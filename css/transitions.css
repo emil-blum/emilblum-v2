@@ -1,0 +1,19 @@
+/* =====================================================
+   EMIL BLUM — PAGE TRANSITIONS
+   A fixed veil div (injected by transitions.js) fades
+   in/out to create the page enter/exit effect.
+   The body is never transformed — this keeps position:fixed,
+   mix-blend-mode, and cursor lerp all working correctly.
+   ===================================================== */
+
+/* Veil — injected as first child of <body> by transitions.js */
+#page-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--cream, #fffbf3);
+  pointer-events: none;
+  opacity: 1;
+  /* Entry fade — JS triggers this by setting opacity: 0 */
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}

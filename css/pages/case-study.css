@@ -1,0 +1,477 @@
+/* =====================================================
+   EMIL BLUM — CASE STUDY PAGE
+   Editorial layout: cinematic hero, flexible gallery,
+   credits, next project.
+   ===================================================== */
+
+/* ── Loading state ─────────────────────────────────── */
+.cs-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 16px;
+}
+
+.cs-spinner {
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid rgba(30, 30, 40, 0.1);
+  border-top-color: var(--maroon);
+  border-radius: 50%;
+  animation: cs-spin 0.75s linear infinite;
+}
+
+@keyframes cs-spin {
+  to { transform: rotate(360deg); }
+}
+
+.cs-loading-text {
+  font-family: var(--font-meta);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(30, 30, 40, 0.3);
+}
+
+/* ── Not found ─────────────────────────────────────── */
+.cs-not-found {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 90vh;
+  gap: 20px;
+  padding-top: 80px;
+}
+
+.cs-not-found.is-visible { display: flex; }
+
+.cs-not-found-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-meta);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--maroon);
+  text-decoration: none;
+  margin-top: 8px;
+  transition: gap 0.25s var(--spring);
+}
+
+.cs-not-found-back:hover { gap: 14px; }
+
+/* ── Main content ─────────────────────────────────── */
+.cs-content { display: none; }
+.cs-content.is-visible { display: block; }
+
+/* ── HERO ─────────────────────────────────────────── */
+.cs-hero {
+  position: relative;
+  height: 92vh;
+  min-height: 520px;
+  overflow: hidden;
+  background: var(--dark);
+}
+
+.cs-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Gradient overlay: subtle top, heavy bottom */
+.cs-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(30, 30, 40, 0.25) 0%,
+      rgba(30, 30, 40, 0.0) 25%,
+      rgba(30, 30, 40, 0.0) 45%,
+      rgba(30, 30, 40, 0.65) 80%,
+      rgba(30, 30, 40, 0.88) 100%
+    );
+  pointer-events: none;
+}
+
+.cs-hero-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 48px 52px;
+  box-sizing: border-box;
+}
+
+/* Back link */
+.cs-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 251, 243, 0.55);
+  font-family: var(--font-meta);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  align-self: flex-start;
+}
+
+.cs-back-link:hover { color: var(--cream); }
+
+.cs-back-link svg {
+  transition: transform 0.25s var(--spring);
+}
+
+.cs-back-link:hover svg { transform: translateX(-4px); }
+
+/* Hero text: stacked at bottom */
+.cs-hero-text { }
+
+.cs-hero-eyebrow {
+  font-family: var(--font-meta);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 251, 243, 0.45);
+  margin-bottom: 14px;
+}
+
+.cs-hero-title {
+  font-size: clamp(2.4rem, 6.5vw, 6rem);
+  font-weight: 500;
+  color: var(--cream);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  max-width: 16ch;
+  margin: 0;
+}
+
+.cs-hero-subtitle {
+  margin-top: 18px;
+  font-size: clamp(14px, 1.6vw, 18px);
+  color: rgba(255, 251, 243, 0.5);
+  line-height: 1.55;
+  max-width: 52ch;
+  font-weight: 400;
+}
+
+/* ── META BAR ──────────────────────────────────────── */
+.cs-meta-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(30, 30, 40, 0.09);
+}
+
+.cs-meta-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cs-meta-key {
+  font-family: var(--font-meta);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(30, 30, 40, 0.35);
+}
+
+.cs-meta-val {
+  font-family: var(--font-meta);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(30, 30, 40, 0.75);
+  font-weight: 500;
+}
+
+.cs-meta-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(30, 30, 40, 0.1);
+  margin: 0 20px;
+  flex-shrink: 0;
+}
+
+.cs-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cs-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border: 1px solid rgba(30, 30, 40, 0.14);
+  border-radius: 2px;
+  font-family: var(--font-meta);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(30, 30, 40, 0.42);
+}
+
+/* ── LEAD TEXT ─────────────────────────────────────── */
+.cs-lead {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.cs-lead-text {
+  font-size: clamp(17px, 2vw, 22px);
+  line-height: 1.75;
+  color: rgba(30, 30, 40, 0.82);
+  max-width: 700px;
+}
+
+/* ── THREE COLUMNS ─────────────────────────────────── */
+.cs-three-col {
+  padding-top: 64px;
+  padding-bottom: 80px;
+  border-top: 1px solid rgba(30, 30, 40, 0.09);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+}
+
+.cs-col-label {
+  font-family: var(--font-meta);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--maroon);
+  margin-bottom: 16px;
+}
+
+.cs-col-body {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(30, 30, 40, 0.62);
+}
+
+/* ── GALLERY ───────────────────────────────────────── */
+.cs-gallery {
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.cs-gallery-section-label {
+  font-family: var(--font-meta);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(30, 30, 40, 0.35);
+  padding: 0 0 20px;
+  margin: 0 40px;
+}
+
+.cs-gallery-row {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.cs-gallery-row.row-1 { grid-template-columns: 1fr; }
+.cs-gallery-row.row-2 { grid-template-columns: 1fr 1fr; }
+.cs-gallery-row.row-3 { grid-template-columns: 1fr 1fr 1fr; }
+.cs-gallery-row.row-2-3 { grid-template-columns: 2fr 1fr; }
+.cs-gallery-row.row-3-2 { grid-template-columns: 1fr 2fr; }
+
+.cs-gallery-item {
+  overflow: hidden;
+  background: #e2ddd5;
+  position: relative;
+}
+
+.cs-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 600ms var(--spring);
+}
+
+.cs-gallery-item:hover img {
+  transform: scale(1.02);
+}
+
+/* Aspect ratios by row type */
+.cs-gallery-row.row-1 .cs-gallery-item { aspect-ratio: 16 / 7; }
+.cs-gallery-row.row-2 .cs-gallery-item { aspect-ratio: 3 / 2; }
+.cs-gallery-row.row-3 .cs-gallery-item { aspect-ratio: 4 / 3; }
+.cs-gallery-row.row-2-3 .cs-gallery-item,
+.cs-gallery-row.row-3-2 .cs-gallery-item { aspect-ratio: 3 / 2; }
+
+/* ── CREDITS & AWARDS ──────────────────────────────── */
+.cs-footer {
+  padding-top: 72px;
+  padding-bottom: 88px;
+  border-top: 1px solid rgba(30, 30, 40, 0.09);
+  display: flex;
+  gap: 80px;
+  flex-wrap: wrap;
+}
+
+.cs-credits-col,
+.cs-awards-col {
+  min-width: 220px;
+}
+
+.cs-section-label {
+  font-family: var(--font-meta);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--maroon);
+  margin-bottom: 20px;
+}
+
+.cs-credit-item {
+  display: flex;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(30, 30, 40, 0.06);
+}
+
+.cs-credit-role {
+  font-size: 12px;
+  color: rgba(30, 30, 40, 0.38);
+  min-width: 150px;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+
+.cs-credit-name {
+  font-size: 13px;
+  color: rgba(30, 30, 40, 0.75);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.cs-award-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(30, 30, 40, 0.06);
+  font-size: 13px;
+  color: rgba(30, 30, 40, 0.7);
+  line-height: 1.5;
+}
+
+.cs-award-item::before {
+  content: '★';
+  font-size: 9px;
+  color: var(--maroon);
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+/* ── NEXT PROJECT ──────────────────────────────────── */
+.cs-next {
+  display: block;
+  padding: 88px 0;
+  background: var(--dark);
+  text-decoration: none;
+  transition: background 0.45s ease;
+}
+
+.cs-next:hover { background: var(--maroon); }
+
+.cs-next-label {
+  font-family: var(--font-meta);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 251, 243, 0.35);
+  margin-bottom: 20px;
+}
+
+.cs-next-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.cs-next-title {
+  font-size: clamp(1.8rem, 4.5vw, 4rem);
+  font-weight: 500;
+  color: var(--cream);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+.cs-next-arrow {
+  flex-shrink: 0;
+  color: rgba(255, 251, 243, 0.5);
+  transition: transform 0.35s var(--spring), color 0.35s ease;
+}
+
+.cs-next:hover .cs-next-arrow {
+  transform: translateX(10px);
+  color: var(--cream);
+}
+
+/* ── RESPONSIVE ────────────────────────────────────── */
+@media (max-width: 900px) {
+  .cs-three-col {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .cs-hero {
+    height: 75vh;
+    min-height: 440px;
+  }
+
+  .cs-hero-content {
+    padding: 20px 24px 36px;
+  }
+
+  .cs-three-col {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .cs-gallery-row.row-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cs-gallery-row.row-2-3,
+  .cs-gallery-row.row-3-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-footer {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .cs-credit-item {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cs-credit-role { min-width: 0; }
+
+  .cs-meta-divider { display: none; }
+}

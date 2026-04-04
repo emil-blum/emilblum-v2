@@ -1,0 +1,262 @@
+/* =====================================================
+   EMIL BLUM — HOME PAGE
+   Loading animation (Willem-style) + hero intro
+   ===================================================== */
+
+/* ── LOADING OVERLAY ── */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9980;
+  background: var(--maroon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ── HEADING ROW: EMIL [box] BLUM ── */
+.loader-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  /* Reference size for em-based box sizing */
+  font-size: clamp(3rem, 8vw, 10rem);
+  width: 100%;
+  padding: 0 2em;
+}
+
+/* Each wordmark wraps in an overflow:hidden clip for the slide-up */
+.loader-word-wrap {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* EMIT starts flush to box-right, BLUM flush to box-left */
+.loader-word-start { justify-content: flex-end; }
+.loader-word-end   { justify-content: flex-start; }
+
+/* The wordmark SVG images — inverted so cream shows on dark bg */
+.loader-word-img {
+  display: block;
+  height: 0.65em;  /* scales with font-size reference */
+  width: auto;
+  filter: invert(1) brightness(1.5);
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ── EXPANDING IMAGE BOX ── */
+.loader-box {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0; /* starts collapsed, GSAP expands */
+  overflow: visible;
+  position: relative;
+}
+
+.loader-box-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(200px, 28vw, 420px);
+  height: clamp(130px, 18vw, 270px);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Growing image container — scale(0→1) from center, GSAP controls transform */
+.loader-image-grow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform-origin: center center;
+  transform: scale(0);
+}
+
+.loader-image-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+/* All images fill the wrap absolutely */
+.loader-img-main,
+.loader-img-extra {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Extra images stack on top, cycle out (highest z = first shown) */
+.loader-img-extra.is-6 { z-index: 6; }
+.loader-img-extra.is-5 { z-index: 5; }
+.loader-img-extra.is-4 { z-index: 4; }
+.loader-img-extra.is-3 { z-index: 3; }
+.loader-img-extra.is-2 { z-index: 2; }
+.loader-img-extra.is-1 { z-index: 1; }
+.loader-img-main       { z-index: 0; }
+
+/* ── HOME PAGE CONTENT ── */
+.home-content {
+  opacity: 0;
+  transition: opacity 0.9s var(--spring);
+}
+
+.home-content.is-visible {
+  opacity: 1;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.hero-eyebrow {
+  color: var(--n500);
+  margin-bottom: 32px;
+}
+
+.hero-headline {
+  max-width: 900px;
+  margin-bottom: 64px;
+}
+
+.hero-headline em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--n400);
+}
+
+.hero-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  max-width: 840px;
+}
+
+@media (max-width: 640px) {
+  .hero-meta {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.hero-bio { color: var(--n600); }
+
+.hero-info-table {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.hero-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--n200);
+  font-family: var(--font-meta);
+  font-size: 12px;
+  font-feature-settings: "ss02" on, "ss03" on;
+  color: var(--n500);
+}
+
+.hero-info-row:first-child { border-top: 1px solid var(--n200); }
+
+.hero-info-value {
+  color: var(--dark);
+  font-weight: 500;
+}
+
+.hero-info-value.status-available {
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  display: inline-block;
+}
+
+/* ── PAGE NAVIGATION GRID ── */
+.home-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--n200);
+  border-top: 1px solid var(--n200);
+}
+
+@media (min-width: 768px) {
+  .home-nav-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.home-nav-item {
+  background: var(--cream);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: background 0.2s ease;
+}
+
+.home-nav-item:hover { background: var(--n100); }
+
+.home-nav-number {
+  color: var(--n400);
+}
+
+.home-nav-title {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  transition: color 0.2s ease;
+}
+
+.home-nav-item:hover .home-nav-title { color: var(--maroon); }
+
+.home-nav-desc {
+  font-size: 13px;
+  color: var(--n500);
+  line-height: 1.5;
+  margin-top: auto;
+}
+
+.home-nav-arrow {
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.2s ease, transform 0.3s var(--spring);
+  color: var(--maroon);
+}
+
+.home-nav-item:hover .home-nav-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}

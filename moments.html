@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moments — Emil Blum</title>
+  <meta name="description" content="Photography archive — light, perspective, and the quiet beauty in ordinary things.">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <style>
+    /* ── Page header ──────────────────────────────────── */
+    .moments-header {
+      padding-top: 140px;
+      padding-bottom: 64px;
+    }
+
+    .moments-header h1 {
+      max-width: 680px;
+      margin-top: 20px;
+    }
+
+    /* ── Masonry grid ─────────────────────────────────── */
+    .photo-grid {
+      column-count: 3;
+      column-gap: 12px;
+      padding-bottom: 120px;
+    }
+
+    @media (max-width: 900px) {
+      .photo-grid { column-count: 2; }
+    }
+
+    @media (max-width: 520px) {
+      .photo-grid { column-count: 1; }
+    }
+
+    /* ── Photo item ───────────────────────────────────── */
+    .photo-item {
+      break-inside: avoid;
+      margin-bottom: 12px;
+      display: block;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* greyscale → colour on hover (uses base.css classes) */
+    .photo-item.hover-color img {
+      transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .photo-item.hover-color:hover img {
+      transform: scale(1.02);
+    }
+
+    /* ── Lightbox overlay ─────────────────────────────── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 30, 40, 0.95);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-img {
+      max-width: 88vw;
+      max-height: 88vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.6);
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 28px;
+      right: 32px;
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 251, 243, 0.08);
+      border: 1px solid rgba(255, 251, 243, 0.15);
+      border-radius: 50%;
+      cursor: pointer;
+      color: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 251, 243, 0.15);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── PAGE CONTENT ── -->
+  <main>
+
+    <!-- Header -->
+    <header class="moments-header container">
+      <p class="t-label section-label" data-reveal>04 — Moments</p>
+      <h1 class="t-headline-xl" data-reveal data-delay="100">
+        Light, perspective, and<br>the quiet beauty in ordinary things.
+      </h1>
+    </header>
+
+    <!-- Photo masonry grid -->
+    <section class="photo-grid container" aria-label="Photography grid">
+
+      <div class="photo-item hover-color img-grey" data-reveal tabindex="0" role="button" aria-label="Open photo 1" data-src="assets/images/01_eb-home-archive-friendapp.webp">
+        <img src="assets/images/01_eb-home-archive-friendapp.webp" alt="Photography archive — image 1" loading="lazy">
+      </div>
+
+      <div class="photo-item hover-color img-grey" data-reveal data-delay="100" tabindex="0" role="button" aria-label="Open photo 2" data-src="assets/images/02_eb-home-archive-kombucha.webp">
+        <img src="assets/images/02_eb-home-archive-kombucha.webp" alt="Photography archive — image 2" loading="lazy">
+      </div>
+
+      <div class="photo-item hover-color img-grey" data-reveal data-delay="200" tabindex="0" role="button" aria-label="Open photo 3" data-src="assets/images/03_eb-home-archive-RType.webp">
+        <img src="assets/images/03_eb-home-archive-RType.webp" alt="Photography archive — image 3" loading="lazy">
+      </div>
+
+      <div class="photo-item hover-color img-grey" data-reveal tabindex="0" role="button" aria-label="Open photo 4" data-src="assets/images/04_eb-home-archive-africanwoman.webp">
+        <img src="assets/images/04_eb-home-archive-africanwoman.webp" alt="Photography archive — image 4" loading="lazy">
+      </div>
+
+      <div class="photo-item hover-color img-grey" data-reveal data-delay="100" tabindex="0" role="button" aria-label="Open photo 5" data-src="assets/images/05_eb-home-archive-AAguitars.webp">
+        <img src="assets/images/05_eb-home-archive-AAguitars.webp" alt="Photography archive — image 5" loading="lazy">
+      </div>
+
+      <div class="photo-item hover-color img-grey" data-reveal data-delay="200" tabindex="0" role="button" aria-label="Open photo 6" data-src="assets/images/06_eb-home-archive-Mindful-illustrations.webp">
+        <img src="assets/images/06_eb-home-archive-Mindful-illustrations.webp" alt="Photography archive — image 6" loading="lazy">
+      </div>
+
+      <div class="photo-item hover-color img-grey" data-reveal tabindex="0" role="button" aria-label="Open photo 7" data-src="assets/images/07_eb-home-archive-GType.webp">
+        <img src="assets/images/07_eb-home-archive-GType.webp" alt="Photography archive — image 7" loading="lazy">
+      </div>
+
+      <div class="photo-item hover-color img-grey" data-reveal data-delay="100" tabindex="0" role="button" aria-label="Open photo 8" data-src="assets/images/08_eb-home-archive-FTLOTGTitles.webp">
+        <img src="assets/images/08_eb-home-archive-FTLOTGTitles.webp" alt="Photography archive — image 8" loading="lazy">
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ── LIGHTBOX ── -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close lightbox">&#x2715;</button>
+    <div class="lightbox-inner">
+      <img class="lightbox-img" id="lightbox-img" src="" alt="">
+    </div>
+  </div>
+
+  <!-- Lightbox JS -->
+  <script>
+    const lightbox     = document.getElementById('lightbox');
+    const lightboxImg  = document.getElementById('lightbox-img');
+    const closeBtn     = document.getElementById('lightbox-close');
+    const photoItems   = document.querySelectorAll('.photo-item');
+
+    function openLightbox(src, alt) {
+      lightboxImg.src = src;
+      lightboxImg.alt = alt || '';
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(() => { lightboxImg.src = ''; }, 350);
+    }
+
+    photoItems.forEach(item => {
+      item.addEventListener('click', () => {
+        openLightbox(item.dataset.src, item.querySelector('img').alt);
+      });
+      item.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(item.dataset.src, item.querySelector('img').alt);
+        }
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+    });
+  </script>
+
+  <!-- Scripts -->
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "id": "oxfam-republic",
+  "title": "Republic of You",
+  "subtitle": "A retro browser game exploring global inequality — for Oxfam",
+  "year": "2015–2016",
+  "category": "Digital & Interactive",
+  "client": "Oxfam GB",
+  "tags": ["Interactive", "Game Design", "Campaign", "Digital"],
+  "intro": "To help Oxfam fight extreme inequality, we built an engaging, light-hearted online quiz-game. In the Republic of You, users create their own country and — as its leader — make decisions on critical matters, each one impacting the wellbeing of their citizens. Just like the real world, but with better pixel art.",
+  "challenge": "Make a genuinely complex global issue — inequality — feel accessible and personally relevant without trivialising it. The target audience needed to feel the weight of these decisions, not just read about statistics.",
+  "approach": "Inspired by retro 8-bit games, every decision triggers illustrated consequences across the country. An equality score reflects cumulative choices, linked to real Oxfam case studies. Illustration by Katie McPherson brought the pixel world to life.",
+  "outcome": "Launched to an immediate and passionate response — and an equally passionate backlash from critics who called it oversimplified. The site received a commendation at the Scottish Design Awards 2016. Subsequent world events have since vindicated the premise.",
+  "heroImage": "assets/images/case-studies/oxfam/hero.jpg",
+  "gallery": [
+    ["assets/images/case-studies/oxfam/gameplay.gif"],
+    ["assets/images/case-studies/oxfam/screen-01.jpg", "assets/images/case-studies/oxfam/screen-02.jpg"],
+    ["assets/images/case-studies/oxfam/screen-03.jpg", "assets/images/case-studies/oxfam/screen-04.jpg"],
+    ["assets/images/case-studies/oxfam/animation-01.gif", "assets/images/case-studies/oxfam/animation-02.gif"]
+  ],
+  "credits": [
+    { "role": "Creative Direction", "name": "Charlie Bell" },
+    { "role": "Art Direction & Design", "name": "Emil Blum" },
+    { "role": "Illustration", "name": "Katie McPherson & Emil Blum" },
+    { "role": "Copywriting", "name": "Adam Smith" },
+    { "role": "Studio", "name": "Whitespace (now Dentsu Creative Edinburgh)" }
+  ],
+  "awards": [
+    "Scottish Design Awards 2016 — Digital Design Commendation"
+  ],
+  "next": { "id": "stewart-brewing", "title": "Stewart Brewing" }
+}

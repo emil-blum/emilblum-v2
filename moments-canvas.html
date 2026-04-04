@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moments — Emil Blum</title>
+  <meta name="description" content="Photography archive — light, perspective, and the quiet beauty in ordinary things.">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <style>
+    /* ─────────────────────────────────────────────────────
+       MOMENTS CANVAS — page-level styles
+       ───────────────────────────────────────────────────── */
+
+    /* Remove default body scroll in canvas mode */
+    body.mode-canvas { overflow: hidden; }
+    body.mode-row    { overflow: hidden; }
+
+    /* ── View switcher pill (bottom-left) ── */
+    .view-switcher {
+      position: fixed;
+      bottom: 28px;
+      left: 28px;
+      z-index: 100;
+      display: flex;
+      gap: 4px;
+      background: var(--dark);
+      border-radius: 999px;
+      padding: 5px;
+      box-shadow: 0 4px 24px rgba(30,30,40,0.25);
+    }
+
+    .view-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: rgba(255,251,243,0.45);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 180ms ease, color 180ms ease;
+      font-family: var(--font-meta);
+      line-height: 1;
+    }
+    .view-btn:hover {
+      color: var(--cream);
+    }
+    .view-btn.active {
+      background: var(--cream);
+      color: var(--dark);
+    }
+
+    /* ── Simple view back-link ── */
+    .back-link {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 100;
+      font-family: var(--font-meta);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--n500);
+      background: var(--cream-alt);
+      border: 1px solid var(--n200);
+      border-radius: 999px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 200ms ease, border-color 200ms ease;
+      cursor: none;
+    }
+    .back-link:hover { color: var(--dark); border-color: var(--n400); }
+    body.mode-canvas .back-link,
+    body.mode-row .back-link { display: none; }
+
+    /* ─────────────────────────────────────────────────────
+       MODE: CANVAS
+       ───────────────────────────────────────────────────── */
+    .canvas-wrap {
+      position: fixed;
+      inset: 0;
+      top: 0;
+      overflow: hidden;
+      background: var(--cream-alt);
+      cursor: grab;
+      display: none;
+    }
+    body.mode-canvas .canvas-wrap { display: block; }
+    .canvas-wrap.grabbing { cursor: grabbing; }
+
+    .canvas-inner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      will-change: transform;
+    }
+
+    .canvas-item {
+      position: absolute;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(30,30,40,0.14);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      cursor: pointer;
+      background: var(--n200);
+    }
+    .canvas-item:hover {
+      box-shadow: 0 16px 48px rgba(30,30,40,0.22);
+      z-index: 10;
+    }
+    .canvas-item img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: filter 0.5s ease;
+      pointer-events: none;
+    }
+    .canvas-item:hover img { }
+
+    /* Subtle dot grid on canvas */
+    .canvas-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(168,146,120,0.25) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─────────────────────────────────────────────────────
+       MODE: ROW (auto-scroll strip)
+       ───────────────────────────────────────────────────── */
+    @keyframes scroll-strip {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .row-wrap {
+      position: fixed;
+      inset: 0;
+      background: var(--dark);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    body.mode-row .row-wrap { display: flex; }
+
+    .row-strip-outer {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .row-strip {
+      display: flex;
+      gap: 20px;
+      /* doubled set for seamless loop */
+      width: max-content;
+      animation: scroll-strip 30s linear infinite;
+    }
+    .row-strip:hover { animation-play-state: paused; }
+
+    .row-item {
+      flex: 0 0 auto;
+      height: 40vh;
+      overflow: hidden;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+    }
+    .row-item img {
+      height: 100%;
+      width: auto;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.4s ease;
+      pointer-events: none;
+    }
+    .row-item:hover img { }
+
+    /* Label at top when in row mode */
+    .row-label {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-meta);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,251,243,0.35);
+      pointer-events: none;
+      display: none;
+    }
+    body.mode-row .row-label { display: block; }
+
+    /* ─────────────────────────────────────────────────────
+       MODE: GRID (masonry)
+       ───────────────────────────────────────────────────── */
+    .grid-wrap {
+      display: none;
+      padding-top: 120px;
+      padding-bottom: 120px;
+    }
+    body.mode-grid .grid-wrap { display: block; }
+
+    .grid-header {
+      margin-bottom: 48px;
+    }
+    .grid-header h1 {
+      max-width: 640px;
+      margin-top: 16px;
+    }
+
+    .photo-grid {
+      column-count: 4;
+      column-gap: 12px;
+    }
+    @media (max-width: 1100px) { .photo-grid { column-count: 3; } }
+    @media (max-width: 760px)  { .photo-grid { column-count: 2; } }
+    @media (max-width: 480px)  { .photo-grid { column-count: 1; } }
+
+    .photo-item {
+      break-inside: avoid;
+      margin-bottom: 12px;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .photo-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .photo-item:hover img {
+      transform: scale(1.02);
+    }
+
+    /* ─────────────────────────────────────────────────────
+       LIGHTBOX
+       ───────────────────────────────────────────────────── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-img {
+      max-width: 88vw;
+      max-height: 80vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      border-radius: 4px;
+      box-shadow: 0 32px 96px rgba(30,30,40,0.18);
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 28px;
+      right: 32px;
+      width: 44px;
+      height: 44px;
+      background: var(--cream-alt);
+      border: 1px solid var(--n200);
+      border-radius: 50%;
+      cursor: pointer;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+      font-size: 18px;
+      line-height: 1;
+      z-index: 10;
+    }
+    .lightbox-close:hover { background: var(--n200); border-color: var(--n300); }
+
+    .lightbox-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      background: var(--cream-alt);
+      border: 1px solid var(--n200);
+      border-radius: 50%;
+      cursor: pointer;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+      z-index: 10;
+    }
+    .lightbox-arrow:hover { background: var(--n200); border-color: var(--n300); }
+    .lightbox-arrow.prev { left: 20px; }
+    .lightbox-arrow.next { right: 20px; }
+    .lightbox-arrow svg { width: 18px; height: 18px; }
+
+    /* Canvas/row mode: hide grid back-link */
+    body.mode-canvas .back-link,
+    body.mode-row .back-link { display: none; }
+  </style>
+</head>
+<body class="mode-canvas">
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── CANVAS MODE ── -->
+  <div class="canvas-wrap" id="canvasWrap">
+    <div class="canvas-inner" id="canvasInner">
+      <!-- Items injected by JS -->
+    </div>
+  </div>
+
+  <!-- ── ROW MODE ── -->
+  <div class="row-wrap" id="rowWrap">
+    <p class="row-label">04 — Moments</p>
+    <div class="row-strip-outer">
+      <div class="row-strip" id="rowStrip">
+        <!-- Items injected by JS (doubled for seamless loop) -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── GRID MODE ── -->
+  <div class="grid-wrap">
+    <div class="container">
+      <header class="grid-header">
+        <p class="t-label section-label">04 — Moments</p>
+        <h1 class="t-headline-xl">Light, perspective, and<br>the quiet beauty in ordinary things.</h1>
+      </header>
+      <section class="photo-grid" id="photoGrid" aria-label="Photography grid">
+        <!-- Items injected by JS -->
+      </section>
+    </div>
+  </div>
+
+  <!-- ── LIGHTBOX ── -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">&#x2715;</button>
+    <button class="lightbox-arrow prev" id="lightboxPrev" aria-label="Previous image">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 14L6 9l5-5"/>
+      </svg>
+    </button>
+    <div class="lightbox-inner">
+      <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    </div>
+    <button class="lightbox-arrow next" id="lightboxNext" aria-label="Next image">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 4l5 5-5 5"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ── VIEW SWITCHER ── -->
+  <div class="view-switcher" role="group" aria-label="Switch view mode">
+    <button class="view-btn active" data-mode="canvas" aria-label="Canvas view" title="Canvas">⊹</button>
+    <button class="view-btn"        data-mode="row"    aria-label="Row view"    title="Row">≡</button>
+    <button class="view-btn"        data-mode="grid"   aria-label="Grid view"   title="Grid">⊞</button>
+  </div>
+
+  <!-- ── BACK LINK ── -->
+  <a href="moments.html" class="back-link" data-cursor="Browse">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 2L4 6l4 4"/>
+    </svg>
+    Simple view
+  </a>
+
+  <!-- Scripts -->
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+  <script>
+    /* =====================================================
+       MOMENTS CANVAS — vanilla JS
+       Three modes: canvas | row | grid
+       Lightbox with prev/next + ESC
+       ===================================================== */
+
+    'use strict';
+
+    /* ── STATE ── */
+    let moments = [];
+    let currentMode = 'canvas';
+    let lightboxIndex = 0;
+
+    /* ── CANVAS DRAG STATE ── */
+    const canvasState = {
+      isDragging: false,
+      startX: 0,
+      startY: 0,
+      originX: 0,
+      originY: 0,
+      x: 0,
+      y: 0
+    };
+
+    /* ── CANVAS LAYOUT CONFIG ── */
+    // Scattered positions for each image (% of canvas area, manually tuned
+    // so nothing overlaps the nav and images feel naturally scattered)
+    const SCATTER = [
+      { x:  8,  y: 22, rot: -4  },
+      { x: 32,  y: 10, rot:  2  },
+      { x: 58,  y: 16, rot: -1.5},
+      { x: 74,  y: 32, rot:  3  },
+      { x: 14,  y: 54, rot:  1.5},
+      { x: 42,  y: 46, rot: -3  },
+      { x: 65,  y: 60, rot:  2  },
+      { x: 28,  y: 72, rot: -2  }
+    ];
+    const CANVAS_IMG_WIDTH = 260; // px
+
+    /* ── LIGHTBOX ── */
+    const lightbox    = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+
+    function openLightbox(index) {
+      lightboxIndex = ((index % moments.length) + moments.length) % moments.length;
+      const m = moments[lightboxIndex];
+      lightboxImg.src = m.src;
+      lightboxImg.alt = m.alt;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(() => { lightboxImg.src = ''; }, 350);
+    }
+
+    function shiftLightbox(dir) {
+      openLightbox(lightboxIndex + dir);
+    }
+
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxPrev').addEventListener('click', () => shiftLightbox(-1));
+    document.getElementById('lightboxNext').addEventListener('click', () => shiftLightbox(1));
+
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox || e.target.classList.contains('lightbox-inner')) closeLightbox();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeLightbox();
+      if (e.key === 'ArrowLeft')  shiftLightbox(-1);
+      if (e.key === 'ArrowRight') shiftLightbox(1);
+    });
+
+    /* ── BUILD: CANVAS ── */
+    function buildCanvas() {
+      const inner = document.getElementById('canvasInner');
+      inner.innerHTML = '';
+
+      moments.forEach((m, i) => {
+        const pos = SCATTER[i % SCATTER.length];
+        const item = document.createElement('div');
+        item.className = 'canvas-item';
+
+        // Calculate pixel position from percentages of a reference canvas size
+        const refW = 1440, refH = 900;
+        const left = (pos.x / 100) * refW;
+        const top  = (pos.y / 100) * refH;
+
+        // Derive height from aspect ratio
+        const imgW = CANVAS_IMG_WIDTH;
+        const imgH = Math.round(imgW * (m.h / m.w));
+
+        item.style.cssText = `
+          left: ${left}px;
+          top: ${top}px;
+          width: ${imgW}px;
+          height: ${imgH}px;
+          transform: rotate(${pos.rot}deg);
+        `;
+
+        const img = document.createElement('img');
+        img.src = m.src;
+        img.alt = m.alt;
+        img.draggable = false;
+        img.loading = 'lazy';
+        item.appendChild(img);
+
+        item.addEventListener('click', () => openLightbox(i));
+        inner.appendChild(item);
+      });
+
+      // Center on initial load
+      const refW = 1440, refH = 900;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      canvasState.x = (vw - refW) / 2;
+      canvasState.y = (vh - refH) / 2;
+      inner.style.transform = `translate(${canvasState.x}px, ${canvasState.y}px)`;
+    }
+
+    /* ── CANVAS DRAG EVENTS ── */
+    function initCanvasDrag() {
+      const wrap  = document.getElementById('canvasWrap');
+      const inner = document.getElementById('canvasInner');
+
+      wrap.addEventListener('pointerdown', e => {
+        if (e.target.closest('.canvas-item')) {
+          // Allow click-through on items only if barely moved
+          canvasState.isDragging = true;
+          canvasState.startX = e.clientX;
+          canvasState.startY = e.clientY;
+          canvasState.originX = canvasState.x;
+          canvasState.originY = canvasState.y;
+          canvasState.moved = false;
+          wrap.classList.add('grabbing');
+          wrap.setPointerCapture(e.pointerId);
+          return;
+        }
+        canvasState.isDragging = true;
+        canvasState.startX = e.clientX;
+        canvasState.startY = e.clientY;
+        canvasState.originX = canvasState.x;
+        canvasState.originY = canvasState.y;
+        canvasState.moved = false;
+        wrap.classList.add('grabbing');
+        wrap.setPointerCapture(e.pointerId);
+      });
+
+      wrap.addEventListener('pointermove', e => {
+        if (!canvasState.isDragging) return;
+        const dx = e.clientX - canvasState.startX;
+        const dy = e.clientY - canvasState.startY;
+        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) canvasState.moved = true;
+        canvasState.x = canvasState.originX + dx;
+        canvasState.y = canvasState.originY + dy;
+        inner.style.transform = `translate(${canvasState.x}px, ${canvasState.y}px)`;
+      });
+
+      const endDrag = () => {
+        canvasState.isDragging = false;
+        wrap.classList.remove('grabbing');
+      };
+      wrap.addEventListener('pointerup', endDrag);
+      wrap.addEventListener('pointercancel', endDrag);
+
+      // Prevent image clicks when dragged
+      wrap.addEventListener('click', e => {
+        if (canvasState.moved) {
+          canvasState.moved = false;
+          e.stopPropagation();
+        }
+      }, true);
+
+      // Touch pinch/scroll passthrough (no zoom implemented but prevent rubber-band)
+      wrap.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+    }
+
+    /* ── BUILD: ROW ── */
+    function buildRow() {
+      const strip = document.getElementById('rowStrip');
+      strip.innerHTML = '';
+
+      // Double the set for seamless loop
+      const doubled = [...moments, ...moments];
+      doubled.forEach((m, i) => {
+        const item = document.createElement('div');
+        item.className = 'row-item';
+        const img = document.createElement('img');
+        img.src = m.src;
+        img.alt = m.alt;
+        img.loading = 'lazy';
+        img.draggable = false;
+        item.appendChild(img);
+        item.addEventListener('click', () => openLightbox(i % moments.length));
+        strip.appendChild(item);
+      });
+    }
+
+    /* ── BUILD: GRID ── */
+    function buildGrid() {
+      const grid = document.getElementById('photoGrid');
+      grid.innerHTML = '';
+
+      moments.forEach((m, i) => {
+        const item = document.createElement('div');
+        item.className = 'photo-item';
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('role', 'button');
+        item.setAttribute('aria-label', `Open photo: ${m.alt}`);
+
+        const img = document.createElement('img');
+        img.src = m.src;
+        img.alt = m.alt;
+        img.loading = 'lazy';
+        item.appendChild(img);
+
+        item.addEventListener('click', () => openLightbox(i));
+        item.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
+        });
+        grid.appendChild(item);
+      });
+    }
+
+    /* ── VIEW SWITCHER ── */
+    function setMode(mode) {
+      if (mode === currentMode) return;
+      currentMode = mode;
+
+      // Body class drives which container is shown
+      document.body.classList.remove('mode-canvas', 'mode-row', 'mode-grid');
+      document.body.classList.add(`mode-${mode}`);
+
+      // Update active button
+      document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+      });
+
+      // Restore scroll for grid
+      if (mode !== 'canvas' && mode !== 'row') {
+        document.body.style.overflow = '';
+      }
+    }
+
+    document.querySelectorAll('.view-btn').forEach(btn => {
+      btn.addEventListener('click', () => setMode(btn.dataset.mode));
+    });
+
+    /* ── INIT ── */
+    async function init() {
+      try {
+        const res = await fetch('content/moments.json');
+        if (!res.ok) throw new Error(res.status);
+        moments = await res.json();
+      } catch (err) {
+        console.warn('[moments-canvas] Could not load moments.json:', err);
+        // Fallback: use hard-coded image paths
+        moments = [
+          { id:1, src:'assets/images/01_eb-home-archive-friendapp.webp',            alt:'Friend App',             w:4,  h:3 },
+          { id:2, src:'assets/images/02_eb-home-archive-kombucha.webp',             alt:'Kombucha bottles',       w:3,  h:4 },
+          { id:3, src:'assets/images/03_eb-home-archive-RType.webp',                alt:'R-Type typography',      w:16, h:9 },
+          { id:4, src:'assets/images/04_eb-home-archive-africanwoman.webp',         alt:'Portrait study',         w:2,  h:3 },
+          { id:5, src:'assets/images/05_eb-home-archive-AAguitars.webp',            alt:'AA Guitars',             w:1,  h:1 },
+          { id:6, src:'assets/images/06_eb-home-archive-Mindful-illustrations.webp',alt:'Mindful illustrations',  w:3,  h:2 },
+          { id:7, src:'assets/images/07_eb-home-archive-GType.webp',                alt:'G-Type lettering',       w:4,  h:3 },
+          { id:8, src:'assets/images/08_eb-home-archive-FTLOTGTitles.webp',         alt:'FTLOTG title sequence',  w:16, h:9 }
+        ];
+      }
+
+      buildCanvas();
+      buildRow();
+      buildGrid();
+      initCanvasDrag();
+
+      // Default mode
+      document.body.classList.add('mode-canvas');
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+
+</body>
+</html>

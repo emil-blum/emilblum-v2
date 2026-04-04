@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Study — Emil Blum</title>
+  <meta name="description" content="Project case study — Emil Blum.">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+  <link rel="stylesheet" href="css/pages/case-study.css">
+</head>
+<body>
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── PAGE CONTENT ── -->
+  <main>
+
+    <!-- Loading -->
+    <div class="cs-loading" id="cs-loading" aria-live="polite">
+      <div class="cs-spinner" aria-hidden="true"></div>
+      <span class="cs-loading-text">Loading project</span>
+    </div>
+
+    <!-- Not found -->
+    <div class="cs-not-found container" id="cs-not-found" role="alert">
+      <p class="t-label section-label">Project</p>
+      <h1 class="t-headline-xl">Coming<br>soon.</h1>
+      <p class="t-body" style="max-width: 420px; color: rgba(30,30,40,0.5); margin-top: 8px;">
+        This case study is still being written. Check back soon, or browse other work.
+      </p>
+      <a href="featured.html" class="cs-not-found-back" data-cursor="View">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M11 7H3M7 3L3 7l4 4"/>
+        </svg>
+        Back to selected work
+      </a>
+    </div>
+
+    <!-- Case study content — populated by JS -->
+    <div class="cs-content" id="cs-content">
+
+      <!-- 1. HERO — full bleed, title overlay -->
+      <section class="cs-hero" id="cs-hero" aria-label="Project hero image">
+        <img class="cs-hero-img" id="cs-hero-img" src="" alt="" loading="eager">
+        <div class="cs-hero-content">
+
+          <a href="featured.html" class="cs-back-link" data-cursor="Back">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M13 8H3M7 4L3 8l4 4"/>
+            </svg>
+            Selected Work
+          </a>
+
+          <div class="cs-hero-text">
+            <p class="cs-hero-eyebrow" id="cs-category">Category</p>
+            <h1 class="cs-hero-title" id="cs-title">Project Title</h1>
+            <p class="cs-hero-subtitle" id="cs-subtitle"></p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 2. META BAR -->
+      <div class="cs-meta-bar container" id="cs-meta-bar">
+        <div class="cs-meta-pair">
+          <span class="cs-meta-key">Year</span>
+          <span class="cs-meta-val" id="cs-year">—</span>
+        </div>
+        <span class="cs-meta-divider" aria-hidden="true"></span>
+        <div class="cs-meta-pair">
+          <span class="cs-meta-key">Client</span>
+          <span class="cs-meta-val" id="cs-client">—</span>
+        </div>
+        <span class="cs-meta-divider" aria-hidden="true"></span>
+        <div class="cs-tags" id="cs-tags"></div>
+      </div>
+
+      <!-- 3. LEAD TEXT -->
+      <section class="cs-lead container" aria-label="Project introduction">
+        <p class="cs-lead-text" id="cs-intro">Project introduction text.</p>
+      </section>
+
+      <!-- 4. CHALLENGE / APPROACH / OUTCOME -->
+      <section class="cs-three-col container" aria-label="Project overview">
+        <div>
+          <p class="cs-col-label">Challenge</p>
+          <p class="cs-col-body" id="cs-challenge"></p>
+        </div>
+        <div>
+          <p class="cs-col-label">Approach</p>
+          <p class="cs-col-body" id="cs-approach"></p>
+        </div>
+        <div>
+          <p class="cs-col-label">Outcome</p>
+          <p class="cs-col-body" id="cs-outcome"></p>
+        </div>
+      </section>
+
+      <!-- 5. GALLERY — rows injected by JS -->
+      <section class="cs-gallery" id="cs-gallery" aria-label="Project imagery"></section>
+
+      <!-- 6. CREDITS & AWARDS -->
+      <div class="cs-footer container" id="cs-footer">
+        <div class="cs-credits-col" id="cs-credits-col"></div>
+        <div class="cs-awards-col"  id="cs-awards-col"></div>
+      </div>
+
+      <!-- 7. NEXT PROJECT -->
+      <a class="cs-next" id="cs-next" href="featured.html" data-cursor="Next">
+        <div class="container">
+          <p class="cs-next-label">Next project</p>
+          <div class="cs-next-row">
+            <span class="cs-next-title" id="cs-next-title">View all work</span>
+            <svg class="cs-next-arrow" width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M6 18h24M22 10l8 8-8 8"/>
+            </svg>
+          </div>
+        </div>
+      </a>
+
+    </div><!-- /.cs-content -->
+  </main>
+
+  <!-- ── CASE STUDY LOADER ── -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ── Inline fallback data (works on file://) ───────── */
+    const INLINE = {
+
+      'hard-rock-vinyl': {
+        title: 'Hard Rock Hotels',
+        subtitle: 'A hand-crafted paper record player for very important guests',
+        year: '2019',
+        category: 'Print & Craft',
+        client: 'Hard Rock Hotels',
+        tags: ['Print', 'Craft', 'Experiential'],
+        intro: 'Hard Rock Hotels asked for a custom welcome gift for selected high-profile guests. Several ideas of varying complexity were presented — the client loved the idea of a bespoke paper vinyl player. From that brief came prototypes, cut fingers, broken vinyl records, and one of the most satisfying things ever made in a studio.',
+        challenge: 'Create something genuinely surprising for guests who have already seen everything. The gift needed to feel premium, embody the Hard Rock music heritage, and work within an extremely short timeframe.',
+        approach: 'A paper record player sleeve that guests can fold and play. Prototyping, material sourcing and testing happened simultaneously. A personalised welcome message and a custom track were recorded and pressed to vinyl. The sleeve instructions became part of the design.',
+        outcome: 'The end result is a functional paper record player — fold the sleeve, place the vinyl, spin it at 45rpm. Completely analog, completely unexpected. A welcome gift that got people talking.',
+        heroImage: 'assets/case-study-placeholders/HardRock/01_HardRock-Website-Casestudy-Hero-and-Large.jpg',
+        gallery: [
+          ['assets/case-study-placeholders/HardRock/02_HardRock-Website-Casestudy-Hero-and-Large.jpg'],
+          ['assets/case-study-placeholders/HardRock/03_HardRock_Website-Casestudy-Square-Image.jpg', 'assets/case-study-placeholders/HardRock/04_HardRock_Website-Casestudy-Square-Image.jpg'],
+          ['assets/case-study-placeholders/HardRock/05_HardRock_Website-Casestudy-Square-Image.jpg', 'assets/case-study-placeholders/HardRock/06_HardRock_Website-Casestudy-Square-Image.jpg'],
+          ['assets/case-study-placeholders/HardRock/Hardrock-Process-1.jpg', 'assets/case-study-placeholders/HardRock/Hardrock-Process-2.jpg', 'assets/case-study-placeholders/HardRock/Hardrock-Process-3.jpg']
+        ],
+        credits: [
+          { role: 'Creative Direction & Design', name: 'Emil Blum' },
+          { role: 'Music', name: 'Richard Jahn' },
+          { role: 'Studio', name: 'Campfire Agency' }
+        ],
+        awards: [],
+        next: { id: 'oxfam-republic', title: 'Oxfam: Republic of You' }
+      },
+
+      'oxfam-republic': {
+        title: 'Republic of You',
+        subtitle: 'A retro browser game exploring global inequality — for Oxfam',
+        year: '2015–2016',
+        category: 'Digital & Interactive',
+        client: 'Oxfam GB',
+        tags: ['Interactive', 'Game Design', 'Campaign', 'Digital'],
+        intro: 'To help Oxfam fight extreme inequality, we built an engaging, light-hearted online quiz-game. In the Republic of You, users create their own country and — as its leader — make decisions on critical matters, each one impacting the wellbeing of their citizens. Just like the real world, but with better pixel art.',
+        challenge: 'Make a genuinely complex global issue — inequality — feel accessible and personally relevant without trivialising it. The target audience needed to feel the weight of these decisions, not just read about statistics.',
+        approach: 'Inspired by retro 8-bit games, every decision triggers illustrated consequences across the country. An equality score reflects cumulative choices, linked to real Oxfam case studies. Illustration by Katie McPherson brought the pixel world to life.',
+        outcome: 'Launched to an immediate and passionate response — the project received a commendation at the Scottish Design Awards 2016. The backlash from online critics (who called it "oversimplified") turned out to be rather prescient given subsequent world events.',
+        heroImage: 'assets/case-study-placeholders/Oxfam-Republic-of-You/ROY_YT.jpg',
+        gallery: [
+          ['assets/case-study-placeholders/Oxfam-Republic-of-You/22eeb567909747.5b4aa42f2d665.gif'],
+          ['assets/case-study-placeholders/Oxfam-Republic-of-You/14195167909747.5b4aa42f2d665.jpg', 'assets/case-study-placeholders/Oxfam-Republic-of-You/368ffa67909747.5b4a9e7e53495.jpg'],
+          ['assets/case-study-placeholders/Oxfam-Republic-of-You/381cbb67909747.5b4a8c9226c0f.jpg', 'assets/case-study-placeholders/Oxfam-Republic-of-You/5b779f67909747.5b4aa42f2e29b.jpg'],
+          ['assets/case-study-placeholders/Oxfam-Republic-of-You/70899e67909747.5b4a894a085da.gif', 'assets/case-study-placeholders/Oxfam-Republic-of-You/aca63a67909747.5b4a9e7e53eb5.gif']
+        ],
+        credits: [
+          { role: 'Creative Direction', name: 'Charlie Bell' },
+          { role: 'Art Direction & Design', name: 'Emil Blum' },
+          { role: 'Illustration', name: 'Katie McPherson & Emil Blum' },
+          { role: 'Copywriting', name: 'Adam Smith' },
+          { role: 'Studio', name: 'Whitespace (now Dentsu Creative Edinburgh)' }
+        ],
+        awards: [
+          'Scottish Design Awards 2016 — Digital Design Commendation'
+        ],
+        next: { id: 'stewart-brewing', title: 'Stewart Brewing' }
+      },
+
+      'stewart-brewing': {
+        title: 'Stewart Brewing',
+        subtitle: 'Molecular beer labels and an augmented reality experience',
+        year: '2019',
+        category: 'Packaging & Brand',
+        client: 'Stewart Brewing',
+        tags: ['Packaging', 'Brand Identity', 'Augmented Reality'],
+        intro: 'Stewart Brewing\'s Project 7 Series represents brewers\' passion for experimental beer. To give the range a new visual identity, we looked inside the brew — visualising the "Elements of Craft", metaphorical molecules that act as identity for each beer, communicating its flavour, colour, smell and the creativity of the people who made it.',
+        challenge: 'Create a label system that communicated the craft and character of seven experimental beers without resorting to the usual rustic or heritage visual clichés common in craft brewing.',
+        approach: 'Each beer\'s label is built from its "molecular fingerprint" — abstract forms derived from the ingredients and process. An augmented reality app layer was developed alongside the labels, letting customers point their phone at any bottle to unlock deeper stories about each brew.',
+        outcome: 'A complete packaging system with a built-in interactive dimension. The AR experience encouraged a deeper, more curious relationship with the beer — and gave the range a genuinely distinctive shelf presence.',
+        heroImage: 'assets/case-study-placeholders/Stewart-Brewings/upload-08bd448a-80b4-4127-94c2-c84ff2b3d66b.webp',
+        gallery: [
+          ['assets/case-study-placeholders/Stewart-Brewings/upload-2e92202c-a587-4c3a-8b29-d4dc55610a97.webp', 'assets/case-study-placeholders/Stewart-Brewings/upload-303c2168-9ffc-4fb9-b488-a31a7d58a644.webp'],
+          ['assets/case-study-placeholders/Stewart-Brewings/upload-35d27559-b54a-4b40-8d79-9200963ec97b.webp'],
+          ['assets/case-study-placeholders/Stewart-Brewings/upload-5687f772-9823-49c4-ac17-d0cf14c60ecf.webp', 'assets/case-study-placeholders/Stewart-Brewings/upload-71aaec08-c36e-4d86-a6b0-a018daabba6a.webp'],
+          ['assets/case-study-placeholders/Stewart-Brewings/upload-73700c31-8f9d-47a7-9335-647213dd554f.webp', 'assets/case-study-placeholders/Stewart-Brewings/upload-7b2a063f-1b70-4d06-a36e-cf4caa6286b4.webp', 'assets/case-study-placeholders/Stewart-Brewings/upload-b83e7f1b-39f9-401d-b4fe-79e518076463.webp']
+        ],
+        credits: [
+          { role: 'Creative Direction & Design', name: 'Emil Blum' }
+        ],
+        awards: [],
+        next: { id: 'fisga-branding', title: 'FISGA' }
+      },
+
+      'fisga-branding': {
+        title: 'FISGA',
+        subtitle: 'Brand identity for a multidisciplinary arts, fitness and events space',
+        year: '2023',
+        category: 'Brand Identity',
+        client: 'FISGA',
+        tags: ['Brand Identity', 'Events', 'Environmental'],
+        intro: 'FISGA is a Lisbon-based space where fitness, music, art and community converge. The Warehouse hosts events; the Garden is a space to train. A bold, modular brand system was built to hold both worlds — and the many events, installations and collaborations that happen within them.',
+        challenge: 'Design a brand flexible enough to serve a wellness studio, a warehouse events venue and a curated arts programme — all under one identity — without feeling generic.',
+        approach: 'An isometric geometric logomark creates immediate spatial depth, referencing architecture and structure. Two bold sub-brand colours (blue for Warehouse, yellow for Garden) allow the identity to flex across radically different contexts while staying unmistakably FISGA.',
+        outcome: 'A coherent identity that scales from signage and floor maps to social event posters. The geometric mark and colour system give FISGA a strong visual voice across every touchpoint.',
+        heroImage: 'assets/case-study-placeholders/Fisga-Branding/Fisga-Cover.jpg',
+        gallery: [
+          ['assets/case-study-placeholders/Fisga-Branding/01_FISGA_Logos.png'],
+          ['assets/case-study-placeholders/Fisga-Branding/02_Fisga_Brand-Example.png', 'assets/case-study-placeholders/Fisga-Branding/04_Fisga_Brand-Example1.png'],
+          ['assets/case-study-placeholders/Fisga-Branding/08_Fisga_Social_Post-Example.jpg'],
+          ['assets/case-study-placeholders/Fisga-Branding/10_FISGA-Warehouse_Floor-Map.png', 'assets/case-study-placeholders/Fisga-Branding/11_FISGA-Warehouse_SIGNAGE.png'],
+          ['assets/case-study-placeholders/Fisga-Branding/05_Fisga-Art.jpg', 'assets/case-study-placeholders/Fisga-Branding/06_Fisga-Art3.png', 'assets/case-study-placeholders/Fisga-Branding/07_Fisga-Art4.png']
+        ],
+        credits: [
+          { role: 'Creative Direction & Design', name: 'Emil Blum' },
+          { role: 'Studio', name: 'Calumma Design' }
+        ],
+        awards: [],
+        next: { id: 'hard-rock-vinyl', title: 'Hard Rock Hotels' }
+      }
+
+    };
+
+    /* ── DOM refs ──────────────────────────────────────── */
+    const loadingEl  = document.getElementById('cs-loading');
+    const notFoundEl = document.getElementById('cs-not-found');
+    const contentEl  = document.getElementById('cs-content');
+
+    /* ── Helpers ───────────────────────────────────────── */
+    function set(id, value) {
+      const el = document.getElementById(id);
+      if (el && value !== undefined && value !== null) el.textContent = value;
+    }
+
+    function showNotFound() {
+      loadingEl.style.display = 'none';
+      notFoundEl.classList.add('is-visible');
+      document.title = 'Coming Soon — Emil Blum';
+    }
+
+    /* ── Populate ──────────────────────────────────────── */
+    function populatePage(data) {
+      document.title = `${data.title || 'Project'} — Emil Blum`;
+
+      if (data.intro) {
+        const descTag = document.querySelector('meta[name="description"]');
+        if (descTag) descTag.setAttribute('content', data.intro.slice(0, 160));
+      }
+
+      // Hero image
+      const heroImg = document.getElementById('cs-hero-img');
+      if (heroImg && data.heroImage) {
+        heroImg.src = data.heroImage;
+        heroImg.alt = data.title || '';
+      }
+
+      // Hero text
+      set('cs-category', data.category);
+      set('cs-title',    data.title);
+      set('cs-subtitle', data.subtitle);
+
+      // Meta bar
+      set('cs-year',   data.year);
+      set('cs-client', data.client);
+
+      const tagsEl = document.getElementById('cs-tags');
+      if (tagsEl && data.tags && data.tags.length) {
+        tagsEl.innerHTML = data.tags.map(t =>
+          `<span class="cs-tag">${t}</span>`
+        ).join('');
+      }
+
+      // Lead + three-col
+      set('cs-intro',     data.intro);
+      set('cs-challenge', data.challenge);
+      set('cs-approach',  data.approach);
+      set('cs-outcome',   data.outcome);
+
+      // Gallery rows
+      const galleryEl = document.getElementById('cs-gallery');
+      if (galleryEl && data.gallery && data.gallery.length) {
+        const rowClassMap = { 1: 'row-1', 2: 'row-2', 3: 'row-3' };
+        galleryEl.innerHTML = data.gallery.map(row => {
+          const cls = rowClassMap[row.length] || 'row-2';
+          return `<div class="cs-gallery-row ${cls}">
+            ${row.map(src => `
+              <div class="cs-gallery-item">
+                <img src="${src}" alt="" loading="lazy">
+              </div>
+            `).join('')}
+          </div>`;
+        }).join('');
+      }
+
+      // Credits
+      const creditsCol = document.getElementById('cs-credits-col');
+      if (creditsCol && data.credits && data.credits.length) {
+        creditsCol.innerHTML = `
+          <p class="cs-section-label">Credits</p>
+          ${data.credits.map(c => `
+            <div class="cs-credit-item">
+              <span class="cs-credit-role">${c.role}</span>
+              <span class="cs-credit-name">${c.name}</span>
+            </div>
+          `).join('')}
+        `;
+      }
+
+      // Awards
+      const awardsCol = document.getElementById('cs-awards-col');
+      if (awardsCol && data.awards && data.awards.length) {
+        awardsCol.innerHTML = `
+          <p class="cs-section-label">Recognition</p>
+          ${data.awards.map(a => `
+            <div class="cs-award-item">${a}</div>
+          `).join('')}
+        `;
+      }
+
+      // Next project
+      if (data.next) {
+        const nextEl   = document.getElementById('cs-next');
+        const nextTitle = document.getElementById('cs-next-title');
+        if (nextEl && data.next.id)    nextEl.href = `case-study.html?id=${data.next.id}`;
+        if (nextTitle && data.next.title) nextTitle.textContent = data.next.title;
+      }
+
+      // Reveal
+      loadingEl.style.display = 'none';
+      contentEl.classList.add('is-visible');
+    }
+
+    /* ── Load ──────────────────────────────────────────── */
+    const id = new URLSearchParams(window.location.search).get('id') || '';
+
+    if (!id) {
+      showNotFound();
+    } else {
+      fetch(`content/case-studies/${id}.json`)
+        .then(res => { if (!res.ok) throw new Error(res.status); return res.json(); })
+        .then(data => populatePage(data))
+        .catch(() => {
+          const fallback = INLINE[id];
+          if (fallback) {
+            populatePage(fallback);
+          } else {
+            showNotFound();
+          }
+        });
+    }
+
+  })();
+  </script>
+
+  <!-- Scripts -->
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+</body>
+</html>

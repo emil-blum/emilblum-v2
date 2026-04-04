@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swarf — Emil Blum</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <style>
+    /* ── Canvas viewport ── */
+    html, body { overflow: hidden; height: 100%; margin: 0; }
+
+    #canvas-wrap {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      cursor: grab;
+      touch-action: none;
+      background-color: var(--cream-alt);
+    }
+
+    #canvas-wrap.is-panning { cursor: grabbing; }
+
+    #world {
+      position: absolute;
+      top: 0; left: 0;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    /* ── Scrap items ── */
+    .scrap-item {
+      position: absolute;
+      transform-origin: center center;
+      cursor: pointer;
+      user-select: none;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .scrap-item.is-dragging-item {
+      cursor: grabbing;
+      z-index: 9999 !important;
+      transition: none;
+    }
+
+    .scrap-item img {
+      display: block;
+      border-radius: 2px;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Shadow directly on element — no pseudo-element artifacts */
+    .scrap-item {
+      box-shadow: 0 4px 20px rgba(30,30,40,0.13), 0 1px 4px rgba(30,30,40,0.08);
+      outline: 2px solid transparent;
+      outline-offset: 0px;
+      transition: box-shadow 0.2s ease, outline-color 0.2s ease;
+    }
+
+    /* Maroon outline on hover */
+    .scrap-item:hover {
+      outline-color: var(--maroon);
+    }
+
+    .scrap-item:hover,
+    .scrap-item.is-dragging-item {
+      box-shadow: 0 12px 36px rgba(30,30,40,0.2), 0 3px 10px rgba(30,30,40,0.10);
+    }
+
+    /* ── Bottom-left description ── */
+    #scraps-desc-left {
+      position: fixed;
+      bottom: 24px;
+      left: 28px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      pointer-events: none;
+      max-width: 260px;
+    }
+
+    #scraps-desc-left span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--n400);
+      font-feature-settings: "ss02" on, "ss03" on;
+    }
+
+    /* ── Bottom-right hint ── */
+    #scraps-desc-right {
+      position: fixed;
+      bottom: 24px;
+      right: 28px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      pointer-events: none;
+      text-align: right;
+    }
+
+    #scraps-desc-right span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--n400);
+      font-feature-settings: "ss02" on, "ss03" on;
+    }
+
+    /* ── Zoom controls — centered bottom ── */
+    #zoom-controls {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      display: flex;
+      flex-direction: row;
+      gap: 4px;
+    }
+
+    .zoom-btn {
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,251,243,0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,251,243,0.5);
+      border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(30,30,40,0.08);
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--dark);
+      line-height: 1;
+      transition: background 0.2s ease;
+      font-family: var(--font-meta);
+      font-weight: 300;
+    }
+
+    .zoom-btn:hover { background: var(--cream); }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #lightbox.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #lb-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(20,20,28,0.92);
+      cursor: pointer;
+    }
+
+    #lb-frame {
+      position: relative;
+      z-index: 1;
+    }
+
+    #lb-img {
+      display: block;
+      max-width: 88vw;
+      max-height: 88vh;
+      border-radius: 2px;
+      object-fit: contain;
+    }
+
+    #lb-close {
+      position: fixed;
+      top: 24px;
+      right: 28px;
+      z-index: 2;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,251,243,0.12);
+      border: 1px solid rgba(255,251,243,0.2);
+      border-radius: 4px;
+      color: rgba(255,251,243,0.7);
+      font-size: 20px;
+      cursor: pointer;
+      font-family: var(--font-meta);
+      font-weight: 300;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    #lb-close:hover {
+      background: rgba(255,251,243,0.2);
+      color: var(--cream);
+    }
+
+    .lb-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      width: 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,251,243,0.08);
+      border: 1px solid rgba(255,251,243,0.12);
+      border-radius: 4px;
+      color: rgba(255,251,243,0.55);
+      cursor: pointer;
+      font-family: var(--font-meta);
+      font-size: 20px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .lb-nav:hover {
+      background: rgba(255,251,243,0.15);
+      color: var(--cream);
+    }
+
+    #lb-prev { left: 20px; }
+    #lb-next { right: 20px; }
+
+    #lb-counter {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      font-family: var(--font-meta);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,251,243,0.4);
+    }
+
+    .site-nav { z-index: 1000; }
+
+    @media (max-width: 640px) {
+      #scraps-desc-left  { bottom: 80px; left: 16px; }
+      #scraps-desc-right { bottom: 80px; right: 16px; }
+      #zoom-controls { bottom: 80px; }
+      .lb-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── CANVAS ── -->
+  <div id="canvas-wrap">
+    <div id="world"></div>
+  </div>
+
+  <!-- ── BOTTOM-LEFT DESCRIPTION ── -->
+  <div id="scraps-desc-left">
+    <span>A selection of visual and</span>
+    <span>conceptual experiments left on</span>
+    <span>the cutting room floor</span>
+  </div>
+
+  <!-- ── BOTTOM-RIGHT HINT ── -->
+  <div id="scraps-desc-right">
+    <span>Drag canvas to look around</span>
+    <span>Click on image to see detail</span>
+  </div>
+
+  <!-- ── ZOOM CONTROLS (centred) ── -->
+  <div id="zoom-controls">
+    <button class="zoom-btn" id="zoom-in"  aria-label="Zoom in">+</button>
+    <button class="zoom-btn" id="zoom-out" aria-label="Zoom out">−</button>
+    <button class="zoom-btn" id="zoom-fit" style="font-size:12px; letter-spacing:0.05em;">fit</button>
+  </div>
+
+  <!-- ── LIGHTBOX ── -->
+  <div id="lightbox" role="dialog" aria-modal="true">
+    <div id="lb-backdrop"></div>
+    <div id="lb-frame">
+      <img id="lb-img" src="" alt="">
+    </div>
+    <button id="lb-close" aria-label="Close">×</button>
+    <button class="lb-nav" id="lb-prev" aria-label="Previous">←</button>
+    <button class="lb-nav" id="lb-next" aria-label="Next">→</button>
+    <div id="lb-counter" aria-live="polite"></div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ── Photos — 36 base images repeated to fill the world ── */
+    const PHOTOS = (() => {
+      const base = [];
+      for (let i = 1; i <= 36; i++) {
+        const n = String(i).padStart(2, '0');
+        const suffix = i <= 3 ? '-Wide' : '';
+        base.push(`moments-v2-canvas/photos/${n}_About-Pictures${suffix}.png`);
+      }
+      // 108 items: repeat 3× so the large canvas feels populated
+      return Array.from({ length: 108 }, (_, i) => base[i % base.length]);
+    })();
+
+    /* ── Layout constants ────────────────────────────── */
+    // 9×12 loose grid — high SPREAD so positions look purely random
+    const COLS    = 9;
+    const ROWS    = 12;
+    const CELL_W  = 900;
+    const CELL_H  = 820;
+    const SPREAD  = 380;   // ±190 px offset within each cell
+    const WORLD_W = COLS * CELL_W;   // 8100
+    const WORLD_H = ROWS * CELL_H;   // 9840
+
+    /* ── Canvas state ────────────────────────────────── */
+    const C = {
+      tx: 0, ty: 0,
+      scale: 0.45,
+      velX: 0, velY: 0,
+      panning: false,
+      lastX: 0, lastY: 0,
+      lastPinchDist: 0,
+    };
+
+    const SCALE_MIN = 0.12;
+    const SCALE_MAX = 2.8;
+    const DECAY     = 0.91;
+
+    /* ── DOM ─────────────────────────────────────────── */
+    const canvasWrap = document.getElementById('canvas-wrap');
+    const world      = document.getElementById('world');
+
+    /* ── Random (fresh each reload) ─────────────────── */
+    function sr() { return Math.random(); }
+
+    /* ── Transform ───────────────────────────────────── */
+    function applyTransform() {
+      world.style.transform = `translate(${C.tx}px,${C.ty}px) scale(${C.scale})`;
+    }
+
+    function zoomAt(cx, cy, factor) {
+      const ns = Math.min(Math.max(C.scale * factor, SCALE_MIN), SCALE_MAX);
+      const r = ns / C.scale;
+      C.tx = cx - (cx - C.tx) * r;
+      C.ty = cy - (cy - C.ty) * r;
+      C.scale = ns;
+      applyTransform();
+    }
+
+    /* ── RAF loop ────────────────────────────────────── */
+    function tick() {
+      if (!C.panning && Math.hypot(C.velX, C.velY) > 0.15) {
+        C.tx += C.velX;
+        C.ty += C.velY;
+        C.velX *= DECAY;
+        C.velY *= DECAY;
+        applyTransform();
+      }
+      requestAnimationFrame(tick);
+    }
+
+    /* ── Item (individual image) drag ────────────────── */
+    let itemDragEl   = null;   // element being dragged
+    let itemDragOffX = 0;
+    let itemDragOffY = 0;
+    let itemDragMoved = false;
+    let topZ = 10;
+
+    /* Convert screen coords to world coords */
+    function screenToWorld(sx, sy) {
+      return {
+        x: (sx - C.tx) / C.scale,
+        y: (sy - C.ty) / C.scale,
+      };
+    }
+
+    /* ── Canvas pan events ───────────────────────────── */
+    canvasWrap.addEventListener('pointerdown', e => {
+      const item = e.target.closest('.scrap-item');
+      if (item) {
+        // Drag this scrap item
+        itemDragEl = item;
+        itemDragMoved = false;
+        item.classList.add('is-dragging-item');
+        item.style.zIndex = ++topZ;
+
+        // Offset: pointer in world coords minus item top-left in world coords
+        const world_p = screenToWorld(e.clientX, e.clientY);
+        const itemLeft = parseFloat(item.style.left) || 0;
+        const itemTop  = parseFloat(item.style.top)  || 0;
+        itemDragOffX = world_p.x - itemLeft;
+        itemDragOffY = world_p.y - itemTop;
+
+        item.setPointerCapture(e.pointerId);
+        e.stopPropagation();
+      } else {
+        // Pan the canvas
+        C.panning = true;
+        C.lastX = e.clientX;
+        C.lastY = e.clientY;
+        C.velX = C.velY = 0;
+        canvasWrap.setPointerCapture(e.pointerId);
+        canvasWrap.classList.add('is-panning');
+      }
+    });
+
+    canvasWrap.addEventListener('pointermove', e => {
+      if (itemDragEl) {
+        const world_p = screenToWorld(e.clientX, e.clientY);
+        itemDragEl.style.left = (world_p.x - itemDragOffX) + 'px';
+        itemDragEl.style.top  = (world_p.y - itemDragOffY) + 'px';
+        itemDragMoved = true;
+        return;
+      }
+      if (!C.panning) return;
+      const dx = e.clientX - C.lastX;
+      const dy = e.clientY - C.lastY;
+      C.tx += dx; C.ty += dy;
+      C.velX = dx; C.velY = dy;
+      C.lastX = e.clientX;
+      C.lastY = e.clientY;
+      applyTransform();
+    });
+
+    canvasWrap.addEventListener('pointerup', e => {
+      if (itemDragEl) {
+        itemDragEl.classList.remove('is-dragging-item');
+        // If barely moved, treat as click → lightbox
+        if (!itemDragMoved) {
+          const idx = parseInt(itemDragEl.dataset.index, 10);
+          openLightbox(idx);
+        }
+        itemDragEl = null;
+        return;
+      }
+      C.panning = false;
+      canvasWrap.classList.remove('is-panning');
+    });
+
+    canvasWrap.addEventListener('pointercancel', () => {
+      if (itemDragEl) {
+        itemDragEl.classList.remove('is-dragging-item');
+        itemDragEl = null;
+      }
+      C.panning = false;
+      canvasWrap.classList.remove('is-panning');
+    });
+
+    /* ── Wheel zoom ──────────────────────────────────── */
+    canvasWrap.addEventListener('wheel', e => {
+      e.preventDefault();
+      zoomAt(e.clientX, e.clientY, e.deltaY < 0 ? 1.08 : 0.926);
+    }, { passive: false });
+
+    /* ── Touch pinch ─────────────────────────────────── */
+    canvasWrap.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        C.lastPinchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+      }
+    }, { passive: true });
+
+    canvasWrap.addEventListener('touchmove', e => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const d = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        zoomAt(cx, cy, d / C.lastPinchDist);
+        C.lastPinchDist = d;
+      }
+    }, { passive: false });
+
+    /* ── Zoom buttons ────────────────────────────────── */
+    document.getElementById('zoom-in').addEventListener('click',  () => zoomAt(window.innerWidth/2, window.innerHeight/2, 1.25));
+    document.getElementById('zoom-out').addEventListener('click', () => zoomAt(window.innerWidth/2, window.innerHeight/2, 0.8));
+    document.getElementById('zoom-fit').addEventListener('click', resetView);
+
+    function resetView() {
+      C.scale = 0.45;
+      C.tx = window.innerWidth  / 2 - (WORLD_W / 2) * C.scale;
+      C.ty = window.innerHeight / 2 - (WORLD_H / 2) * C.scale;
+      C.velX = C.velY = 0;
+      applyTransform();
+    }
+
+    /* ── Build layout ────────────────────────────────── */
+    function buildLayout() {
+      PHOTOS.forEach((src, i) => {
+        const col = i % COLS;
+        const row = Math.floor(i / COLS);
+
+        // Fresh random every reload — no seed
+        const cx  = col * CELL_W + CELL_W * 0.5 + (sr() - 0.5) * SPREAD;
+        const cy  = row * CELL_H + CELL_H * 0.5 + (sr() - 0.5) * SPREAD;
+        const rot = (sr() - 0.5) * 44;   // ±22° rotation
+        const w   = Math.round(380 + sr() * 400) + (i % 36 < 3 ? 120 : 0);
+
+        const item = document.createElement('div');
+        item.className = 'scrap-item';
+        item.dataset.index = i;
+        item.style.cssText = `
+          left: ${cx}px;
+          top:  ${cy}px;
+          transform: translate(-50%, -50%) rotate(${rot}deg);
+          z-index: ${Math.round(sr() * 20) + 1};
+        `;
+
+        const img = document.createElement('img');
+        img.src = src;
+        img.width = w;
+        img.draggable = false;
+        img.loading = 'lazy';
+        img.alt = `Scrap ${i + 1}`;
+
+        item.appendChild(img);
+        world.appendChild(item);
+      });
+
+      world.style.width  = WORLD_W + 'px';
+      world.style.height = WORLD_H + 'px';
+    }
+
+    /* ── Lightbox ────────────────────────────────────── */
+    let lbIndex = 0;
+    const lightbox  = document.getElementById('lightbox');
+    const lbImg     = document.getElementById('lb-img');
+    const lbCounter = document.getElementById('lb-counter');
+
+    function openLightbox(i) {
+      lbIndex = i;
+      lbImg.src = PHOTOS[i];
+      lbCounter.textContent = `${String(i+1).padStart(2,'0')} / ${String(PHOTOS.length).padStart(2,'0')}`;
+      lightbox.classList.add('is-open');
+    }
+
+    function closeLightbox() { lightbox.classList.remove('is-open'); }
+
+    function prevPhoto() {
+      lbIndex = (lbIndex - 1 + PHOTOS.length) % PHOTOS.length;
+      lbImg.src = PHOTOS[lbIndex];
+      lbCounter.textContent = `${String(lbIndex+1).padStart(2,'0')} / ${String(PHOTOS.length).padStart(2,'0')}`;
+    }
+
+    function nextPhoto() {
+      lbIndex = (lbIndex + 1) % PHOTOS.length;
+      lbImg.src = PHOTOS[lbIndex];
+      lbCounter.textContent = `${String(lbIndex+1).padStart(2,'0')} / ${String(PHOTOS.length).padStart(2,'0')}`;
+    }
+
+    document.getElementById('lb-close').addEventListener('click',   closeLightbox);
+    document.getElementById('lb-backdrop').addEventListener('click', closeLightbox);
+    document.getElementById('lb-prev').addEventListener('click',     prevPhoto);
+    document.getElementById('lb-next').addEventListener('click',     nextPhoto);
+
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape')     closeLightbox();
+      if (e.key === 'ArrowLeft')  prevPhoto();
+      if (e.key === 'ArrowRight') nextPhoto();
+    });
+
+    /* ── Init ────────────────────────────────────────── */
+    buildLayout();
+    resetView();
+    tick();
+
+  })();
+  </script>
+
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+</body>
+</html>

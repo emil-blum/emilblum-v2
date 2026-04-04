@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swarf — Emil Blum</title>
+  <meta name="description" content="An overwhelming feed of half-finished ideas, fragments, and explorations.">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <style>
+    :root {
+      --cream-alt: #f4eee4;
+    }
+
+    body {
+      background: var(--cream-alt);
+    }
+
+    /* ── Page header ──────────────────────────────────── */
+    .scraps-header {
+      padding-top: 140px;
+      padding-bottom: 48px;
+    }
+
+    .scraps-header h1 {
+      max-width: 620px;
+      margin-top: 20px;
+    }
+
+    /* ── Dense masonry feed ───────────────────────────── */
+    .scraps-feed {
+      column-count: 4;
+      column-gap: 8px;
+      padding-bottom: 140px;
+    }
+
+    @media (max-width: 1100px) { .scraps-feed { column-count: 3; } }
+    @media (max-width: 720px)  { .scraps-feed { column-count: 2; } }
+    @media (max-width: 420px)  { .scraps-feed { column-count: 1; } }
+
+    /* ── Scrap tile base ──────────────────────────────── */
+    .scrap {
+      break-inside: avoid;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    /* ── Text quote tile ──────────────────────────────── */
+    .scrap-quote {
+      padding: 28px 24px;
+      background: var(--cream);
+      border: 1px solid rgba(30, 30, 40, 0.08);
+    }
+
+    .scrap-quote p {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.35;
+      color: var(--dark);
+    }
+
+    .scrap-quote .scrap-meta {
+      margin-top: 14px;
+    }
+
+    /* ── Image tile ───────────────────────────────────── */
+    .scrap-img {
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .scrap-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: filter 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .scrap-img:hover img {
+      transform: scale(1.03);
+    }
+
+    /* ── Colour block tile ────────────────────────────── */
+    .scrap-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+      min-height: 120px;
+    }
+
+    .scrap-block .scrap-meta {
+      color: rgba(255, 251, 243, 0.55);
+    }
+
+    .scrap-block p {
+      color: rgba(255, 251, 243, 0.7);
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 6px;
+    }
+
+    /* ── Colour variants ──────────────────────────────── */
+    .scrap-block.bg-dark    { background: var(--dark); }
+    .scrap-block.bg-maroon  { background: var(--maroon); }
+    .scrap-block.bg-green   { background: var(--green); }
+    .scrap-block.bg-yellow  { background: var(--yellow); }
+
+    .scrap-block.bg-yellow .scrap-meta,
+    .scrap-block.bg-yellow p {
+      color: rgba(30, 30, 40, 0.65);
+    }
+
+    /* ── Small meta label ─────────────────────────────── */
+    .scrap-meta {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(30, 30, 40, 0.3);
+    }
+
+    /* ── Tiny link tile ───────────────────────────────── */
+    .scrap-link-tile {
+      padding: 20px 24px;
+      background: rgba(30, 30, 40, 0.04);
+      border: 1px solid rgba(30, 30, 40, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .scrap-link-tile:hover {
+      background: rgba(30, 30, 40, 0.08);
+    }
+
+    .scrap-link-tile .link-label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--dark);
+      line-height: 1.3;
+    }
+
+    .scrap-link-tile .link-url {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: rgba(30, 30, 40, 0.35);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── PAGE CONTENT ── -->
+  <main>
+
+    <header class="scraps-header container">
+      <p class="t-label section-label" data-reveal>05 — Scraps</p>
+      <h1 class="t-headline-xl" data-reveal data-delay="100">
+        An overwhelming feed<br>of half-finished ideas.
+      </h1>
+    </header>
+
+    <div class="scraps-feed container" aria-label="Scraps feed">
+
+      <!-- Row 1 -->
+      <div class="scrap scrap-quote">
+        <p>"Design is the last conversation before silence."</p>
+        <span class="scrap-meta">Fragment · 2023</span>
+      </div>
+
+      <div class="scrap scrap-img">
+        <img src="assets/images/01_eb-home-archive-friendapp.webp" alt="Archive fragment" loading="lazy">
+      </div>
+
+      <div class="scrap scrap-block bg-dark">
+        <span class="scrap-meta">Idea · unrealised</span>
+        <p>A typeface where every glyph is drawn from a single continuous line. No lifts. No shortcuts.</p>
+      </div>
+
+      <div class="scrap scrap-img">
+        <img src="assets/images/02_eb-home-archive-kombucha.webp" alt="Archive fragment" loading="lazy">
+      </div>
+
+      <!-- Row 2 -->
+      <div class="scrap scrap-block bg-maroon">
+        <span class="scrap-meta">Colour note</span>
+        <p>Maroon is the most honest colour. It doesn't try to be red. It tried once, and stopped.</p>
+      </div>
+
+      <div class="scrap scrap-quote">
+        <p>"The grid is a lie we agree to tell together."</p>
+        <span class="scrap-meta">Notebook · 2022</span>
+      </div>
+
+      <div class="scrap scrap-img">
+        <img src="assets/images/03_eb-home-archive-RType.webp" alt="Archive fragment" loading="lazy">
+      </div>
+
+      <div class="scrap scrap-link-tile" href="#">
+        <span class="link-label">Luisa Pereira — Musical Algorithms</span>
+        <span class="link-url">luisapereira.net/teaching/modules/musical-algorithms</span>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="scrap scrap-img">
+        <img src="assets/images/04_eb-home-archive-africanwoman.webp" alt="Archive fragment" loading="lazy">
+      </div>
+
+      <div class="scrap scrap-block bg-green">
+        <span class="scrap-meta">Project stub</span>
+        <p>Generative seed packet labels. Each unique. Each something that could theoretically grow.</p>
+      </div>
+
+      <div class="scrap scrap-quote">
+        <p>"A logo is a scar. Made with intention. Healed into identity."</p>
+        <span class="scrap-meta">Draft · never sent</span>
+      </div>
+
+      <div class="scrap scrap-img">
+        <img src="assets/images/05_eb-home-archive-AAguitars.webp" alt="Archive fragment" loading="lazy">
+      </div>
+
+      <!-- Row 4 -->
+      <div class="scrap scrap-block bg-yellow">
+        <span class="scrap-meta">Reminder</span>
+        <p>Finish the binaural frequency explorer. It was almost working in March.</p>
+      </div>
+
+      <div class="scrap scrap-img">
+        <img src="assets/images/06_eb-home-archive-Mindful-illustrations.webp" alt="Archive fragment" loading="lazy">
+      </div>
+
+      <div class="scrap scrap-link-tile">
+        <span class="link-label">Josef Müller-Brockmann Grid Systems PDF</span>
+        <span class="link-url">archive.org/details/grid-systems-in-graphic-design</span>
+      </div>
+
+      <div class="scrap scrap-quote">
+        <p>"Every material has a direction it wants to go. Your job is to agree."</p>
+        <span class="scrap-meta">Workshop notes · 2019</span>
+      </div>
+
+      <!-- Row 5 -->
+      <div class="scrap scrap-img">
+        <img src="assets/images/07_eb-home-archive-GType.webp" alt="Archive fragment" loading="lazy">
+      </div>
+
+      <div class="scrap scrap-block bg-dark">
+        <span class="scrap-meta">Type experiment</span>
+        <p>Variable font where weight is controlled by ambient sound level. Quiet room = thin. Noise = black.</p>
+      </div>
+
+      <div class="scrap scrap-img">
+        <img src="assets/images/08_eb-home-archive-FTLOTGTitles.webp" alt="Archive fragment" loading="lazy">
+      </div>
+
+      <div class="scrap scrap-block bg-maroon">
+        <span class="scrap-meta">Unresolved</span>
+        <p>How do you design for something that shouldn't need design? The question keeps coming back.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+</body>
+</html>

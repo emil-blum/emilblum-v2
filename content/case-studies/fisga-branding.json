@@ -1,0 +1,27 @@
+{
+  "id": "fisga-branding",
+  "title": "FISGA",
+  "subtitle": "Brand identity for a multidisciplinary arts, fitness and events space",
+  "year": "2023",
+  "category": "Brand Identity",
+  "client": "FISGA",
+  "tags": ["Brand Identity", "Events", "Environmental"],
+  "intro": "FISGA is a Lisbon-based space where fitness, music, art and community converge. The Warehouse hosts events; the Garden is a space to train. A bold, modular brand system was built to hold both worlds — and the many events, installations and collaborations that happen within them.",
+  "challenge": "Design a brand flexible enough to serve a wellness studio, a warehouse events venue and a curated arts programme — all under one identity — without feeling generic.",
+  "approach": "An isometric geometric logomark creates immediate spatial depth, referencing architecture and structure. Two bold sub-brand colours — blue for Warehouse, yellow for Garden — allow the identity to flex across radically different contexts while staying unmistakably FISGA.",
+  "outcome": "A coherent identity that scales from signage and floor maps to social event posters. The geometric mark and colour system give FISGA a strong visual voice across every touchpoint.",
+  "heroImage": "assets/images/case-studies/fisga/hero.jpg",
+  "gallery": [
+    ["assets/images/case-studies/fisga/logos.png"],
+    ["assets/images/case-studies/fisga/brand-blue.png", "assets/images/case-studies/fisga/brand-yellow.png"],
+    ["assets/images/case-studies/fisga/social-posters.jpg"],
+    ["assets/images/case-studies/fisga/floor-map.png", "assets/images/case-studies/fisga/signage.png"],
+    ["assets/images/case-studies/fisga/art-01.jpg", "assets/images/case-studies/fisga/art-02.png", "assets/images/case-studies/fisga/art-03.png"]
+  ],
+  "credits": [
+    { "role": "Creative Direction & Design", "name": "Emil Blum" },
+    { "role": "Studio", "name": "Calumma Design" }
+  ],
+  "awards": [],
+  "next": { "id": "hard-rock-vinyl", "title": "Hard Rock Hotels" }
+}

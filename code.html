@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Experiments — Emil Blum</title>
+  <meta name="description" content="AI-assisted code experiments, tools, toys, and curious applications by Emil Blum.">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <style>
+    /* ── Page ────────────────────────────────────────────── */
+    .code-section {
+      padding-top: clamp(100px, 12vw, 140px);
+      padding-bottom: 80px;
+    }
+
+    /* ── Header: 24px padding matches logo + footer ──────── */
+    .carousel-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 0 24px 32px;
+    }
+
+    .carousel-header h1 {
+      margin-top: 12px;
+    }
+
+    /* Arrow buttons */
+    .carousel-controls {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+      align-self: flex-end; /* bottom-align with title on all sizes */
+    }
+
+    /* Mobile: header stacks, arrows bottom-right */
+    @media (max-width: 600px) {
+      .carousel-header {
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      .carousel-header > div:first-child {
+        width: 100%;
+      }
+      .carousel-controls {
+        margin-left: auto;
+      }
+    }
+
+    .carousel-btn {
+      width: 36px;   /* ~20% smaller than 44px */
+      height: 36px;
+      border: 1px solid rgba(30, 30, 40, 0.18);
+      background: transparent;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--dark);
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .carousel-btn:hover {
+      background: var(--maroon);
+      border-color: var(--maroon);
+      color: var(--cream);
+    }
+
+    .carousel-btn:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+    }
+
+    .carousel-btn:disabled:hover {
+      background: transparent;
+      border-color: rgba(30, 30, 40, 0.18);
+      color: var(--dark);
+    }
+
+    /* ── Carousel track: 24px matches logo + footer ──────── */
+    .carousel-track {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      padding-bottom: 8px;
+      /* No left/right padding — overflow containers ignore it in some browsers.
+         24px breathing room is created by .carousel-pad spacer divs instead.
+         scroll-padding-left tells the snap engine the same offset. */
+      scroll-padding-left: 24px;
+    }
+
+    .carousel-track::-webkit-scrollbar { display: none; }
+
+    /* Spacer creates the 24px edge offset reliably in all browsers */
+    .carousel-pad {
+      flex: 0 0 24px;
+    }
+
+    /* ── Card ────────────────────────────────────────────── */
+    .carousel-card {
+      flex: 0 0 85vw;
+      display: flex;
+      flex-direction: column;
+      scroll-snap-align: start;
+    }
+
+    @media (min-width: 768px) {
+      .carousel-card { flex: 0 0 45vw; }
+    }
+
+    /* Thumbnail — consistent 16:9 across all cards */
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      flex-shrink: 0;
+      background-color: rgba(30, 30, 40, 0.04);
+      background-image: radial-gradient(circle, rgba(30, 30, 40, 0.1) 1px, transparent 1px);
+      background-size: 18px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-thumb::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--maroon);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .carousel-card:hover .card-thumb::after {
+      transform: scaleX(1);
+    }
+
+    /* Card meta */
+    .card-meta { margin-top: 16px; }
+
+    .card-title-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(30, 30, 40, 0.1);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: clamp(17px, 1.6vw, 22px);
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--dark);
+    }
+
+    .card-link {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--maroon);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      transition: gap 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-link:hover { gap: 11px; }
+
+    /* Desktop: cursor "Explore" acts as the affordance — hide the text link */
+    @media (min-width: 900px) {
+      .card-link { display: none; }
+    }
+
+    .card-desc {
+      font-size: 13px;
+      line-height: 1.65;
+      color: rgba(30, 30, 40, 0.55);
+      max-width: 60%;
+    }
+
+    @media (max-width: 900px) {
+      .card-desc { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── PAGE CONTENT ── -->
+  <main>
+    <section class="code-section">
+
+      <!-- Header -->
+      <div class="carousel-header container">
+        <div>
+          <p class="t-label section-label" data-reveal>03 — Code Experiments</p>
+          <h1 class="t-headline-xl" data-reveal data-delay="100">
+            AI-assisted coding<br>experiments and tools.
+          </h1>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="prev-btn" aria-label="Previous project">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M10 3L5 8l5 5"/>
+            </svg>
+          </button>
+          <button class="carousel-btn" id="next-btn" aria-label="Next project">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M6 3l5 5-5 5"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Carousel -->
+      <div class="carousel-track" id="carousel-track">
+        <div class="carousel-pad" aria-hidden="true"></div>
+
+        <!-- 01 Window to Nature -->
+        <article class="carousel-card" data-cursor="Explore">
+          <div class="card-thumb"></div>
+          <div class="card-meta">
+            <div class="card-title-row">
+              <h2 class="card-title">Window to Nature</h2>
+              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+            </div>
+            <p class="card-desc">A live ambient screen that pipes in calming nature scenes — forests, rain, coastlines. Built as a browser extension and standalone app.</p>
+          </div>
+        </article>
+
+        <!-- 02 Scratch Sound Recorder -->
+        <article class="carousel-card" data-cursor="Explore">
+          <div class="card-thumb"></div>
+          <div class="card-meta">
+            <div class="card-title-row">
+              <h2 class="card-title">Scratch Sound Recorder</h2>
+              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+            </div>
+            <p class="card-desc">Draw shapes on a canvas, each stroke triggering a synthesised sound. Export your session as audio. A sketchpad that sings.</p>
+          </div>
+        </article>
+
+        <!-- 03 Painting Canvas Tools -->
+        <article class="carousel-card" data-cursor="Explore">
+          <div class="card-thumb"></div>
+          <div class="card-meta">
+            <div class="card-title-row">
+              <h2 class="card-title">Painting Canvas Tools</h2>
+              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+            </div>
+            <p class="card-desc">A set of browser-based painting utilities — wet oil simulation, acrylic brush textures, watercolour bleed. Made for experimentation, not production.</p>
+          </div>
+        </article>
+
+        <!-- 04 Image Secret Message Encoder -->
+        <article class="carousel-card" data-cursor="Explore">
+          <div class="card-thumb"></div>
+          <div class="card-meta">
+            <div class="card-title-row">
+              <h2 class="card-title">Image Secret Message Encoder</h2>
+              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+            </div>
+            <p class="card-desc">Steganography tool that hides text inside image pixel data. Encode a message into any PNG, decode it later. All client-side, nothing leaves the browser.</p>
+          </div>
+        </article>
+
+        <!-- 05 Reveil -->
+        <article class="carousel-card" data-cursor="Explore">
+          <div class="card-thumb"></div>
+          <div class="card-meta">
+            <div class="card-title-row">
+              <h2 class="card-title">Reveil</h2>
+              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+            </div>
+            <p class="card-desc">An alarm clock that wakes you with birdsong streams from around the world, timed to local sunrise. No music. No algorithm. Just dawn.</p>
+          </div>
+        </article>
+
+        <!-- 06 Binaural Player -->
+        <article class="carousel-card" data-cursor="Explore">
+          <div class="card-thumb"></div>
+          <div class="card-meta">
+            <div class="card-title-row">
+              <h2 class="card-title">Binaural Player</h2>
+              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+            </div>
+            <p class="card-desc">A focus and relaxation player using binaural beat synthesis. Choose your target brainwave state — alpha, theta, delta — and let it run.</p>
+          </div>
+        </article>
+
+        <div class="carousel-pad" aria-hidden="true"></div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+  <script>
+    const track   = document.getElementById('carousel-track');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    function cardWidth() {
+      const card = track.querySelector('.carousel-card');
+      return card ? card.offsetWidth + 16 : 400; // 16px = gap
+    }
+
+    nextBtn.addEventListener('click', () => {
+      track.scrollBy({ left: cardWidth(), behavior: 'smooth' });
+    });
+
+    prevBtn.addEventListener('click', () => {
+      track.scrollBy({ left: -cardWidth(), behavior: 'smooth' });
+    });
+
+    // Update arrow states on scroll
+    function updateButtons() {
+      prevBtn.disabled = track.scrollLeft <= 0;
+      nextBtn.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+    }
+
+    track.addEventListener('scroll', updateButtons, { passive: true });
+    updateButtons();
+  </script>
+
+</body>
+</html>

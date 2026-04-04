@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build artifacts (keep fragment-collage/assets — it's the compiled output)
+fragment-collage/.vite/
+fragment-collage/dist/
+
+# OS
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Featured — Emil Blum</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <style>
+
+    /* ── Page base ── */
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── Page header ── */
+    .featured-header {
+      padding: clamp(7rem, 12vw, 11rem) clamp(1.5rem, 5vw, 6rem) clamp(3rem, 5vw, 5rem);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ── Scattered grid ──
+       12 equal columns. Items span variable widths and are offset
+       vertically via margin-top to create a staggered, airy layout.
+    ── */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      column-gap: clamp(1rem, 2vw, 2.5rem);
+      padding: 0 clamp(1.5rem, 5vw, 6rem);
+      padding-bottom: clamp(6rem, 10vw, 12rem);
+      align-items: start; /* prevent items stretching to fill shared row height */
+    }
+
+    /* ── Project item ── */
+    .project-item {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      opacity: 0;
+      transform: translateY(48px);
+      transition:
+        opacity 0.85s cubic-bezier(0.215, 0.61, 0.355, 1),
+        transform 0.85s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    .project-item.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Staggered delays driven by data-index */
+    .project-item[data-index="1"] { transition-delay: 0s; }
+    .project-item[data-index="2"] { transition-delay: 0.1s; }
+    .project-item[data-index="3"] { transition-delay: 0.05s; }
+    .project-item[data-index="4"] { transition-delay: 0.12s; }
+
+    /* Grid positions — desktop */
+    @media (min-width: 768px) {
+      .item-1 { grid-column: 1 / 8;  margin-bottom: 10rem; }
+      .item-2 { grid-column: 8 / 13; margin-top: 14rem; margin-bottom: 10rem; }
+      .item-3 { grid-column: 2 / 8;  margin-bottom: 10rem; }
+      .item-4 { grid-column: 7 / 13; margin-top: 8rem;  margin-bottom: 10rem; }
+    }
+
+    /* Mobile: full width, modest spacing */
+    @media (max-width: 767px) {
+      .project-item {
+        grid-column: 1 / -1;
+        margin-bottom: 4rem !important;
+        margin-top: 0 !important;
+      }
+    }
+
+    /* ── Image container ── */
+    .img-wrap {
+      position: relative;
+      overflow: hidden;
+      background: rgba(30,30,40,0.05);
+      /* Aspect ratios per item */
+    }
+
+    .item-1 .img-wrap { aspect-ratio: 3 / 4; }
+    .item-2 .img-wrap { aspect-ratio: 3 / 2; }
+    .item-3 .img-wrap { aspect-ratio: 4 / 3; }
+    .item-4 .img-wrap { aspect-ratio: 3 / 4; }
+
+    /* ── Parallax image ──
+       Taller than its container (120%) so there's room to pan ±10%.
+       JS drives translateY via requestAnimationFrame (synced to Lenis).
+    ── */
+    .parallax-img {
+      position: absolute;
+      top: -10%;
+      left: 0;
+      width: 100%;
+      height: 120%;
+      object-fit: cover;
+      will-change: transform;
+      transition: transform 0s; /* transform is driven by JS only */
+      transform: translateY(0%);
+    }
+
+    /* Subtle scale on hover via wrapper */
+    .img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--dark);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .project-item:hover .img-wrap::after {
+      opacity: 0.06;
+    }
+
+    /* ── Project metadata ── */
+    .project-meta {
+      margin-top: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    /* Top row: category (left) + year (right) */
+    .project-meta-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .project-cat {
+      font-family: var(--font-meta);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(30,30,40,0.38);
+    }
+
+    .project-year {
+      font-family: var(--font-meta);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: rgba(30,30,40,0.25);
+    }
+
+    .project-title {
+      font-family: var(--font-body);
+      font-size: clamp(1.1rem, 2.2vw, 1.55rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--dark);
+      margin: 0;
+      transition: color 0.3s ease;
+    }
+
+    .project-item:hover .project-title {
+      color: var(--maroon);
+    }
+
+    /* ── View arrow — appears on hover ── */
+    .project-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+      font-family: var(--font-meta);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--maroon);
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.35s ease, transform 0.35s var(--spring);
+    }
+
+    .project-item:hover .project-cta {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Nav on top */
+    .site-nav { z-index: 1000; }
+
+  </style>
+</head>
+<body>
+
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── PAGE HEADER ── -->
+  <header class="featured-header">
+    <p class="t-label" style="color: var(--n400);">02 — Selected work</p>
+    <h1 class="t-headline-xl">Featured</h1>
+  </header>
+
+  <!-- ── SCATTERED PROJECT GRID ── -->
+  <section class="featured-grid" aria-label="Featured projects">
+
+    <!-- 1 · Hard Rock Hotels ─────────────────────── -->
+    <a href="case-study.html?id=hard-rock-vinyl"
+       class="project-item item-1"
+       data-index="1"
+       data-cursor="View">
+      <div class="img-wrap">
+        <img
+          class="parallax-img"
+          src="assets/placeholder-images/01_Deanston-Frame.jpg"
+          alt="Hard Rock Hotels — Paper vinyl record player"
+          draggable="false">
+      </div>
+      <div class="project-meta">
+        <div class="project-meta-top">
+          <span class="project-cat">Print &amp; Craft</span>
+          <span class="project-year">2019</span>
+        </div>
+        <h2 class="project-title">Hard Rock Hotels</h2>
+        <span class="project-cta">View case study →</span>
+      </div>
+    </a>
+
+    <!-- 2 · Oxfam Republic of You ───────────────── -->
+    <a href="case-study.html?id=oxfam-republic"
+       class="project-item item-2"
+       data-index="2"
+       data-cursor="View">
+      <div class="img-wrap">
+        <img
+          class="parallax-img"
+          src="assets/placeholder-images/Ozfam.png"
+          alt="Oxfam Republic of You — Retro browser game"
+          draggable="false">
+      </div>
+      <div class="project-meta">
+        <div class="project-meta-top">
+          <span class="project-cat">Digital &amp; Interactive</span>
+          <span class="project-year">2015–16</span>
+        </div>
+        <h2 class="project-title">Oxfam: Republic of You</h2>
+        <span class="project-cta">View case study →</span>
+      </div>
+    </a>
+
+    <!-- 3 · Stewart Brewing ─────────────────────── -->
+    <a href="case-study.html?id=stewart-brewing"
+       class="project-item item-3"
+       data-index="3"
+       data-cursor="View">
+      <div class="img-wrap">
+        <img
+          class="parallax-img"
+          src="assets/placeholder-images/SB_HipPop-Macro-RGB.jpg"
+          alt="Stewart Brewing — Molecular label series"
+          draggable="false">
+      </div>
+      <div class="project-meta">
+        <div class="project-meta-top">
+          <span class="project-cat">Packaging &amp; Brand</span>
+          <span class="project-year">2019</span>
+        </div>
+        <h2 class="project-title">Stewart Brewing</h2>
+        <span class="project-cta">View case study →</span>
+      </div>
+    </a>
+
+    <!-- 4 · FISGA ───────────────────────────────── -->
+    <a href="case-study.html?id=fisga-branding"
+       class="project-item item-4"
+       data-index="4"
+       data-cursor="View">
+      <div class="img-wrap">
+        <img
+          class="parallax-img"
+          src="assets/placeholder-images/04_Calumma-Case-1418x1920-FISGA.png"
+          alt="FISGA — Brand identity for Lisbon arts and fitness space"
+          draggable="false">
+      </div>
+      <div class="project-meta">
+        <div class="project-meta-top">
+          <span class="project-cat">Identity &amp; Brand</span>
+          <span class="project-year">2023</span>
+        </div>
+        <h2 class="project-title">FISGA</h2>
+        <span class="project-cta">View case study →</span>
+      </div>
+    </a>
+
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="js/transitions.js" defer></script>
+  <script src="js/nav.js" defer></script>
+
+  <!-- Lenis smooth scroll + parallax — requires HTTP (npx serve) -->
+  <script type="module">
+    import Lenis from 'https://cdn.jsdelivr.net/npm/lenis@1.3.21/dist/lenis.mjs';
+
+    /* ── Smooth scroll ── */
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: true,
+    });
+
+    /* ── Parallax ──────────────────────────────────────
+       Each .parallax-img sits inside an .img-wrap that is
+       overflow:hidden. The image is 120% tall, offset top:-10%,
+       giving ±10% of movement headroom.
+
+       As the wrap scrolls from bottom-of-screen to top-of-screen
+       (progress 0→1), we translate the image from -10% to +10%.
+       This runs every RAF frame in sync with Lenis so it's smooth.
+    ── */
+    const items = Array.from(document.querySelectorAll('.project-item'));
+
+    function updateParallax() {
+      const vh = window.innerHeight;
+      items.forEach(item => {
+        const wrap = item.querySelector('.img-wrap');
+        const img  = item.querySelector('.parallax-img');
+        if (!wrap || !img) return;
+
+        const rect = wrap.getBoundingClientRect();
+
+        // 0 = wrap just entered bottom of screen
+        // 1 = wrap just exited top of screen
+        const progress = (vh - rect.top) / (vh + rect.height);
+        const clamped  = Math.max(0, Math.min(1, progress));
+
+        // Map 0→1 to -10%→+10%
+        const yPct = -10 + clamped * 20;
+        img.style.transform = `translateY(${yPct}%)`;
+      });
+    }
+
+    /* ── RAF loop — drives both Lenis and parallax ── */
+    function raf(time) {
+      lenis.raf(time);
+      updateParallax();
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    /* ── Fade-in on scroll ── */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+    items.forEach(item => observer.observe(item));
+
+    /* ── Initial parallax pass (items already in view on load) ── */
+    updateParallax();
+  </script>
+
+</body>
+</html>

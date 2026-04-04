@@ -1,0 +1,68 @@
+[
+  {
+    "id": "hard-rock-vinyl",
+    "title": "Hard Rock Hotels",
+    "year": "2019",
+    "category": "Print & Craft",
+    "description": "A hand-crafted paper record player pressed to vinyl — a bespoke welcome gift for very important guests.",
+    "thumbnail": "assets/images/01_eb-home-archive-friendapp.webp",
+    "holoVariant": "galaxy",
+    "caseStudy": "case-study.html?id=hard-rock-vinyl",
+    "tags": ["Print", "Craft", "Experiential"]
+  },
+  {
+    "id": "daydream-believers",
+    "title": "Daydream Believers",
+    "year": "2021",
+    "category": "Brand Identity & Digital",
+    "description": "Brand and digital design for a creative consultancy working at the edge of imagination.",
+    "thumbnail": "assets/images/02_eb-home-archive-kombucha.webp",
+    "holoVariant": "rainbow",
+    "caseStudy": "case-study.html?id=daydream-believers",
+    "tags": ["Brand", "Web", "Identity"]
+  },
+  {
+    "id": "oxfam-republic",
+    "title": "Republic of You",
+    "year": "2015–2016",
+    "category": "Digital & Interactive",
+    "description": "A retro 8-bit browser game that put players in charge of a country — and asked them to fix inequality.",
+    "thumbnail": "assets/images/03_eb-home-archive-RType.webp",
+    "holoVariant": "radiant",
+    "caseStudy": "case-study.html?id=oxfam-republic",
+    "tags": ["Interactive", "Game Design", "Campaign"]
+  },
+  {
+    "id": "stewart-brewing",
+    "title": "Stewart Brewing",
+    "year": "2019",
+    "category": "Packaging & Brand",
+    "description": "Molecular beer labels and an AR app for Edinburgh's most beloved independent brewery.",
+    "thumbnail": "assets/images/04_eb-home-archive-africanwoman.webp",
+    "holoVariant": "prismatic",
+    "caseStudy": "case-study.html?id=stewart-brewing",
+    "tags": ["Packaging", "Brand", "AR"]
+  },
+  {
+    "id": "sgma-solgelica",
+    "title": "SgMA / Solgelica",
+    "year": "2025",
+    "category": "Brand & Identity System",
+    "description": "Visual identity for a biotech startup pioneering sol-gel materials for sustainable applications.",
+    "thumbnail": "assets/images/05_eb-home-archive-AAguitars.webp",
+    "holoVariant": "classic",
+    "caseStudy": "case-study.html?id=sgma-solgelica",
+    "tags": ["Brand", "Biotech", "Identity"]
+  },
+  {
+    "id": "calumma-design",
+    "title": "Calumma Design",
+    "year": "Ongoing",
+    "category": "Brand & Web",
+    "description": "An evolving brand identity and digital presence for an independent interior and product design practice.",
+    "thumbnail": "assets/images/06_eb-home-archive-Mindful-illustrations.webp",
+    "holoVariant": "galaxy",
+    "caseStudy": "case-study.html?id=calumma-design",
+    "tags": ["Brand", "Web", "Interior"]
+  }
+]

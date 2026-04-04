@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV — Emil Blum</title>
+  <meta name="description" content="Work history and experience — Emil Blum, creative director and designer.">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <style>
+    /* ── Page header ──────────────────────────────────── */
+    .cv-header {
+      padding-top: 140px;
+      padding-bottom: 72px;
+    }
+
+    .cv-header h1 {
+      max-width: 640px;
+      margin-top: 20px;
+    }
+
+    /* ── Two-column layout ────────────────────────────── */
+    .cv-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 80px;
+      align-items: start;
+      padding-bottom: 80px;
+    }
+
+    @media (max-width: 960px) {
+      .cv-layout {
+        grid-template-columns: 1fr;
+        gap: 60px;
+      }
+    }
+
+    /* ── Accordion ────────────────────────────────────── */
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid rgba(30, 30, 40, 0.1);
+    }
+
+    .accordion-item:first-child {
+      border-top: 1px solid rgba(30, 30, 40, 0.1);
+    }
+
+    .accordion-trigger {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 28px 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      cursor: pointer;
+      text-align: left;
+      gap: 16px;
+    }
+
+    .accordion-trigger:hover .acc-company {
+      color: var(--maroon);
+    }
+
+    .acc-header {
+      flex: 1;
+    }
+
+    .acc-company {
+      font-size: clamp(20px, 2.5vw, 26px);
+      font-weight: 500;
+      color: var(--dark);
+      line-height: 1.2;
+      transition: color 0.2s;
+    }
+
+    .acc-period {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(30, 30, 40, 0.4);
+      margin-top: 4px;
+    }
+
+    .acc-icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(30, 30, 40, 0.4);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s;
+      margin-top: 4px;
+    }
+
+    .accordion-item.open .acc-icon {
+      transform: rotate(45deg);
+      color: var(--maroon);
+    }
+
+    /* ── Accordion body ───────────────────────────────── */
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .accordion-body-inner {
+      padding-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .acc-role-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--maroon);
+      margin-bottom: 8px;
+    }
+
+    .acc-body-desc {
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(30, 30, 40, 0.75);
+      max-width: 540px;
+    }
+
+    .acc-clients-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(30, 30, 40, 0.4);
+      margin-bottom: 8px;
+    }
+
+    .acc-clients {
+      font-size: 14px;
+      color: rgba(30, 30, 40, 0.6);
+      line-height: 1.6;
+    }
+
+    .acc-praise {
+      border-left: 2px solid var(--maroon);
+      padding-left: 20px;
+    }
+
+    .acc-praise q {
+      font-size: 14px;
+      font-style: italic;
+      line-height: 1.65;
+      color: rgba(30, 30, 40, 0.65);
+      display: block;
+    }
+
+    .acc-praise cite {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(30, 30, 40, 0.35);
+      margin-top: 8px;
+      display: block;
+      font-style: normal;
+    }
+
+    /* ── Right column — image placeholder ─────────────── */
+    .cv-sidebar {
+      position: sticky;
+      top: 100px;
+    }
+
+    .cv-sidebar-img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      background: #e8e2d8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(30, 30, 40, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cv-sidebar-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 6px,
+        rgba(30, 30, 40, 0.03) 6px,
+        rgba(30, 30, 40, 0.03) 12px
+      );
+    }
+
+    .cv-sidebar-img span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(30, 30, 40, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+
+    .cv-sidebar-caption {
+      margin-top: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(30, 30, 40, 0.3);
+    }
+
+    /* ── Divider ──────────────────────────────────────── */
+    .cv-divider {
+      height: 1px;
+      background: rgba(30, 30, 40, 0.1);
+      margin-bottom: 80px;
+    }
+
+    /* ── Praise section ───────────────────────────────── */
+    .praise-section {
+      padding-bottom: 120px;
+    }
+
+    .praise-section h2 {
+      margin-top: 20px;
+      margin-bottom: 48px;
+    }
+
+    .praise-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    @media (max-width: 860px) {
+      .praise-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+
+    .praise-card {
+      padding: 32px;
+      background: var(--cream);
+      border: 1px solid rgba(30, 30, 40, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .praise-quote {
+      font-size: 15px;
+      font-style: italic;
+      line-height: 1.7;
+      color: rgba(30, 30, 40, 0.75);
+    }
+
+    .praise-attr {
+      margin-top: auto;
+    }
+
+    .praise-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--dark);
+    }
+
+    .praise-role {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(30, 30, 40, 0.35);
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── PAGE CONTENT ── -->
+  <main>
+
+    <header class="cv-header container">
+      <p class="t-label section-label" data-reveal>06 — Curriculum Vitae</p>
+      <h1 class="t-headline-xl" data-reveal data-delay="100">
+        Work, experience, and<br>a few kind words.
+      </h1>
+    </header>
+
+    <!-- Two-column: accordion + sidebar -->
+    <div class="cv-layout container">
+
+      <!-- Left: work experience accordion -->
+      <div class="cv-accordion-col">
+        <p class="t-label section-label" data-reveal style="margin-bottom: 8px;">Experience</p>
+
+        <div class="accordion" role="list">
+
+          <!-- Calumma Design -->
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-calumma" data-cursor="Read">
+              <div class="acc-header">
+                <p class="acc-company">Calumma Design</p>
+                <p class="acc-period">2022 — Present</p>
+              </div>
+              <span class="acc-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M8 2v12M2 8h12"/>
+                </svg>
+              </span>
+            </button>
+            <div class="accordion-body" id="acc-calumma">
+              <div class="accordion-body-inner">
+                <div>
+                  <p class="acc-role-label">Creative Director &amp; Founder</p>
+                  <p class="acc-body-desc">Founded Calumma as an independent design studio working at the intersection of brand identity, digital experience, and cultural strategy. Led all creative output and client relationships, building a practice around restraint, craft, and genuine curiosity.</p>
+                </div>
+                <div>
+                  <p class="acc-clients-label">Notable clients</p>
+                  <p class="acc-clients">Hawthorn FC · Wollongong City · MTC Australia · Common Ground · Studio Pip</p>
+                </div>
+                <div class="acc-praise">
+                  <q>Emil brought a clarity to our brand that we had been searching for years. It felt inevitable the moment we saw it.</q>
+                  <cite>— Brand Director, Hawthorn FC</cite>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Freelance -->
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-freelance" data-cursor="Read">
+              <div class="acc-header">
+                <p class="acc-company">Freelance Creative Director</p>
+                <p class="acc-period">2018 — 2022</p>
+              </div>
+              <span class="acc-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M8 2v12M2 8h12"/>
+                </svg>
+              </span>
+            </button>
+            <div class="accordion-body" id="acc-freelance">
+              <div class="accordion-body-inner">
+                <div>
+                  <p class="acc-role-label">Independent Creative Director</p>
+                  <p class="acc-body-desc">Four years of independent practice across brand identity, packaging, editorial design, and interactive experience. Worked directly with founders and marketing teams to bring ambitious ideas to life, without layers of hierarchy.</p>
+                </div>
+                <div>
+                  <p class="acc-clients-label">Notable clients</p>
+                  <p class="acc-clients">Aesop · Lonely Planet · Broadsheet Media · Ovolo Hotels · Thank You</p>
+                </div>
+                <div class="acc-praise">
+                  <q>One of the most intuitive designers I've worked with. He reads a brief and somehow already knows what it needs to become.</q>
+                  <cite>— Head of Marketing, Broadsheet Media</cite>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hard Rock -->
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-hardrock" data-cursor="Read">
+              <div class="acc-header">
+                <p class="acc-company">Hard Rock International</p>
+                <p class="acc-period">2015 — 2018</p>
+              </div>
+              <span class="acc-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M8 2v12M2 8h12"/>
+                </svg>
+              </span>
+            </button>
+            <div class="accordion-body" id="acc-hardrock">
+              <div class="accordion-body-inner">
+                <div>
+                  <p class="acc-role-label">Senior Designer, Global Brand</p>
+                  <p class="acc-body-desc">Part of the global brand team responsible for maintaining and evolving the Hard Rock visual identity across 200+ locations worldwide. Led campaigns for hotel openings in Europe, the Middle East, and Asia-Pacific.</p>
+                </div>
+                <div>
+                  <p class="acc-clients-label">Markets covered</p>
+                  <p class="acc-clients">Europe · Middle East · Asia-Pacific · USA</p>
+                </div>
+                <div class="acc-praise">
+                  <q>Emil's work consistently elevated our standards. His ability to work at global scale while maintaining local sensitivity is rare.</q>
+                  <cite>— VP Brand, Hard Rock International</cite>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tangent -->
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-tangent" data-cursor="Read">
+              <div class="acc-header">
+                <p class="acc-company">Tangent</p>
+                <p class="acc-period">2012 — 2015</p>
+              </div>
+              <span class="acc-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M8 2v12M2 8h12"/>
+                </svg>
+              </span>
+            </button>
+            <div class="accordion-body" id="acc-tangent">
+              <div class="accordion-body-inner">
+                <div>
+                  <p class="acc-role-label">Designer</p>
+                  <p class="acc-body-desc">First professional role at a multidisciplinary design consultancy in Melbourne. Worked across brand, print, and digital for cultural institutions, not-for-profits, and technology startups. Where the habits were formed.</p>
+                </div>
+                <div>
+                  <p class="acc-clients-label">Sectors</p>
+                  <p class="acc-clients">Arts &amp; culture · Technology · Education · Not-for-profit</p>
+                </div>
+                <div class="acc-praise">
+                  <q>What struck us immediately was the quality of Emil's thinking. He wasn't just making things look good — he was solving real problems.</q>
+                  <cite>— Creative Director, Tangent</cite>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: sidebar image placeholder -->
+      <aside class="cv-sidebar">
+        <div class="cv-sidebar-img" aria-hidden="true">
+          <span>Image placeholder</span>
+        </div>
+        <p class="cv-sidebar-caption t-micro">Studio, Melbourne · 2024</p>
+      </aside>
+
+    </div>
+
+    <!-- Divider -->
+    <div class="cv-divider container"></div>
+
+    <!-- Praise section -->
+    <section class="praise-section container" aria-labelledby="praise-heading">
+      <p class="t-label section-label" data-reveal>Kind words</p>
+      <h2 class="t-headline-md" id="praise-heading" data-reveal data-delay="100">
+        What people say.
+      </h2>
+
+      <div class="praise-grid">
+
+        <div class="praise-card" data-reveal>
+          <p class="praise-quote">"Working with Emil was the easiest creative process we've had in a decade. He already knew what we needed before we finished the sentence."</p>
+          <div class="praise-attr">
+            <p class="praise-name">Sarah Mitchell</p>
+            <p class="praise-role">CEO, Common Ground</p>
+          </div>
+        </div>
+
+        <div class="praise-card" data-reveal data-delay="100">
+          <p class="praise-quote">"The brand he designed for us has outlasted three rebrand pitches from large agencies. It simply works, and it's ours."</p>
+          <div class="praise-attr">
+            <p class="praise-name">James Okafor</p>
+            <p class="praise-role">Founder, Studio Pip</p>
+          </div>
+        </div>
+
+        <div class="praise-card" data-reveal data-delay="200">
+          <p class="praise-quote">"Emil has a rare combination of visual intelligence and strategic clarity. He makes you feel certain about things you were previously afraid to commit to."</p>
+          <div class="praise-attr">
+            <p class="praise-name">Dr. Nadia Bloom</p>
+            <p class="praise-role">Director, MTC Australia</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Accordion JS -->
+  <script>
+    const triggers = document.querySelectorAll('.accordion-trigger');
+
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item    = trigger.closest('.accordion-item');
+        const bodyId  = trigger.getAttribute('aria-controls');
+        const body    = document.getElementById(bodyId);
+        const isOpen  = item.classList.contains('open');
+
+        // Close all
+        document.querySelectorAll('.accordion-item.open').forEach(openItem => {
+          openItem.classList.remove('open');
+          openItem.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'false');
+          const openBody = openItem.querySelector('.accordion-body');
+          openBody.style.maxHeight = '0';
+        });
+
+        // Open clicked (if was closed)
+        if (!isOpen) {
+          item.classList.add('open');
+          trigger.setAttribute('aria-expanded', 'true');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        }
+      });
+    });
+  </script>
+
+  <!-- Scripts -->
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+</body>
+</html>

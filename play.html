@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Play — Emil Blum</title>
+  <meta name="description" content="Ripple Music — an interactive musical canvas. Tap anywhere to begin.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <style>
+    /* ── Full-page dark canvas ────────────────────────── */
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #1e1e28;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
+    canvas {
+      display: block;
+      position: fixed;
+      inset: 0;
+      cursor: crosshair;
+      z-index: 0;
+    }
+
+    /* ── Nav sits on top, glassmorphism already handles dark ── */
+    .site-nav {
+      position: fixed;
+      z-index: 100;
+    }
+
+    /* ── Cursor and transition overlays above canvas ──── */
+    #cursor, #page-transition {
+      z-index: 110;
+    }
+
+    /* ── Hint overlay ─────────────────────────────────── */
+    #hint {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      transition: opacity 2s ease;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    #hint.gone { opacity: 0; }
+
+    #hint h1 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 300;
+      font-size: clamp(28px, 5vw, 52px);
+      color: rgba(250, 160, 0, 0.14);
+      letter-spacing: 0.02em;
+    }
+
+    #hint p {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: lowercase;
+      color: rgba(250, 160, 0, 0.10);
+    }
+
+    /* ── UI bar ───────────────────────────────────────── */
+    #ui {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 1.2s;
+      z-index: 20;
+    }
+
+    #ui.visible { opacity: 1; }
+
+    .btn {
+      background: rgba(250, 160, 0, 0.06);
+      border: 1px solid rgba(250, 160, 0, 0.14);
+      color: rgba(250, 160, 0, 0.50);
+      padding: 8px 18px;
+      border-radius: 24px;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: lowercase;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.75);
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    .btn.recording {
+      background: rgba(255, 70, 70, 0.10);
+      border-color: rgba(255, 70, 70, 0.28);
+      color: rgba(255, 100, 80, 0.90);
+    }
+
+    .btn.recording:hover {
+      background: rgba(255, 70, 70, 0.18);
+    }
+
+    .btn.recording::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 100, 80, 0.90);
+      margin-right: 7px;
+      vertical-align: middle;
+      animation: pulse-dot 1.1s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1;   transform: scale(1);   }
+      50%       { opacity: 0.4; transform: scale(1.45); }
+    }
+
+    /* ── Note label ───────────────────────────────────── */
+    .note-label {
+      position: fixed;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: rgba(250, 160, 0, 0.40);
+      pointer-events: none;
+      animation: note-rise 1.8s ease forwards;
+      z-index: 10;
+    }
+
+    @keyframes note-rise {
+      0%   { opacity: 0.8; transform: translateY(0);    }
+      100% { opacity: 0;   transform: translateY(-30px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── CANVAS ── -->
+  <canvas id="canvas"></canvas>
+
+  <!-- ── HINT OVERLAY ── -->
+  <div id="hint">
+    <h1>Ripple Music</h1>
+    <p>tap anywhere to begin</p>
+  </div>
+
+  <!-- ── UI CONTROLS ── -->
+  <div id="ui">
+    <button class="btn" id="clearBtn">clear</button>
+    <button class="btn" id="recordBtn">&#x23FA; record</button>
+  </div>
+
+  <!-- ── RIPPLE MUSIC ENGINE ── -->
+  <script>
+  'use strict';
+
+  // ── Brand colours ──────────────────────────────────
+  const BG_COLOR = '#1e1e28';
+
+  // ══════════════════════════════════════════════════
+  //  CANVAS SETUP
+  // ══════════════════════════════════════════════════
+  const canvas = document.getElementById('canvas');
+  const ctx    = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.fillStyle = BG_COLOR;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // ══════════════════════════════════════════════════
+  //  PENTATONIC SCALE  (C major: C D E G A)
+  // ══════════════════════════════════════════════════
+  const NOTE_NAMES = ['C', 'D', 'E', 'G', 'A'];
+  const BASE_FREQS = [130.81, 146.83, 164.81, 196.00, 220.00];
+  const rawPairs = [];
+  [-1, 0, 1, 2].forEach(octave => {
+    BASE_FREQS.forEach((f, i) => {
+      rawPairs.push({ f: f * Math.pow(2, octave), n: NOTE_NAMES[i] + (octave + 4) });
+    });
+  });
+  rawPairs.sort((a, b) => a.f - b.f);
+  const SORTED_FREQS = rawPairs.map(p => p.f);
+  const SORTED_NAMES = rawPairs.map(p => p.n);
+
+  const FREQ_MIN = SORTED_FREQS[0];
+  const FREQ_MAX = SORTED_FREQS[SORTED_FREQS.length - 1];
+
+  function xToFreqIndex(x) {
+    return Math.round((x / canvas.width) * (SORTED_FREQS.length - 1));
+  }
+  function xToFreq(x) {
+    return SORTED_FREQS[Math.max(0, Math.min(xToFreqIndex(x), SORTED_FREQS.length - 1))];
+  }
+  function xToName(x) {
+    return SORTED_NAMES[Math.max(0, Math.min(xToFreqIndex(x), SORTED_NAMES.length - 1))];
+  }
+  function nearestNote(freq) {
+    return SORTED_FREQS.reduce((best, f) =>
+      Math.abs(f - freq) < Math.abs(best - freq) ? f : best
+    );
+  }
+  function harmonyFreq(f1, f2) {
+    return nearestNote(Math.sqrt(f1 * f2));
+  }
+
+  // Remap hue: brand yellow is ~38°, keep warm amber range
+  function freqToHue(freq) {
+    const t = (Math.log2(freq) - Math.log2(FREQ_MIN)) /
+              (Math.log2(FREQ_MAX) - Math.log2(FREQ_MIN));
+    // Warm yellow-amber range: 32° (deep amber) → 48° (bright yellow)
+    return 32 + t * 16;
+  }
+
+  // ══════════════════════════════════════════════════
+  //  AUDIO ENGINE
+  // ══════════════════════════════════════════════════
+  let audioCtx      = null;
+  let masterGain    = null;
+  let recordingDest = null;
+
+  function initAudio() {
+    if (audioCtx) return;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AC();
+
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.60;
+
+    const convolver = audioCtx.createConvolver();
+    const len       = Math.floor(audioCtx.sampleRate * 2.8);
+    const impulse   = audioCtx.createBuffer(2, len, audioCtx.sampleRate);
+    for (let ch = 0; ch < 2; ch++) {
+      const d = impulse.getChannelData(ch);
+      for (let i = 0; i < len; i++) {
+        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.5);
+      }
+    }
+    convolver.buffer = impulse;
+
+    const reverbGain = audioCtx.createGain();
+    reverbGain.gain.value = 0.30;
+
+    masterGain.connect(audioCtx.destination);
+    masterGain.connect(convolver);
+    convolver.connect(reverbGain);
+    reverbGain.connect(audioCtx.destination);
+
+    recordingDest = audioCtx.createMediaStreamDestination();
+    masterGain.connect(recordingDest);
+    reverbGain.connect(recordingDest);
+  }
+
+  function playNote(freq, vol, dur = 2.2, soft = false) {
+    if (!audioCtx) return;
+    const now = audioCtx.currentTime;
+
+    const osc  = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+
+    const attack = soft ? 0.10 : 0.015;
+    const decay  = soft ? 0.60 : 0.22;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(vol, now + attack);
+    gain.gain.exponentialRampToValueAtTime(vol * 0.30, now + decay);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start(now);
+    osc.stop(now + dur + 0.05);
+
+    const subOsc  = audioCtx.createOscillator();
+    const subGain = audioCtx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.value = freq * 0.5;
+    subGain.gain.setValueAtTime(0, now);
+    subGain.gain.linearRampToValueAtTime(vol * 0.18, now + attack);
+    subGain.gain.exponentialRampToValueAtTime(0.0001, now + dur * 0.8);
+    subOsc.connect(subGain);
+    subGain.connect(masterGain);
+    subOsc.start(now);
+    subOsc.stop(now + dur);
+  }
+
+  // ══════════════════════════════════════════════════
+  //  RIPPLE CLASS
+  // ══════════════════════════════════════════════════
+  let _id = 0;
+
+  class Ripple {
+    constructor(x, y, freq) {
+      this.id      = _id++;
+      this.x       = x;
+      this.y       = y;
+      this.freq    = freq;
+      this.hue     = freqToHue(freq);
+      this.radius  = 2;
+      this.speed   = 72;
+      this.alive   = true;
+      this.maxR    = Math.hypot(
+        Math.max(x, canvas.width  - x),
+        Math.max(y, canvas.height - y)
+      ) * 1.08;
+    }
+
+    get opacity() {
+      return Math.max(0, 1 - (this.radius / this.maxR));
+    }
+
+    update(dt) {
+      this.radius += this.speed * dt;
+      if (this.radius >= this.maxR) this.alive = false;
+    }
+
+    draw(c) {
+      const op = this.opacity;
+      if (op < 0.008) return;
+
+      const { x, y, radius: r, hue } = this;
+
+      if (r > 4) {
+        const bandW = Math.min(r * 0.35, 40);
+        const g = c.createRadialGradient(x, y, Math.max(0, r - bandW), x, y, r);
+        g.addColorStop(0,   `hsla(${hue}, 85%, 60%, 0)`);
+        g.addColorStop(0.7, `hsla(${hue}, 88%, 65%, ${(op * 0.06).toFixed(4)})`);
+        g.addColorStop(1,   `hsla(${hue}, 92%, 70%, ${(op * 0.14).toFixed(4)})`);
+        c.beginPath();
+        c.arc(x, y, r, 0, Math.PI * 2);
+        c.fillStyle = g;
+        c.fill();
+      }
+
+      c.beginPath();
+      c.arc(x, y, r, 0, Math.PI * 2);
+      c.strokeStyle = `hsla(${hue}, 88%, 68%, ${op.toFixed(3)})`;
+      c.lineWidth = 1.6;
+      c.stroke();
+
+      if (r > 12) {
+        c.beginPath();
+        c.arc(x, y, r - 8, 0, Math.PI * 2);
+        c.strokeStyle = `hsla(${hue}, 80%, 62%, ${(op * 0.22).toFixed(3)})`;
+        c.lineWidth = 0.8;
+        c.stroke();
+      }
+
+      if (r < 50) {
+        const gOp = op * (1 - r / 50) * 0.9;
+        if (gOp > 0.01) {
+          const og = c.createRadialGradient(x, y, 0, x, y, 14);
+          og.addColorStop(0, `hsla(${hue}, 95%, 85%, ${gOp})`);
+          og.addColorStop(1, `hsla(${hue}, 90%, 65%, 0)`);
+          c.beginPath();
+          c.arc(x, y, 14, 0, Math.PI * 2);
+          c.fillStyle = og;
+          c.fill();
+        }
+      }
+    }
+
+    intersects(other) {
+      const d    = Math.hypot(this.x - other.x, this.y - other.y);
+      if (d < 0.5) return false;
+      const dMin = Math.abs(this.radius - other.radius);
+      const dMax = this.radius + other.radius;
+      return d < dMax && d > dMin;
+    }
+
+    crossPoints(other) {
+      const dx = other.x - this.x, dy = other.y - this.y;
+      const d  = Math.hypot(dx, dy);
+      if (d < 0.5) return [];
+      const a  = (this.radius ** 2 - other.radius ** 2 + d ** 2) / (2 * d);
+      const h2 = this.radius ** 2 - a ** 2;
+      if (h2 < 0) return [];
+      const h  = Math.sqrt(h2);
+      const mx = this.x + (a * dx) / d;
+      const my = this.y + (a * dy) / d;
+      return [
+        { x: mx + (h * dy) / d, y: my - (h * dx) / d },
+        { x: mx - (h * dy) / d, y: my + (h * dx) / d },
+      ];
+    }
+  }
+
+  // ══════════════════════════════════════════════════
+  //  SPARK CLASS
+  // ══════════════════════════════════════════════════
+  class Spark {
+    constructor(x, y, hue) {
+      this.x    = x;
+      this.y    = y;
+      this.hue  = hue;
+      this.life = 1.0;
+      this.r    = 8 + Math.random() * 10;
+    }
+    update(dt) { this.life -= dt * 0.45; }
+    draw(c) {
+      if (this.life <= 0.02) return;
+      const op  = this.life * 0.72;
+      const sz  = this.r * (1 + (1 - this.life) * 5.5);
+      const g   = c.createRadialGradient(this.x, this.y, 0, this.x, this.y, sz);
+      g.addColorStop(0.0, `hsla(${this.hue}, 95%, 92%, ${op})`);
+      g.addColorStop(0.3, `hsla(${this.hue}, 90%, 75%, ${op * 0.55})`);
+      g.addColorStop(0.65,`hsla(${this.hue}, 80%, 62%, ${op * 0.22})`);
+      g.addColorStop(1.0, `hsla(${this.hue}, 75%, 55%, 0)`);
+      c.beginPath();
+      c.arc(this.x, this.y, sz, 0, Math.PI * 2);
+      c.fillStyle = g;
+      c.fill();
+    }
+  }
+
+  // ══════════════════════════════════════════════════
+  //  STATE
+  // ══════════════════════════════════════════════════
+  const ripples        = [];
+  const sparks         = [];
+  const activePairs    = new Map();
+  const MAX_RIPPLES    = 20;
+  const TAP_COOLDOWN   = 260;
+  let lastTap          = 0;
+  let hasInteracted    = false;
+
+  // ══════════════════════════════════════════════════
+  //  INTERACTION
+  // ══════════════════════════════════════════════════
+  function handleTap(x, y) {
+    const now = Date.now();
+    if (now - lastTap < TAP_COOLDOWN) return;
+    lastTap = now;
+
+    initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const freq = xToFreq(x);
+    const vol  = 0.28 + (1 - y / canvas.height) * 0.38;
+
+    playNote(freq, Math.min(vol, 0.65), 2.5);
+    spawnLabel(x, y, xToName(x));
+
+    ripples.push(new Ripple(x, y, freq));
+    while (ripples.length > MAX_RIPPLES) ripples.shift();
+
+    if (!hasInteracted) {
+      hasInteracted = true;
+      document.getElementById('hint').classList.add('gone');
+      document.getElementById('ui').classList.add('visible');
+    }
+  }
+
+  canvas.addEventListener('mousedown', e => handleTap(e.clientX, e.clientY));
+  canvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    for (const t of e.changedTouches) handleTap(t.clientX, t.clientY);
+  }, { passive: false });
+
+  function spawnLabel(x, y, name) {
+    const el = document.createElement('div');
+    el.className = 'note-label';
+    el.textContent = name;
+    el.style.left = `${x + 12}px`;
+    el.style.top  = `${y - 6}px`;
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+
+  // ══════════════════════════════════════════════════
+  //  HARMONY INTERSECTION CHECK
+  // ══════════════════════════════════════════════════
+  function checkIntersections() {
+    for (let i = 0; i < ripples.length; i++) {
+      for (let j = i + 1; j < ripples.length; j++) {
+        const a   = ripples[i], b = ripples[j];
+        const key = `${Math.min(a.id, b.id)}:${Math.max(a.id, b.id)}`;
+        const nowIntersecting = a.intersects(b);
+        const wasIntersecting = activePairs.get(key) || false;
+
+        if (nowIntersecting && !wasIntersecting) {
+          const hFreq = harmonyFreq(a.freq, b.freq);
+          playNote(hFreq, 0.18, 3.0, true);
+          const pts = a.crossPoints(b);
+          const hue = (a.hue + b.hue) / 2;
+          pts.forEach(pt => sparks.push(new Spark(pt.x, pt.y, hue)));
+        }
+
+        activePairs.set(key, nowIntersecting);
+      }
+    }
+
+    if (activePairs.size > 200) {
+      const live = new Set(ripples.map(r => r.id));
+      for (const key of activePairs.keys()) {
+        const [a, b] = key.split(':').map(Number);
+        if (!live.has(a) || !live.has(b)) activePairs.delete(key);
+      }
+    }
+  }
+
+  // ══════════════════════════════════════════════════
+  //  RECORDING
+  // ══════════════════════════════════════════════════
+  let mediaRecorder  = null;
+  let chunks         = [];
+  let isRecording    = false;
+
+  const recordBtn = document.getElementById('recordBtn');
+
+  recordBtn.addEventListener('click', () => {
+    isRecording ? stopRecording() : startRecording();
+  });
+
+  function startRecording() {
+    initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    if (!recordingDest) return;
+
+    const videoTracks = canvas.captureStream(30).getVideoTracks();
+    const audioTracks = recordingDest.stream.getAudioTracks();
+    const stream      = new MediaStream([...videoTracks, ...audioTracks]);
+
+    const mime = ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm']
+      .find(m => MediaRecorder.isTypeSupported(m)) || '';
+
+    chunks        = [];
+    mediaRecorder = new MediaRecorder(stream, mime ? { mimeType: mime } : {});
+    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+    mediaRecorder.onstop          = exportVideo;
+    mediaRecorder.start(100);
+
+    isRecording = true;
+    recordBtn.textContent = 'save';
+    recordBtn.classList.add('recording');
+  }
+
+  function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+    isRecording = false;
+    recordBtn.textContent = '⏺ record';
+    recordBtn.classList.remove('recording');
+  }
+
+  function exportVideo() {
+    const blob = new Blob(chunks, { type: 'video/webm' });
+    const url  = URL.createObjectURL(blob);
+    const a    = Object.assign(document.createElement('a'), {
+      href: url,
+      download: `ripple-${new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')}.webm`
+    });
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 3000);
+  }
+
+  // ── Clear ─────────────────────────────────────────
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    ripples.length = 0;
+    sparks.length  = 0;
+    activePairs.clear();
+    ctx.fillStyle = BG_COLOR;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    hasInteracted = false;
+    document.getElementById('hint').classList.remove('gone');
+    document.getElementById('ui').classList.remove('visible');
+  });
+
+  // ══════════════════════════════════════════════════
+  //  RENDER LOOP
+  // ══════════════════════════════════════════════════
+  let lastTime = null;
+
+  function frame(ts) {
+    if (!lastTime) lastTime = ts;
+    const dt = Math.min((ts - lastTime) / 1000, 0.05);
+    lastTime = ts;
+
+    // Trail fade using brand dark colour
+    ctx.fillStyle = 'rgba(30, 30, 40, 0.055)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      ripples[i].update(dt);
+      if (!ripples[i].alive) { ripples.splice(i, 1); continue; }
+      ripples[i].draw(ctx);
+    }
+
+    checkIntersections();
+
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      sparks[i].update(dt);
+      if (sparks[i].life <= 0) { sparks.splice(i, 1); continue; }
+      sparks[i].draw(ctx);
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  // Initial fill
+  ctx.fillStyle = BG_COLOR;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  requestAnimationFrame(frame);
+  </script>
+
+  <!-- Scripts -->
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+</body>
+</html>

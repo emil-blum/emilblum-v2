@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Emil Blum</title>
+  <meta name="description" content="About Emil Blum — creative director and designer working across brand, digital, and interactive media.">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+  <link rel="stylesheet" href="fragment-collage/assets/fragment-collage.css">
+
+  <style>
+    /* ── Page header ──────────────────────────────────── */
+    .cv-header {
+      padding-top: 140px;
+      padding-bottom: 56px; /* bio follows, so less gap here */
+    }
+
+    .cv-header h1 {
+      max-width: 640px;
+      margin-top: 20px;
+    }
+
+    /* ── Bio section ──────────────────────────────────── */
+    /* No max-width on the container itself — that would fight
+       .container's margin: 0 auto and shift the whole block
+       off the left edge. Width is constrained on inner children. */
+    .cv-bio {
+      padding-bottom: 100px;
+    }
+
+    .cv-bio-text {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      margin-bottom: 44px;
+      max-width: 520px;
+    }
+
+    /* ── Bio social links ─────────────────────────────── */
+    .cv-bio-connect-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(30, 30, 40, 0.4);
+      margin-bottom: 14px;
+    }
+
+    .cv-bio-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 0;
+      align-items: baseline;
+    }
+
+    .cv-bio-link {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--dark);
+      text-decoration: underline;
+      text-decoration-color: var(--maroon);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    }
+
+    .cv-bio-link:hover {
+      color: var(--maroon);
+      text-decoration-color: var(--maroon);
+    }
+
+    .cv-bio-link-sep {
+      color: var(--n300);
+      padding: 0 12px;
+      font-size: 12px;
+      user-select: none;
+    }
+
+    /* ── Staggered layout: accordion offset right ──────── */
+    /* Header sits full-width; accordion is indented to create
+       a staggered relationship between title and experience list */
+    .cv-layout {
+      padding-bottom: 100px;
+      padding-left: clamp(0px, 32%, 480px); /* stagger offset */
+    }
+
+    @media (max-width: 960px) {
+      /* Restore the container's side padding — cv-layout's padding-left
+         override would otherwise wipe it out and flush content to the edge */
+      .cv-layout { padding-left: var(--px-mobile); }
+    }
+
+    /* ── Accordion ────────────────────────────────────── */
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid rgba(30, 30, 40, 0.1);
+    }
+
+    .accordion-item:first-child {
+      border-top: 1px solid rgba(30, 30, 40, 0.1);
+    }
+
+    .accordion-trigger {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 28px 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      cursor: pointer;
+      text-align: left;
+      gap: 16px;
+    }
+
+    .accordion-trigger:hover .acc-company {
+      color: var(--maroon);
+    }
+
+    .acc-header {
+      flex: 1;
+    }
+
+    .acc-company {
+      font-size: clamp(20px, 2.5vw, 26px);
+      font-weight: 500;
+      color: var(--dark);
+      line-height: 1.2;
+      transition: color 0.2s;
+    }
+
+    .acc-period {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(30, 30, 40, 0.4);
+      margin-top: 4px;
+    }
+
+    .acc-icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(30, 30, 40, 0.4);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s;
+      margin-top: 4px;
+    }
+
+    .accordion-item.open .acc-icon {
+      transform: rotate(45deg);
+      color: var(--maroon);
+    }
+
+    /* ── Accordion body ───────────────────────────────── */
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 60 / 40 split: text left, image right */
+    .accordion-body-inner {
+      padding-bottom: 36px;
+      padding-top: 4px;
+      display: grid;
+      grid-template-columns: 1fr 0.66fr; /* ~60/40 */
+      gap: 40px;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .accordion-body-inner {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+
+    .acc-text-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .acc-role-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--maroon);
+      margin-bottom: 8px;
+    }
+
+    .acc-body-desc {
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(30, 30, 40, 0.75);
+    }
+
+    .acc-clients-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(30, 30, 40, 0.4);
+      margin-bottom: 8px;
+    }
+
+    .acc-clients {
+      font-size: 14px;
+      color: rgba(30, 30, 40, 0.6);
+      line-height: 1.6;
+    }
+
+    /* 5:3 image column — right column of accordion body */
+    /* align-self: start keeps it top-anchored in the grid row.
+       Sticky is on the inner .acc-img-slideshow — putting sticky
+       directly on a grid item can override align-self in some browsers. */
+    .acc-image-col {
+      align-self: start;
+    }
+
+    /* Auto-cycling image slideshow */
+    .acc-img-slideshow {
+      position: sticky;
+      top: 100px;
+      width: 100%;
+      aspect-ratio: 5 / 3;
+      overflow: hidden;
+      background: var(--n100);
+    }
+
+    .acc-img-slideshow img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      opacity: 0;
+      transition: opacity 200ms ease;
+      display: block;
+    }
+
+    .acc-img-slideshow img.is-active {
+      opacity: 1;
+    }
+
+    /* ── Fragment collage section ──────────────────────── */
+    .collage-section {
+      width: 100%;
+      height: 80vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #fragment-collage {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── PAGE CONTENT ── -->
+  <main>
+
+    <header class="cv-header container">
+      <p class="t-label section-label" data-reveal>06 — About</p>
+      <h1 class="t-headline-xl" data-reveal data-delay="100">
+        Work and experience.
+      </h1>
+    </header>
+
+    <!-- Bio paragraphs + social links -->
+    <div class="cv-bio container">
+      <div class="cv-bio-text">
+        <p class="acc-body-desc" data-reveal>
+          I'm a creative director and designer based in Melbourne, working across brand identity, digital experience, and interactive media. I founded Calumma Design in 2022 as an independent studio built around restraint, craft, and genuine curiosity — the belief that the most enduring work comes from asking better questions, not just producing faster answers.
+        </p>
+        <p class="acc-body-desc" data-reveal data-delay="100">
+          Before going independent, I spent a decade working across in-house teams and agencies — from global hospitality brands to cultural institutions and early-stage startups. That range shaped how I think: I move comfortably between the strategic and the hands-on, between a brand's reason for existing and the precise weight of a typeface on a page.
+        </p>
+      </div>
+
+      <div data-reveal data-delay="200">
+        <p class="cv-bio-connect-label">Find me</p>
+        <div class="cv-bio-links">
+          <a href="mailto:hello@emilblum.com" class="cv-bio-link">Email</a>
+          <span class="cv-bio-link-sep" aria-hidden="true">·</span>
+          <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="cv-bio-link">LinkedIn</a>
+          <span class="cv-bio-link-sep" aria-hidden="true">·</span>
+          <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="cv-bio-link">Instagram</a>
+          <span class="cv-bio-link-sep" aria-hidden="true">·</span>
+          <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="cv-bio-link">Are.na</a>
+          <span class="cv-bio-link-sep" aria-hidden="true">·</span>
+          <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="cv-bio-link">Substack</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accordion: staggered right via cv-layout padding-left -->
+    <div class="cv-layout container">
+
+      <p class="t-label section-label" data-reveal style="margin-bottom: 8px;">Experience</p>
+
+      <div class="accordion" role="list">
+
+        <!-- Calumma Design -->
+        <div class="accordion-item" role="listitem">
+          <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-calumma" data-cursor="Read">
+            <div class="acc-header">
+              <p class="acc-company">Calumma Design</p>
+              <p class="acc-period">2022 — Present</p>
+            </div>
+            <span class="acc-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M8 2v12M2 8h12"/>
+              </svg>
+            </span>
+          </button>
+          <div class="accordion-body" id="acc-calumma">
+            <div class="accordion-body-inner">
+              <div class="acc-text-col">
+                <div>
+                  <p class="acc-role-label">Creative Director &amp; Founder</p>
+                  <p class="acc-body-desc">Founded Calumma as an independent design studio working at the intersection of brand identity, digital experience, and cultural strategy. Led all creative output and client relationships, building a practice around restraint, craft, and genuine curiosity.</p>
+                </div>
+                <div>
+                  <p class="acc-clients-label">Notable clients</p>
+                  <p class="acc-clients">Hawthorn FC · Wollongong City · MTC Australia · Common Ground · Studio Pip</p>
+                </div>
+              </div>
+              <div class="acc-image-col">
+                <div class="acc-img-slideshow">
+                  <img src="assets/placeholder-images/01_Calumma-Case-1920x1080-FISGA.png" alt="" class="is-active">
+                  <img src="assets/placeholder-images/01_Calumma-Case-1920x1080-YESfest.png" alt="">
+                  <img src="assets/placeholder-images/01_Calumma-Case-1920x1080-BIMA10.jpg" alt="">
+                  <img src="assets/placeholder-images/01_Calumma-Case-1920x1080-DaydreamBelievers.png" alt="">
+                  <img src="assets/placeholder-images/01_Calumma-Case-1920x1080_JMT.png" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Freelance -->
+        <div class="accordion-item" role="listitem">
+          <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-freelance" data-cursor="Read">
+            <div class="acc-header">
+              <p class="acc-company">Freelance Creative Director</p>
+              <p class="acc-period">2018 — 2022</p>
+            </div>
+            <span class="acc-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M8 2v12M2 8h12"/>
+              </svg>
+            </span>
+          </button>
+          <div class="accordion-body" id="acc-freelance">
+            <div class="accordion-body-inner">
+              <div class="acc-text-col">
+                <div>
+                  <p class="acc-role-label">Independent Creative Director</p>
+                  <p class="acc-body-desc">Four years of independent practice across brand identity, packaging, editorial design, and interactive experience. Worked directly with founders and marketing teams to bring ambitious ideas to life, without layers of hierarchy.</p>
+                </div>
+                <div>
+                  <p class="acc-clients-label">Notable clients</p>
+                  <p class="acc-clients">Aesop · Lonely Planet · Broadsheet Media · Ovolo Hotels · Thank You</p>
+                </div>
+              </div>
+              <div class="acc-image-col">
+                <div class="acc-img-slideshow">
+                  <img src="assets/placeholder-images/SUS17_Master-Artwork.jpg" alt="" class="is-active">
+                  <img src="assets/placeholder-images/01_StartupSummit2018_Photo.jpg" alt="">
+                  <img src="assets/placeholder-images/01_Deanston-Frame.jpg" alt="">
+                  <img src="assets/placeholder-images/10_Storytime-Ross-From_Friends-2022_Poster.jpg" alt="">
+                  <img src="assets/placeholder-images/Storytime-Posters.jpg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hard Rock -->
+        <div class="accordion-item" role="listitem">
+          <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-hardrock" data-cursor="Read">
+            <div class="acc-header">
+              <p class="acc-company">Hard Rock International</p>
+              <p class="acc-period">2015 — 2018</p>
+            </div>
+            <span class="acc-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M8 2v12M2 8h12"/>
+              </svg>
+            </span>
+          </button>
+          <div class="accordion-body" id="acc-hardrock">
+            <div class="accordion-body-inner">
+              <div class="acc-text-col">
+                <div>
+                  <p class="acc-role-label">Senior Designer, Global Brand</p>
+                  <p class="acc-body-desc">Part of the global brand team responsible for maintaining and evolving the Hard Rock visual identity across 200+ locations worldwide. Led campaigns for hotel openings in Europe, the Middle East, and Asia-Pacific.</p>
+                </div>
+                <div>
+                  <p class="acc-clients-label">Markets covered</p>
+                  <p class="acc-clients">Europe · Middle East · Asia-Pacific · USA</p>
+                </div>
+              </div>
+              <div class="acc-image-col">
+                <div class="acc-img-slideshow">
+                  <img src="assets/placeholder-images/01-SUS18-Design-min.jpg" alt="" class="is-active">
+                  <img src="assets/placeholder-images/02-SUS18-Design-min.jpg" alt="">
+                  <img src="assets/placeholder-images/HotHead-Big-Small.jpg" alt="">
+                  <img src="assets/placeholder-images/Two-Cans-Small.jpg" alt="">
+                  <img src="assets/placeholder-images/Poster-Preview2-min.jpg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tangent -->
+        <div class="accordion-item" role="listitem">
+          <button class="accordion-trigger" aria-expanded="false" aria-controls="acc-tangent" data-cursor="Read">
+            <div class="acc-header">
+              <p class="acc-company">Tangent</p>
+              <p class="acc-period">2012 — 2015</p>
+            </div>
+            <span class="acc-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M8 2v12M2 8h12"/>
+              </svg>
+            </span>
+          </button>
+          <div class="accordion-body" id="acc-tangent">
+            <div class="accordion-body-inner">
+              <div class="acc-text-col">
+                <div>
+                  <p class="acc-role-label">Designer</p>
+                  <p class="acc-body-desc">First professional role at a multidisciplinary design consultancy in Melbourne. Worked across brand, print, and digital for cultural institutions, not-for-profits, and technology startups. Where the habits were formed.</p>
+                </div>
+                <div>
+                  <p class="acc-clients-label">Sectors</p>
+                  <p class="acc-clients">Arts &amp; culture · Technology · Education · Not-for-profit</p>
+                </div>
+              </div>
+              <div class="acc-image-col">
+                <div class="acc-img-slideshow">
+                  <img src="assets/placeholder-images/01_SUS-Ind-Illustration-min.jpg" alt="" class="is-active">
+                  <img src="assets/placeholder-images/02_SUS-Ind-Illustration-min.jpg" alt="">
+                  <img src="assets/placeholder-images/03_SUS-Ind-Illustration-min.jpg" alt="">
+                  <img src="assets/placeholder-images/cc-6274.jpg" alt="">
+                  <img src="assets/placeholder-images/cc-6288.jpg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Accordion + slideshow JS -->
+  <script>
+    const slideshowTimers = new Map();
+
+    function startSlideshow(item) {
+      const imgs = Array.from(item.querySelectorAll('.acc-img-slideshow img'));
+      if (imgs.length < 2) return;
+      let idx = 0;
+      const tick = () => {
+        imgs[idx].classList.remove('is-active');
+        idx = (idx + 1) % imgs.length;
+        imgs[idx].classList.add('is-active');
+      };
+      slideshowTimers.set(item, setInterval(tick, 800));
+    }
+
+    function stopSlideshow(item) {
+      clearInterval(slideshowTimers.get(item));
+      slideshowTimers.delete(item);
+      // Reset to first image
+      item.querySelectorAll('.acc-img-slideshow img').forEach((img, i) => {
+        img.classList.toggle('is-active', i === 0);
+      });
+    }
+
+    const triggers = document.querySelectorAll('.accordion-trigger');
+
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item    = trigger.closest('.accordion-item');
+        const bodyId  = trigger.getAttribute('aria-controls');
+        const body    = document.getElementById(bodyId);
+        const isOpen  = item.classList.contains('open');
+
+        // Close all open items
+        document.querySelectorAll('.accordion-item.open').forEach(openItem => {
+          openItem.classList.remove('open');
+          const openTrigger = openItem.querySelector('.accordion-trigger');
+          openTrigger.setAttribute('aria-expanded', 'false');
+          openTrigger.setAttribute('data-cursor', 'Read');
+          openItem.querySelector('.accordion-body').style.maxHeight = '0';
+          stopSlideshow(openItem);
+        });
+
+        // Open clicked (if was closed)
+        if (!isOpen) {
+          item.classList.add('open');
+          trigger.setAttribute('aria-expanded', 'true');
+          trigger.removeAttribute('data-cursor');
+          // Manually reset cursor — removing data-cursor means nav.js's mouseout
+          // handler finds no [data-cursor] target and won't clear the state itself.
+          document.body.classList.remove('cursor-hover');
+          const cursorLabel = document.getElementById('cursor-label');
+          if (cursorLabel) cursorLabel.textContent = '';
+          body.style.maxHeight = body.scrollHeight + 'px';
+          startSlideshow(item);
+        }
+      });
+    });
+  </script>
+
+  <!-- Scripts -->
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+  <!-- ── FRAGMENT COLLAGE ── -->
+  <section class="collage-section">
+    <div id="fragment-collage"></div>
+  </section>
+  <script src="fragment-collage/assets/fragment-collage.js"></script>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+</body>
+</html>

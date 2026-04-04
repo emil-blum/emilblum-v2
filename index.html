@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emil Blum — Creative Director</title>
+  <meta name="description" content="Emil Blum is a creative director and designer working across brand, digital, and interactive media.">
+
+  <!-- Preload wordmarks -->
+  <link rel="preload" href="assets/wordmarks/emil.svg" as="image" type="image/svg+xml">
+  <link rel="preload" href="assets/wordmarks/blum.svg" as="image" type="image/svg+xml">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+  <link rel="stylesheet" href="css/pages/home.css">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+</head>
+<body>
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor">
+    <span id="cursor-label"></span>
+  </div>
+
+  <!-- ── LOADING ANIMATION ── -->
+  <div id="loader" role="presentation" aria-hidden="true">
+    <div class="loader-heading">
+
+      <!-- EMIL wordmark — clips and slides up -->
+      <div class="loader-word-wrap loader-word-start">
+        <img id="wm-emil" class="loader-word-img"
+             src="assets/wordmarks/emil.svg"
+             alt="Emil" draggable="false">
+      </div>
+
+      <!-- Expanding image box between the two names -->
+      <div class="loader-box" id="loader-box">
+        <div class="loader-box-inner">
+          <div class="loader-image-grow" id="loader-image-grow">
+            <div class="loader-image-wrap">
+              <!-- 6 extras cycle out one by one, leaving the main (img-7) -->
+              <img class="loader-img-extra is-6" src="assets/images/loader/06-Placeholder.jpg" alt="" draggable="false">
+              <img class="loader-img-extra is-5" src="assets/images/loader/05-Placeholder.png" alt="" draggable="false">
+              <img class="loader-img-extra is-4" src="assets/images/loader/04-Placeholder.png" alt="" draggable="false">
+              <img class="loader-img-extra is-3" src="assets/images/loader/03-Placeholder.png" alt="" draggable="false">
+              <img class="loader-img-extra is-2" src="assets/images/loader/02-Placeholder.jpg" alt="" draggable="false">
+              <img class="loader-img-extra is-1" src="assets/images/loader/01-Placeholder.png" alt="" draggable="false">
+              <img class="loader-img-main"        src="assets/images/loader/07-Placeholder.jpg" alt="" draggable="false">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLUM wordmark — clips and slides up -->
+      <div class="loader-word-wrap loader-word-end">
+        <img id="wm-blum" class="loader-word-img"
+             src="assets/wordmarks/blum.svg"
+             alt="Blum" draggable="false">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HOME CONTENT ── -->
+  <main id="home-content" class="home-content">
+
+    <!-- HERO -->
+    <section class="hero container">
+
+      <p class="t-label hero-eyebrow" data-reveal>
+        01 — Emil Blum
+      </p>
+
+      <h1 class="t-display hero-headline" data-reveal data-delay="100">
+        Creative direction,<br>
+        code, <em>and a few</em><br>
+        strange ideas.
+      </h1>
+
+      <div class="hero-meta">
+        <p class="t-body-lg hero-bio" data-reveal data-delay="200">
+          I'm a creative director and designer working across brand identity,
+          digital experience, and interactive media. I make things that are
+          considered, a bit weird, and always have something to say.
+        </p>
+
+        <div class="hero-info-table" data-reveal data-delay="300">
+          <div class="hero-info-row">
+            <span>Role</span>
+            <span class="hero-info-value">Creative Director</span>
+          </div>
+          <div class="hero-info-row">
+            <span>Based</span>
+            <span class="hero-info-value">Edinburgh, Scotland</span>
+          </div>
+          <div class="hero-info-row">
+            <span>Focus</span>
+            <span class="hero-info-value">Brand · Digital · Interactive</span>
+          </div>
+          <div class="hero-info-row">
+            <span>Status</span>
+            <span class="hero-info-value status-available">
+              <span class="status-dot"></span>
+              Available
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PAGE NAVIGATION GRID -->
+    <section aria-label="Site sections">
+      <div class="home-nav-grid">
+
+        <a href="featured.html" class="home-nav-item" data-cursor="Enter">
+          <span class="home-nav-number t-micro">01</span>
+          <span class="home-nav-title">Featured</span>
+          <span class="home-nav-desc">Selected work — the projects I'm most proud of and want to shout about.</span>
+          <svg class="home-nav-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 10h12M10 4l6 6-6 6"/>
+          </svg>
+        </a>
+
+        <a href="code.html" class="home-nav-item" data-cursor="Enter">
+          <span class="home-nav-number t-micro">02</span>
+          <span class="home-nav-title">Code</span>
+          <span class="home-nav-desc">AI-assisted software experiments — tools, toys, and curious applications.</span>
+          <svg class="home-nav-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 10h12M10 4l6 6-6 6"/>
+          </svg>
+        </a>
+
+        <a href="art.html" class="home-nav-item" data-cursor="Enter">
+          <span class="home-nav-number t-micro">03</span>
+          <span class="home-nav-title">Art</span>
+          <span class="home-nav-desc">Visual work that doesn't fit neatly anywhere else. Paintings, prints, explorations.</span>
+          <svg class="home-nav-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 10h12M10 4l6 6-6 6"/>
+          </svg>
+        </a>
+
+        <a href="moments-v2.html" class="home-nav-item" data-cursor="Enter">
+          <span class="home-nav-number t-micro">04</span>
+          <span class="home-nav-title">Moments</span>
+          <span class="home-nav-desc">Photography — light, perspective, and the quiet beauty in ordinary things.</span>
+          <svg class="home-nav-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 10h12M10 4l6 6-6 6"/>
+          </svg>
+        </a>
+
+        <a href="scraps-v2.html" class="home-nav-item" data-cursor="Enter">
+          <span class="home-nav-number t-micro">05</span>
+          <span class="home-nav-title">Swarf</span>
+          <span class="home-nav-desc">Visual and conceptual experiments left on the cutting room floor — typography, sketches, illustrations, half-finished things.</span>
+          <svg class="home-nav-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 10h12M10 4l6 6-6 6"/>
+          </svg>
+        </a>
+
+        <a href="about.html" class="home-nav-item" data-cursor="Enter">
+          <span class="home-nav-number t-micro">06</span>
+          <span class="home-nav-title">About</span>
+          <span class="home-nav-desc">Work history, clients, process, and a few kind words from people I've worked with.</span>
+          <svg class="home-nav-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 10h12M10 4l6 6-6 6"/>
+          </svg>
+        </a>
+
+        <a href="play.html" class="home-nav-item" data-cursor="Play">
+          <span class="home-nav-number t-micro">07</span>
+          <span class="home-nav-title">Play</span>
+          <span class="home-nav-desc">Tap anywhere to make music. An interactive experiment to keep you here a little longer.</span>
+          <svg class="home-nav-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 10h12M10 4l6 6-6 6"/>
+          </svg>
+        </a>
+
+        <!-- Social links tile -->
+        <div class="home-nav-item" style="cursor: default;">
+          <span class="home-nav-number t-micro">↗</span>
+          <span class="home-nav-title" style="font-size: 18px; color: var(--n400);">Find me</span>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+            <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener"
+               class="arrow-link" data-cursor="LinkedIn" style="font-size: 11px;">
+              LinkedIn
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 16L16 4M16 4H8M16 4v8"/>
+              </svg>
+            </a>
+            <a href="https://instagram.com/emilblum" target="_blank" rel="noopener"
+               class="arrow-link" data-cursor="Instagram" style="font-size: 11px;">
+              Instagram
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 16L16 4M16 4H8M16 4v8"/>
+              </svg>
+            </a>
+            <a href="https://substack.com/@emilblum" target="_blank" rel="noopener"
+               class="arrow-link" data-cursor="Substack" style="font-size: 11px;">
+              Substack
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 16L16 4M16 4H8M16 4v8"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+  <script src="js/pages/home.js"></script>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+</body>
+</html>

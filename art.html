@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Art — Emil Blum</title>
+  <meta name="description" content="Visual art, paintings, and prints by Emil Blum.">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <style>
+
+    /* ── Mode states ──────────────────────────────────────── */
+    body.art-mode-row  { overflow: hidden; background: #0e1628; }
+    body.art-mode-grid { overflow: auto;   background: var(--cream); }
+
+    /* ── Row view ─────────────────────────────────────────── */
+    .art-row {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      overflow: hidden;
+      padding-top: clamp(88px, 10vw, 120px);
+    }
+    body.art-mode-grid .art-row { display: none; }
+
+    /* Header above the strip */
+    .art-row-header {
+      flex-shrink: 0;
+      padding: 0 24px 32px;
+    }
+    .art-row-header .section-label { color: rgba(255, 251, 243, 0.4); }
+    .art-row-header .section-label::after { background: rgba(255,251,243,0.15); }
+    .art-row-header h1 { color: var(--cream); margin-top: 12px; }
+
+    @media (max-width: 600px) {
+      .art-row { padding-top: 80px; }
+      .art-row-header { padding: 0 20px 24px; }
+      .art-row-header h1 { font-size: clamp(24px, 7vw, 36px); }
+    }
+
+    /* Auto-scroll strip */
+    @keyframes art-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .art-strip-outer {
+      flex: 1;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    .art-strip {
+      display: flex;
+      gap: 20px;
+      width: max-content;
+      animation: art-scroll 80s linear infinite;
+    }
+    .art-strip.paused { animation-play-state: paused; }
+
+    .art-row-item {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    /* Image container */
+    .art-row-img-wrap {
+      height: 42vh;
+      overflow: hidden;
+      border-radius: 4px;
+      position: relative;
+    }
+
+    /* Placeholder tile */
+    .art-row-tile {
+      height: 100%;
+      background: rgba(255, 251, 243, 0.05);
+      border: 1px solid rgba(255, 251, 243, 0.08);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .art-row-item:hover .art-row-tile {
+      background: rgba(255, 251, 243, 0.09);
+      border-color: rgba(255, 251, 243, 0.16);
+    }
+
+    .art-row-img-wrap img {
+      height: 100%;
+      width: auto;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    /* Inline caption — always reserves space, text fades in on hover */
+    .art-row-caption-inline {
+      height: 44px;
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .art-row-caption-inline p {
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      margin: 0;
+    }
+    .art-row-item:hover .art-row-caption-inline p {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .art-row-caption-title {
+      font-size: 13px;
+      color: rgba(255, 251, 243, 0.65);
+    }
+    .art-row-caption-meta {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 251, 243, 0.28);
+    }
+
+    /* ── Grid view ────────────────────────────────────────── */
+    .art-grid {
+      display: none;
+      padding-top: 140px;
+      padding-bottom: 80px;
+    }
+    body.art-mode-grid .art-grid { display: block; }
+
+    .art-grid-header h1 {
+      max-width: 640px;
+      margin-top: 16px;
+    }
+
+    /* Masonry columns */
+    .art-masonry {
+      column-count: 4;
+      column-gap: 10px;
+    }
+    @media (max-width: 1100px) { .art-masonry { column-count: 3; } }
+    @media (max-width: 720px)  { .art-masonry { column-count: 2; } }
+    @media (max-width: 480px)  { .art-masonry { column-count: 1; } }
+
+    .art-grid-item {
+      break-inside: avoid;
+      margin-bottom: 10px;
+      cursor: pointer;
+      overflow: hidden;
+      border-radius: 3px;
+      position: relative;
+      opacity: 0;
+      transform: translateY(36px);
+      transition:
+        opacity 0.75s cubic-bezier(0.215, 0.61, 0.355, 1),
+        transform 0.75s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    .art-grid-item.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .art-grid-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .art-grid-item:hover img { transform: scale(1.02); }
+
+    /* Grid placeholder tile */
+    .art-grid-tile {
+      width: 100%;
+      background: var(--n100);
+      border: 1px solid var(--n200);
+      transition: background 0.2s ease;
+    }
+    .art-grid-item:hover .art-grid-tile { background: var(--n200); }
+
+    /* ── Lightbox ─────────────────────────────────────────── */
+    .art-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .art-lightbox.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lb-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(20, 20, 28, 0.94);
+      cursor: pointer;
+    }
+
+    .lb-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      max-width: 88vw;
+    }
+
+    .lb-img {
+      display: block;
+      max-width: 80vw;
+      max-height: 72vh;
+      object-fit: contain;
+      border-radius: 3px;
+    }
+
+    /* Placeholder shown in lightbox when no real image */
+    .lb-placeholder {
+      width: clamp(200px, 50vw, 600px);
+      aspect-ratio: 4 / 3;
+      background: rgba(255, 251, 243, 0.04);
+      border: 1px solid rgba(255, 251, 243, 0.1);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lb-placeholder span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 251, 243, 0.2);
+    }
+
+    .lb-caption {
+      text-align: center;
+    }
+    .lb-caption-title {
+      font-size: 14px;
+      color: rgba(255, 251, 243, 0.75);
+      margin-bottom: 4px;
+    }
+    .lb-caption-meta {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 251, 243, 0.3);
+    }
+
+    .lb-close {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 2;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 251, 243, 0.1);
+      border: 1px solid rgba(255, 251, 243, 0.2);
+      border-radius: 4px;
+      color: rgba(255, 251, 243, 0.7);
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .lb-close:hover {
+      background: rgba(255, 251, 243, 0.18);
+      color: var(--cream);
+    }
+
+    .lb-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 251, 243, 0.1);
+      border: 1px solid rgba(255, 251, 243, 0.2);
+      border-radius: 4px;
+      color: rgba(255, 251, 243, 0.7);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .lb-arrow:hover {
+      background: rgba(255, 251, 243, 0.18);
+      color: var(--cream);
+    }
+    .lb-arrow.prev { left: 20px; }
+    .lb-arrow.next { right: 20px; }
+
+    /* ── Header layout — title left, toggle right ─────────── */
+    .art-row-header,
+    .art-grid-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .art-grid-header { margin-bottom: 48px; }
+
+    /* ── View toggle buttons ────────────────────────────────── */
+    .art-header-controls {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+      align-self: flex-end;
+    }
+
+    /* Row mode: dark bg → cream-bordered buttons */
+    .art-toggle-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      cursor: pointer;
+      line-height: 1;
+      font-size: 15px;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      /* default (row mode): cream ghost */
+      background: transparent;
+      border: 1px solid rgba(255, 251, 243, 0.25);
+      color: rgba(255, 251, 243, 0.6);
+    }
+    .art-toggle-btn:hover {
+      background: rgba(255, 251, 243, 0.1);
+      border-color: rgba(255, 251, 243, 0.4);
+      color: var(--cream);
+    }
+    .art-toggle-btn.active {
+      background: var(--maroon);
+      border-color: var(--maroon);
+      color: var(--cream);
+    }
+
+    /* Grid mode: cream bg → dark-bordered buttons (override) */
+    body.art-mode-grid .art-toggle-btn {
+      border-color: rgba(30, 30, 40, 0.18);
+      color: var(--dark);
+    }
+    body.art-mode-grid .art-toggle-btn:hover {
+      background: var(--maroon);
+      border-color: var(--maroon);
+      color: var(--cream);
+    }
+    body.art-mode-grid .art-toggle-btn.active {
+      background: var(--maroon);
+      border-color: var(--maroon);
+      color: var(--cream);
+    }
+
+    @media (max-width: 600px) {
+      .art-row-header, .art-grid-header { flex-wrap: wrap; align-items: flex-start; }
+      .art-row-header > div:first-child,
+      .art-grid-header > div:first-child { width: 100%; }
+      .art-header-controls { margin-left: auto; }
+    }
+
+    /* Footer — dark styling inside row view */
+    .art-row .site-footer {
+      flex-shrink: 0;
+      background: transparent;
+      border-top-color: rgba(255, 251, 243, 0.08);
+    }
+    .art-row .site-footer .footer-link,
+    .art-row .site-footer .footer-copy {
+      color: rgba(255, 251, 243, 0.3);
+    }
+    .art-row .site-footer .footer-link:hover {
+      color: rgba(255, 251, 243, 0.75);
+    }
+    /* Grid footer hidden in row mode; row footer hidden in grid mode */
+    body.art-mode-row  .art-grid-footer { display: none; }
+    body.art-mode-grid .art-row .site-footer { display: none; }
+
+  </style>
+</head>
+<body class="art-mode-row">
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── ROW VIEW ── -->
+  <div class="art-row" id="artRow">
+
+    <header class="art-row-header">
+      <div>
+        <p class="t-label section-label" style="--line-color: rgba(255,251,243,0.12);">04 — Art</p>
+        <h1 class="t-headline-xl">Visual work that<br>doesn't fit anywhere else.</h1>
+      </div>
+      <div class="art-header-controls">
+        <button class="art-toggle-btn active" data-view="row" aria-label="Row view" title="Row view">≡</button>
+        <button class="art-toggle-btn"        data-view="grid" aria-label="Grid view" title="Grid view">⊞</button>
+      </div>
+    </header>
+
+    <div class="art-strip-outer">
+      <div class="art-strip" id="artStrip">
+        <!-- Doubled items injected by JS for seamless loop -->
+      </div>
+    </div>
+
+
+    <!-- Footer inside row view (dark-styled via CSS) -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <a href="tos.html" class="footer-link">Terms of Service</a>
+        <div class="footer-social">
+          <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+          <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+          <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+          <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+          <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+          <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+        </div>
+        <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ── GRID VIEW ── -->
+  <div class="art-grid" id="artGrid">
+    <div class="container">
+      <header class="art-grid-header">
+        <div>
+          <p class="t-label section-label" data-reveal>04 — Art</p>
+          <h1 class="t-headline-xl" data-reveal data-delay="100">Visual work that<br>doesn't fit anywhere else.</h1>
+        </div>
+        <div class="art-header-controls">
+          <button class="art-toggle-btn"        data-view="row"  aria-label="Row view"  title="Row view">≡</button>
+          <button class="art-toggle-btn active" data-view="grid" aria-label="Grid view" title="Grid view">⊞</button>
+        </div>
+      </header>
+      <section class="art-masonry" id="artMasonry" aria-label="Art grid"></section>
+    </div>
+  </div>
+
+  <!-- ── LIGHTBOX ── -->
+  <div class="art-lightbox" id="artLightbox" role="dialog" aria-modal="true" aria-label="Artwork viewer">
+    <div class="lb-backdrop" id="lbBackdrop"></div>
+    <button class="lb-close" id="lbClose" aria-label="Close">&#x2715;</button>
+    <button class="lb-arrow prev" id="lbPrev" aria-label="Previous">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3L5 8l5 5"/></svg>
+    </button>
+    <div class="lb-content">
+      <div class="lb-placeholder" id="lbPlaceholder">
+        <span>Artwork placeholder</span>
+      </div>
+      <img class="lb-img" id="lbImg" src="" alt="" style="display:none;">
+      <div class="lb-caption">
+        <p class="lb-caption-title" id="lbCaptionTitle"></p>
+        <p class="lb-caption-meta" id="lbCaptionMeta"></p>
+      </div>
+    </div>
+    <button class="lb-arrow next" id="lbNext" aria-label="Next">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+    </button>
+  </div>
+
+  <!-- ── FOOTER (grid mode) ── -->
+  <footer class="site-footer art-grid-footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+  <script>
+    'use strict';
+
+    /* ── Artwork data ──────────────────────────────────────
+       Drop real image paths into `src` when ready.
+       aspectW/H drive placeholder proportions.
+    ─────────────────────────────────────────────────────── */
+    const BASE = 'assets/art-placeholders/';
+    const artworks = [
+      { src: BASE + '01_Art-placeholder.jpg', alt: 'Placeholder 01', title: 'Untitled 01', meta: 'Placeholder · 2024', aspectW: 16, aspectH: 9  },
+      { src: BASE + '02_Art-placeholder.jpg', alt: 'Placeholder 02', title: 'Untitled 02', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 4  },
+      { src: BASE + '03_Art-placeholder.jpg', alt: 'Placeholder 03', title: 'Untitled 03', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 4  },
+      { src: BASE + '04_Art-placeholder.jpg', alt: 'Placeholder 04', title: 'Untitled 04', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 4  },
+      { src: BASE + '05_Art-placeholder.jpg', alt: 'Placeholder 05', title: 'Untitled 05', meta: 'Placeholder · 2024', aspectW: 1,  aspectH: 1  },
+      { src: BASE + '06_Art-placeholder.jpg', alt: 'Placeholder 06', title: 'Untitled 06', meta: 'Placeholder · 2024', aspectW: 16, aspectH: 9  },
+      { src: BASE + '07_Art-placeholder.jpg', alt: 'Placeholder 07', title: 'Untitled 07', meta: 'Placeholder · 2024', aspectW: 16, aspectH: 9  },
+      { src: BASE + '08_Art-placeholder.jpg', alt: 'Placeholder 08', title: 'Untitled 08', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 4  },
+      { src: BASE + '09_Art-placeholder.jpg', alt: 'Placeholder 09', title: 'Untitled 09', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 4  },
+      { src: BASE + '10_Art-placeholder.jpg', alt: 'Placeholder 10', title: 'Untitled 10', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 4  },
+      { src: BASE + '11_Art-placeholder.jpg', alt: 'Placeholder 11', title: 'Untitled 11', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 4  },
+      { src: BASE + '12_Art-placeholder.jpg', alt: 'Placeholder 12', title: 'Untitled 12', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 4  },
+      { src: BASE + '13_Art-placeholder.jpg', alt: 'Placeholder 13', title: 'Untitled 13', meta: 'Placeholder · 2024', aspectW: 1,  aspectH: 1  },
+      { src: BASE + '14_Art-placeholder.jpg', alt: 'Placeholder 14', title: 'Untitled 14', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 4  },
+      { src: BASE + '16_Art-placeholder.jpg', alt: 'Placeholder 16', title: 'Untitled 16', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 4  },
+      { src: BASE + '17_Art-placeholder.jpg', alt: 'Placeholder 17', title: 'Untitled 17', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 2  },
+      { src: BASE + '18_Art-placeholder.jpg', alt: 'Placeholder 18', title: 'Untitled 18', meta: 'Placeholder · 2024', aspectW: 21, aspectH: 10 },
+      { src: BASE + '19_Art-placeholder.jpg', alt: 'Placeholder 19', title: 'Untitled 19', meta: 'Placeholder · 2024', aspectW: 3,  aspectH: 4  },
+    ];
+
+    /* ── State ─────────────────────────────────────────── */
+    let lbIndex = 0;
+
+    /* ── Build: row strip ──────────────────────────────── */
+    function buildStrip() {
+      const strip = document.getElementById('artStrip');
+      const stripHeight = window.innerHeight * 0.42; // 42vh in px
+
+      // Double for seamless loop
+      const doubled = [...artworks, ...artworks];
+      doubled.forEach((art, i) => {
+        const idx = i % artworks.length;
+        const pxWidth = Math.round(stripHeight * (art.aspectW / art.aspectH));
+
+        const item = document.createElement('div');
+        item.className = 'art-row-item';
+
+        // Image wrap
+        const wrap = document.createElement('div');
+        wrap.className = 'art-row-img-wrap';
+        wrap.style.width = pxWidth + 'px';
+
+        if (art.src) {
+          const img = document.createElement('img');
+          img.src = art.src;
+          img.alt = art.alt;
+          img.draggable = false;
+          img.loading = 'lazy';
+          wrap.appendChild(img);
+        } else {
+          const tile = document.createElement('div');
+          tile.className = 'art-row-tile';
+          wrap.appendChild(tile);
+        }
+        item.appendChild(wrap);
+
+        // Inline caption
+        const cap = document.createElement('div');
+        cap.className = 'art-row-caption-inline';
+        cap.style.width = pxWidth + 'px';
+        const titleEl = document.createElement('p');
+        titleEl.className = 'art-row-caption-title';
+        titleEl.textContent = art.title;
+        const metaEl = document.createElement('p');
+        metaEl.className = 'art-row-caption-meta';
+        metaEl.textContent = art.meta;
+        cap.appendChild(titleEl);
+        cap.appendChild(metaEl);
+        item.appendChild(cap);
+
+        // Pause strip on hover
+        item.addEventListener('mouseenter', () => strip.classList.add('paused'));
+        item.addEventListener('mouseleave', () => strip.classList.remove('paused'));
+
+        // Open lightbox on click
+        item.addEventListener('click', () => openLightbox(idx));
+
+        strip.appendChild(item);
+      });
+    }
+
+    /* ── Build: grid ───────────────────────────────────── */
+    function buildGrid() {
+      const masonry = document.getElementById('artMasonry');
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+            // Clear delay after reveal so hover transitions aren't sluggish
+            setTimeout(() => { entry.target.style.transitionDelay = '0s'; }, 800);
+          }
+        });
+      }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+
+      artworks.forEach((art, i) => {
+        const item = document.createElement('div');
+        item.className = 'art-grid-item';
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('role', 'button');
+        item.setAttribute('aria-label', art.title);
+        // Staggered delay: column index (i % 4) drives the offset
+        item.style.transitionDelay = `${(i % 4) * 0.07}s`;
+
+        if (art.src) {
+          const img = document.createElement('img');
+          img.src = art.src;
+          img.alt = art.alt;
+          img.loading = 'lazy';
+          item.appendChild(img);
+        } else {
+          const tile = document.createElement('div');
+          tile.className = 'art-grid-tile';
+          tile.style.aspectRatio = `${art.aspectW} / ${art.aspectH}`;
+          item.appendChild(tile);
+        }
+
+        item.addEventListener('click', () => openLightbox(i));
+        item.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
+        });
+
+        masonry.appendChild(item);
+        observer.observe(item);
+      });
+    }
+
+    /* ── Lightbox ──────────────────────────────────────── */
+    function openLightbox(index) {
+      lbIndex = ((index % artworks.length) + artworks.length) % artworks.length;
+      const art = artworks[lbIndex];
+      const lb = document.getElementById('artLightbox');
+      const img = document.getElementById('lbImg');
+      const placeholder = document.getElementById('lbPlaceholder');
+
+      if (art.src) {
+        img.src = art.src;
+        img.alt = art.alt;
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+      } else {
+        img.style.display = 'none';
+        placeholder.style.display = 'flex';
+        placeholder.style.aspectRatio = `${art.aspectW} / ${art.aspectH}`;
+      }
+
+      document.getElementById('lbCaptionTitle').textContent = art.title;
+      document.getElementById('lbCaptionMeta').textContent  = art.meta;
+      lb.classList.add('open');
+    }
+
+    function closeLightbox() {
+      const lb = document.getElementById('artLightbox');
+      lb.classList.remove('open');
+      setTimeout(() => {
+        document.getElementById('lbImg').src = '';
+      }, 350);
+    }
+
+    function shiftLightbox(dir) {
+      openLightbox(lbIndex + dir);
+    }
+
+    document.getElementById('lbClose').addEventListener('click', closeLightbox);
+    document.getElementById('lbBackdrop').addEventListener('click', closeLightbox);
+    document.getElementById('lbPrev').addEventListener('click', () => shiftLightbox(-1));
+    document.getElementById('lbNext').addEventListener('click', () => shiftLightbox(1));
+
+    document.addEventListener('keydown', e => {
+      const lb = document.getElementById('artLightbox');
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeLightbox();
+      if (e.key === 'ArrowLeft')  shiftLightbox(-1);
+      if (e.key === 'ArrowRight') shiftLightbox(1);
+    });
+
+    /* ── View toggle ───────────────────────────────────── */
+    function setView(view) {
+      document.body.classList.remove('art-mode-row', 'art-mode-grid');
+      document.body.classList.add(`art-mode-${view}`);
+
+      document.querySelectorAll('.art-toggle-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
+      });
+    }
+
+    document.querySelectorAll('.art-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => setView(btn.dataset.view));
+    });
+
+    /* ── Init ──────────────────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', () => {
+      buildStrip();
+      buildGrid();
+    });
+  </script>
+
+</body>
+</html>

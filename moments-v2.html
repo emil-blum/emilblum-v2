@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moments — Emil Blum</title>
+
+  <!-- Portfolio fonts (same as canvas app) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Portfolio nav/base/transitions styles -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <!-- Canvas app CSS is injected by the IIFE bundle at runtime — no separate link needed -->
+
+  <style>
+    html, body {
+      overflow: hidden;
+      height: 100%;
+      margin: 0;
+    }
+
+    /* Nav sits on top of everything */
+    .site-nav { z-index: 1000; }
+
+    /* The React root fills the whole viewport */
+    #root {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* Bottom-left page description — matches controls hint style in the canvas app */
+    #moments-desc {
+      position: fixed;
+      bottom: 24px;
+      left: 28px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      pointer-events: none;
+    }
+
+    #moments-desc span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #a89278;
+      font-feature-settings: "ss02" on, "ss03" on;
+    }
+
+    @media (max-width: 640px) {
+      #moments-desc {
+        bottom: 16px;
+        left: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── CUSTOM CURSOR ── -->
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="index.html" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="index.html" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── CANVAS APP ROOT ── -->
+  <!-- The React/Three.js app mounts here and fills #root (position: fixed, inset: 0) -->
+  <div id="root"></div>
+
+  <!-- ── BOTTOM-LEFT DESCRIPTION ── -->
+  <div id="moments-desc">
+    <span>A selection of moments</span>
+    <span>captured on camera over the years</span>
+  </div>
+
+  <!-- Canvas app bundle — IIFE format, plain script tag (no CORS, works on file://) -->
+  <script src="moments-v2-canvas/assets/index--u5wjkeH.js"></script>
+
+  <!-- Portfolio nav + transitions (must come after body for correct DOM order) -->
+  <script src="js/transitions.js" defer></script>
+  <script src="js/nav.js" defer></script>
+
+</body>
+</html>
