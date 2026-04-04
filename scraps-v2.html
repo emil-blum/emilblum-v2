@@ -122,6 +122,9 @@
       font-feature-settings: "ss02" on, "ss03" on;
     }
 
+    /* Disable hit-testing during canvas pan (avoids expensive per-move checks on 108 items) */
+    body.is-panning .scrap-item { pointer-events: none; }
+
     /* ── Zoom controls — centered bottom ── */
     #zoom-controls {
       position: fixed;
@@ -420,10 +423,13 @@
     }
 
     /* ── Item (individual image) drag ────────────────── */
-    let itemDragEl   = null;   // element being dragged
-    let itemDragOffX = 0;
-    let itemDragOffY = 0;
-    let itemDragMoved = false;
+    let itemDragEl    = null;   // element being dragged
+    let itemDragOffX  = 0;
+    let itemDragOffY  = 0;
+    let itemDragStartX = 0;     // screen coords at drag start (for distance check)
+    let itemDragStartY = 0;
+    let itemDragMoved  = false;
+    const DRAG_THRESHOLD = 6;   // px — must move this far before it counts as a drag
     let topZ = 10;
 
     /* Convert screen coords to world coords */
@@ -444,12 +450,14 @@
         item.classList.add('is-dragging-item');
         item.style.zIndex = ++topZ;
 
-        // Offset: pointer in world coords minus item top-left in world coords
+        // Offset: pointer in world coords minus item anchor in world coords
         const world_p = screenToWorld(e.clientX, e.clientY);
         const itemLeft = parseFloat(item.style.left) || 0;
         const itemTop  = parseFloat(item.style.top)  || 0;
-        itemDragOffX = world_p.x - itemLeft;
-        itemDragOffY = world_p.y - itemTop;
+        itemDragOffX   = world_p.x - itemLeft;
+        itemDragOffY   = world_p.y - itemTop;
+        itemDragStartX = e.clientX;
+        itemDragStartY = e.clientY;
 
         item.setPointerCapture(e.pointerId);
         e.stopPropagation();
@@ -461,15 +469,21 @@
         C.velX = C.velY = 0;
         canvasWrap.setPointerCapture(e.pointerId);
         canvasWrap.classList.add('is-panning');
+        document.body.classList.add('is-panning');
       }
     });
 
     canvasWrap.addEventListener('pointermove', e => {
       if (itemDragEl) {
+        // Only count as drag once pointer travels beyond threshold
+        if (!itemDragMoved) {
+          const dist = Math.hypot(e.clientX - itemDragStartX, e.clientY - itemDragStartY);
+          if (dist < DRAG_THRESHOLD) return;
+          itemDragMoved = true;
+        }
         const world_p = screenToWorld(e.clientX, e.clientY);
         itemDragEl.style.left = (world_p.x - itemDragOffX) + 'px';
         itemDragEl.style.top  = (world_p.y - itemDragOffY) + 'px';
-        itemDragMoved = true;
         return;
       }
       if (!C.panning) return;
@@ -495,6 +509,7 @@
       }
       C.panning = false;
       canvasWrap.classList.remove('is-panning');
+      document.body.classList.remove('is-panning');
     });
 
     canvasWrap.addEventListener('pointercancel', () => {
@@ -504,12 +519,19 @@
       }
       C.panning = false;
       canvasWrap.classList.remove('is-panning');
+      document.body.classList.remove('is-panning');
     });
 
     /* ── Wheel zoom ──────────────────────────────────── */
     canvasWrap.addEventListener('wheel', e => {
       e.preventDefault();
-      zoomAt(e.clientX, e.clientY, e.deltaY < 0 ? 1.08 : 0.926);
+      // Normalise deltaY across deltaMode (pixels / lines / pages)
+      let delta = e.deltaY;
+      if (e.deltaMode === 1) delta *= 16;   // line → px
+      if (e.deltaMode === 2) delta *= window.innerHeight;  // page → px
+      // 0.999^100 ≈ 0.905 per mouse notch; trackpad fires tiny deltas → smooth
+      const factor = Math.pow(0.999, delta);
+      zoomAt(e.clientX, e.clientY, factor);
     }, { passive: false });
 
     /* ── Touch pinch ─────────────────────────────────── */
