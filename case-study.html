@@ -77,7 +77,7 @@
 
       <!-- 1. HERO — full bleed, title overlay -->
       <section class="cs-hero" id="cs-hero" aria-label="Project hero image">
-        <img class="cs-hero-img" id="cs-hero-img" src="" alt="" loading="eager">
+        <img class="cs-hero-img" id="cs-hero-img" alt="" loading="eager">
         <div class="cs-hero-content">
 
           <a href="featured.html" class="cs-back-link" data-cursor="Back">
@@ -229,7 +229,7 @@
         gallery: [
           {
             type: 'full',
-            src: 'assets/case-study-placeholders/Oxfam-Republic-of-You/22eeb567909747.5b4aa42f2d665.gif'
+            src: 'assets/case-study-placeholders/Oxfam-Republic-of-You/22eeb567909747.5b4a894a08bfe.gif'
           },
           {
             type: 'grid', cols: 2,
@@ -438,12 +438,6 @@
       set('cs-approach',  data.approach);
       set('cs-outcome',   data.outcome);
 
-      // Gallery blocks
-      const galleryEl = document.getElementById('cs-gallery');
-      if (galleryEl && data.gallery && data.gallery.length) {
-        buildGallery(galleryEl, data.gallery);
-      }
-
       // Credits
       const creditsCol = document.getElementById('cs-credits-col');
       if (creditsCol && data.credits && data.credits.length) {
@@ -477,9 +471,16 @@
         if (nextTitle && data.next.title) nextTitle.textContent = data.next.title;
       }
 
-      // Reveal
+      // Reveal content first — gallery must be built AFTER this so
+      // IntersectionObserver can see elements (hidden in display:none kills observation)
       loadingEl.style.display = 'none';
       contentEl.classList.add('is-visible');
+
+      // Build gallery after a rAF so layout is computed before observer fires
+      const galleryEl = document.getElementById('cs-gallery');
+      if (galleryEl && data.gallery && data.gallery.length) {
+        requestAnimationFrame(() => buildGallery(galleryEl, data.gallery));
+      }
     }
 
     /* ── Gallery builder ───────────────────────────────── */
