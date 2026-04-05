@@ -199,23 +199,21 @@
       top: 50%;
       transform: translateY(-50%);
       z-index: 2;
-      width: 48px;
-      height: 64px;
+      width: 34px;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(255,251,243,0.08);
-      border: 1px solid rgba(255,251,243,0.12);
+      background: rgba(255,251,243,0.1);
+      border: 1px solid rgba(255,251,243,0.2);
       border-radius: 4px;
-      color: rgba(255,251,243,0.55);
+      color: rgba(255,251,243,0.7);
       cursor: pointer;
-      font-family: var(--font-meta);
-      font-size: 20px;
       transition: background 0.2s ease, color 0.2s ease;
     }
 
     .lb-nav:hover {
-      background: rgba(255,251,243,0.15);
+      background: rgba(255,251,243,0.18);
       color: var(--cream);
     }
 
@@ -317,8 +315,12 @@
       <img id="lb-img" src="" alt="">
     </div>
     <button id="lb-close" aria-label="Close">×</button>
-    <button class="lb-nav" id="lb-prev" aria-label="Previous">←</button>
-    <button class="lb-nav" id="lb-next" aria-label="Next">→</button>
+    <button class="lb-nav" id="lb-prev" aria-label="Previous">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3L5 8l5 5"/></svg>
+    </button>
+    <button class="lb-nav" id="lb-next" aria-label="Next">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
+    </button>
     <div id="lb-counter" aria-live="polite"></div>
   </div>
 
@@ -341,7 +343,8 @@
     // Desktop (>1024): 2× viewport   Tablet (>640): 3×   Mobile: 5×
     const VW   = window.innerWidth;
     const VH   = window.innerHeight;
-    const MULT = VW > 1024 ? 2 : VW > 640 ? 3 : 5;
+    // Tablet and mobile both use 3× — 5× created a world too large relative to image sizes
+    const MULT = VW > 1024 ? 2 : 3;
 
     const WORLD_W = Math.round(VW * MULT);
     const WORLD_H = Math.round(VH * MULT);
@@ -510,8 +513,9 @@
       // No grid — fully random scatter across the world
       // Padding keeps images from clipping the world edges
       const pad  = Math.round(Math.min(WORLD_W, WORLD_H) * 0.06);
-      const minW = Math.round(VW * 0.12);   // smallest: ~12vw
-      const maxW = Math.round(VW * 0.42);   // largest:  ~42vw
+      // On mobile images need to be larger relative to the viewport so they fill well
+      const minW = VW > 640 ? Math.round(VW * 0.12) : Math.round(VW * 0.28);
+      const maxW = VW > 640 ? Math.round(VW * 0.42) : Math.round(VW * 0.72);
 
       PHOTOS.forEach((src, i) => {
         const cx  = pad + sr() * (WORLD_W - pad * 2);

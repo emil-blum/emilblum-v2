@@ -379,6 +379,30 @@
       .art-row-header > div:first-child,
       .art-grid-header > div:first-child { width: 100%; }
       .art-header-controls { margin-left: auto; }
+
+      /* Lightbox: arrows move to bottom corners, title sits centred between them */
+      .lb-img { max-width: 92vw; max-height: 74vh; }
+
+      .lb-arrow {
+        top: auto;
+        bottom: 20px;
+        transform: none;
+      }
+
+      /* Caption breaks out of lb-content flow and pins to bottom centre */
+      .lb-caption {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        width: max-content;
+        max-width: 58vw;
+        z-index: 3;
+        pointer-events: none;
+      }
+      .lb-caption-title { font-size: 12px; }
+      .lb-caption-meta  { display: none; }
     }
 
     /* Footer — dark styling inside row view */
