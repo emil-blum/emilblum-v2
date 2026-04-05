@@ -276,16 +276,22 @@
   padding-bottom: clamp(80px, 10vw, 120px);
 }
 
-/* Spacing between blocks */
+/* Spacing between blocks — visible by default.
+   Scroll-reveal is progressive: JS adds .will-animate then .is-visible */
 .cs-block {
   margin-bottom: clamp(48px, 7vw, 88px);
-  /* Reveal animation — triggered by IntersectionObserver */
+}
+.cs-block:last-child { margin-bottom: 0; }
+
+.cs-block.will-animate {
   opacity: 0;
   transform: translateY(28px);
   transition: opacity 0.75s var(--spring), transform 0.75s var(--spring);
 }
-.cs-block:last-child { margin-bottom: 0; }
-.cs-block.is-visible { opacity: 1; transform: translateY(0); }
+.cs-block.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* ── Full-width block ────────────────────────────── */
 .cs-block-full {
@@ -297,19 +303,23 @@
   background: var(--n100, #e8ddd0);
 }
 
-/* Parallax container — overflow:hidden clips the oversize image */
+/* Parallax container needs defined height for image to fill correctly */
 .cs-block-full-inner {
+  position: relative;
   overflow: hidden;
   border-radius: 2px;
+  aspect-ratio: 16 / 7;   /* default; overridden for tall/square images */
 }
 
-/* Image is 110% tall so translateY has room to travel */
+/* Absolutely positioned so height: 110% works relative to parent */
 .cs-parallax-img {
-  display: block;
+  position: absolute;
+  top: -5%;
+  left: 0;
   width: 100%;
   height: 110%;
   object-fit: cover;
-  transform: translateY(-5%);
+  display: block;
   will-change: transform;
 }
 
