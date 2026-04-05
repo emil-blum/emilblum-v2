@@ -124,43 +124,11 @@
       font-feature-settings: "ss02" on, "ss03" on;
     }
 
-    /* Disable hit-testing during canvas pan (avoids expensive per-move checks on 108 items) */
+    /* Disable hit-testing during canvas pan */
     body.is-panning .scrap-item { pointer-events: none; }
 
-    /* ── Zoom controls — centered bottom ── */
-    #zoom-controls {
-      position: fixed;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 200;
-      display: flex;
-      flex-direction: row;
-      gap: 4px;
-    }
-
-    .zoom-btn {
-      width: 34px;
-      height: 34px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,251,243,0.88);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,251,243,0.5);
-      border-radius: 4px;
-      box-shadow: 0 2px 12px rgba(30,30,40,0.08);
-      cursor: pointer;
-      font-size: 18px;
-      color: var(--dark);
-      line-height: 1;
-      transition: background 0.2s ease;
-      font-family: var(--font-meta);
-      font-weight: 300;
-    }
-
-    .zoom-btn:hover { background: var(--cream); }
+    /* max-width: none prevents any base-css reset shrinking images near container edges */
+    .scrap-item img { max-width: none; }
 
     /* ── Lightbox ── */
     #lightbox {
@@ -272,7 +240,6 @@
     @media (max-width: 640px) {
       #scraps-desc-left  { bottom: 80px; left: 16px; }
       #scraps-desc-right { bottom: 80px; right: 16px; }
-      #zoom-controls { bottom: 80px; }
       .lb-nav { display: none; }
     }
   </style>
@@ -332,13 +299,6 @@
     <span>Click on image to see detail</span>
   </div>
 
-  <!-- ── ZOOM CONTROLS (centred) ── -->
-  <div id="zoom-controls">
-    <button class="zoom-btn" id="zoom-in"  aria-label="Zoom in">+</button>
-    <button class="zoom-btn" id="zoom-out" aria-label="Zoom out">−</button>
-    <button class="zoom-btn" id="zoom-fit" style="font-size:12px; letter-spacing:0.05em;">fit</button>
-  </div>
-
   <!-- ── LIGHTBOX ── -->
   <div id="lightbox" role="dialog" aria-modal="true">
     <div id="lb-backdrop"></div>
@@ -366,29 +326,30 @@
       return imgs;
     })();
 
-    /* ── Layout constants ────────────────────────────── */
-    // 6×6 grid — world ≈ 4200×4500px, well within mobile GPU texture limits
+    /* ── Viewport-relative world dimensions ─────────── */
+    // Desktop (>1024): 2× viewport   Tablet (>640): 3×   Mobile: 5×
+    const VW   = window.innerWidth;
+    const VH   = window.innerHeight;
+    const MULT = VW > 1024 ? 2 : VW > 640 ? 3 : 5;
+
     const COLS    = 6;
     const ROWS    = 6;
-    const CELL_W  = 700;
-    const CELL_H  = 750;
-    const SPREAD  = 300;   // ±150 px offset within each cell
-    const WORLD_W = COLS * CELL_W;   // 4200
-    const WORLD_H = ROWS * CELL_H;   // 4500
+    const WORLD_W = Math.round(VW * MULT);
+    const WORLD_H = Math.round(VH * MULT);
+    const CELL_W  = Math.round(WORLD_W / COLS);
+    const CELL_H  = Math.round(WORLD_H / ROWS);
+    const SPREAD  = Math.round(Math.min(CELL_W, CELL_H) * 0.25); // scatter within cell
 
-    /* ── Canvas state ────────────────────────────────── */
+    /* ── Canvas state (scale locked at 1) ───────────── */
     const C = {
       tx: 0, ty: 0,
-      scale: 0.45,
+      scale: 1,
       velX: 0, velY: 0,
       panning: false,
       lastX: 0, lastY: 0,
-      lastPinchDist: 0,
     };
 
-    const SCALE_MIN = 0.18;  // raised — prevents extreme zoom-out that strains mobile GPU
-    const SCALE_MAX = 2.8;
-    const DECAY     = 0.91;
+    const DECAY = 0.91;
 
     /* ── DOM ─────────────────────────────────────────── */
     const canvasWrap = document.getElementById('canvas-wrap');
@@ -399,16 +360,15 @@
 
     /* ── Transform ───────────────────────────────────── */
     function applyTransform() {
-      world.style.transform = `translate(${C.tx}px,${C.ty}px) scale(${C.scale})`;
+      world.style.transform = `translate(${C.tx}px,${C.ty}px)`;
     }
 
-    function zoomAt(cx, cy, factor) {
-      const ns = Math.min(Math.max(C.scale * factor, SCALE_MIN), SCALE_MAX);
-      const r = ns / C.scale;
-      C.tx = cx - (cx - C.tx) * r;
-      C.ty = cy - (cy - C.ty) * r;
-      C.scale = ns;
-      applyTransform();
+    /* ── Clamp pan so world can't drift fully off screen */
+    function clampPan() {
+      const minX = VW - WORLD_W;
+      const minY = VH - WORLD_H;
+      C.tx = Math.min(0, Math.max(minX, C.tx));
+      C.ty = Math.min(0, Math.max(minY, C.ty));
     }
 
     /* ── RAF loop ────────────────────────────────────── */
@@ -418,52 +378,45 @@
         C.ty += C.velY;
         C.velX *= DECAY;
         C.velY *= DECAY;
+        clampPan();
         applyTransform();
       }
       requestAnimationFrame(tick);
     }
 
     /* ── Item (individual image) drag ────────────────── */
-    let itemDragEl    = null;   // element being dragged
+    let itemDragEl    = null;
     let itemDragOffX  = 0;
     let itemDragOffY  = 0;
-    let itemDragStartX = 0;     // screen coords at drag start (for distance check)
+    let itemDragStartX = 0;
     let itemDragStartY = 0;
     let itemDragMoved  = false;
-    const DRAG_THRESHOLD = 6;   // px — must move this far before it counts as a drag
+    const DRAG_THRESHOLD = 6;
     let topZ = 10;
 
-    /* Convert screen coords to world coords */
+    /* Convert screen coords to world coords (scale=1, so direct subtract) */
     function screenToWorld(sx, sy) {
-      return {
-        x: (sx - C.tx) / C.scale,
-        y: (sy - C.ty) / C.scale,
-      };
+      return { x: sx - C.tx, y: sy - C.ty };
     }
 
     /* ── Canvas pan events ───────────────────────────── */
     canvasWrap.addEventListener('pointerdown', e => {
       const item = e.target.closest('.scrap-item');
       if (item) {
-        // Drag this scrap item
         itemDragEl = item;
         itemDragMoved = false;
         item.classList.add('is-dragging-item');
         item.style.zIndex = ++topZ;
 
-        // Offset: pointer in world coords minus item anchor in world coords
         const world_p = screenToWorld(e.clientX, e.clientY);
-        const itemLeft = parseFloat(item.style.left) || 0;
-        const itemTop  = parseFloat(item.style.top)  || 0;
-        itemDragOffX   = world_p.x - itemLeft;
-        itemDragOffY   = world_p.y - itemTop;
+        itemDragOffX   = world_p.x - (parseFloat(item.style.left) || 0);
+        itemDragOffY   = world_p.y - (parseFloat(item.style.top)  || 0);
         itemDragStartX = e.clientX;
         itemDragStartY = e.clientY;
 
         item.setPointerCapture(e.pointerId);
         e.stopPropagation();
       } else {
-        // Pan the canvas
         C.panning = true;
         C.lastX = e.clientX;
         C.lastY = e.clientY;
@@ -476,7 +429,6 @@
 
     canvasWrap.addEventListener('pointermove', e => {
       if (itemDragEl) {
-        // Only count as drag once pointer travels beyond threshold
         if (!itemDragMoved) {
           const dist = Math.hypot(e.clientX - itemDragStartX, e.clientY - itemDragStartY);
           if (dist < DRAG_THRESHOLD) return;
@@ -494,16 +446,15 @@
       C.velX = dx; C.velY = dy;
       C.lastX = e.clientX;
       C.lastY = e.clientY;
+      clampPan();
       applyTransform();
     });
 
     canvasWrap.addEventListener('pointerup', e => {
       if (itemDragEl) {
         itemDragEl.classList.remove('is-dragging-item');
-        // If barely moved, treat as click → lightbox
         if (!itemDragMoved) {
-          const idx = parseInt(itemDragEl.dataset.index, 10);
-          openLightbox(idx);
+          openLightbox(parseInt(itemDragEl.dataset.index, 10));
         }
         itemDragEl = null;
         return;
@@ -523,66 +474,26 @@
       document.body.classList.remove('is-panning');
     });
 
-    /* ── Wheel zoom ──────────────────────────────────── */
-    canvasWrap.addEventListener('wheel', e => {
-      e.preventDefault();
-      // Normalise deltaY across deltaMode (pixels / lines / pages)
-      let delta = e.deltaY;
-      if (e.deltaMode === 1) delta *= 16;   // line → px
-      if (e.deltaMode === 2) delta *= window.innerHeight;  // page → px
-      // 0.999^100 ≈ 0.905 per mouse notch; trackpad fires tiny deltas → smooth
-      const factor = Math.pow(0.999, delta);
-      zoomAt(e.clientX, e.clientY, factor);
-    }, { passive: false });
-
-    /* ── Touch pinch ─────────────────────────────────── */
-    canvasWrap.addEventListener('touchstart', e => {
-      if (e.touches.length === 2) {
-        C.lastPinchDist = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-      }
-    }, { passive: true });
-
-    canvasWrap.addEventListener('touchmove', e => {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        const d = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-        const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-        const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-        zoomAt(cx, cy, d / C.lastPinchDist);
-        C.lastPinchDist = d;
-      }
-    }, { passive: false });
-
-    /* ── Zoom buttons ────────────────────────────────── */
-    document.getElementById('zoom-in').addEventListener('click',  () => zoomAt(window.innerWidth/2, window.innerHeight/2, 1.25));
-    document.getElementById('zoom-out').addEventListener('click', () => zoomAt(window.innerWidth/2, window.innerHeight/2, 0.8));
-    document.getElementById('zoom-fit').addEventListener('click', resetView);
-
     function resetView() {
-      C.scale = 0.45;
-      C.tx = window.innerWidth  / 2 - (WORLD_W / 2) * C.scale;
-      C.ty = window.innerHeight / 2 - (WORLD_H / 2) * C.scale;
+      // Centre the world in the viewport — edges extend beyond screen on all sides
+      C.tx = Math.round((VW - WORLD_W) / 2);
+      C.ty = Math.round((VH - WORLD_H) / 2);
       C.velX = C.velY = 0;
       applyTransform();
     }
 
     /* ── Build layout ────────────────────────────────── */
     function buildLayout() {
+      const imgBase = Math.round(CELL_W * 0.5);
+
       PHOTOS.forEach((src, i) => {
         const col = i % COLS;
         const row = Math.floor(i / COLS);
 
-        // Fresh random every reload — no seed
         const cx  = col * CELL_W + CELL_W * 0.5 + (sr() - 0.5) * SPREAD;
         const cy  = row * CELL_H + CELL_H * 0.5 + (sr() - 0.5) * SPREAD;
-        const rot = (sr() - 0.5) * 44;   // ±22° rotation
-        const w   = Math.round(380 + sr() * 400) + (i % 36 < 3 ? 120 : 0);
+        const rot = (sr() - 0.5) * 44;
+        const w   = Math.round(imgBase + sr() * imgBase * 0.6) + (i < 3 ? Math.round(CELL_W * 0.2) : 0);
 
         const item = document.createElement('div');
         item.className = 'scrap-item';
