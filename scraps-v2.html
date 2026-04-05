@@ -32,7 +32,9 @@
       position: absolute;
       top: 0; left: 0;
       transform-origin: 0 0;
-      will-change: transform;
+      /* No will-change: transform — avoids a single massive GPU texture that
+         overflows mobile VRAM limits and causes straight-line clipping.
+         The browser tile-rasterizes dynamically instead (only visible tiles). */
     }
 
     /* ── Scrap items ── */
@@ -353,27 +355,26 @@
   (function () {
     'use strict';
 
-    /* ── Photos — 36 base images repeated to fill the world ── */
+    /* ── Photos — 36 unique images, no repetition ─────── */
     const PHOTOS = (() => {
-      const base = [];
+      const imgs = [];
       for (let i = 1; i <= 36; i++) {
         const n = String(i).padStart(2, '0');
         const suffix = i <= 3 ? '-Wide' : '';
-        base.push(`moments-v2-canvas/photos/${n}_About-Pictures${suffix}.png`);
+        imgs.push(`moments-v2-canvas/photos/${n}_About-Pictures${suffix}.png`);
       }
-      // 108 items: repeat 3× so the large canvas feels populated
-      return Array.from({ length: 108 }, (_, i) => base[i % base.length]);
+      return imgs;
     })();
 
     /* ── Layout constants ────────────────────────────── */
-    // 9×12 loose grid — high SPREAD so positions look purely random
-    const COLS    = 9;
-    const ROWS    = 12;
-    const CELL_W  = 900;
-    const CELL_H  = 820;
-    const SPREAD  = 380;   // ±190 px offset within each cell
-    const WORLD_W = COLS * CELL_W;   // 8100
-    const WORLD_H = ROWS * CELL_H;   // 9840
+    // 6×6 grid — world ≈ 4200×4500px, well within mobile GPU texture limits
+    const COLS    = 6;
+    const ROWS    = 6;
+    const CELL_W  = 700;
+    const CELL_H  = 750;
+    const SPREAD  = 300;   // ±150 px offset within each cell
+    const WORLD_W = COLS * CELL_W;   // 4200
+    const WORLD_H = ROWS * CELL_H;   // 4500
 
     /* ── Canvas state ────────────────────────────────── */
     const C = {
@@ -385,7 +386,7 @@
       lastPinchDist: 0,
     };
 
-    const SCALE_MIN = 0.12;
+    const SCALE_MIN = 0.18;  // raised — prevents extreme zoom-out that strains mobile GPU
     const SCALE_MAX = 2.8;
     const DECAY     = 0.91;
 
