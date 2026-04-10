@@ -8,15 +8,51 @@
   "tags": ["Brand Identity", "Events", "Environmental"],
   "intro": "FISGA is a Lisbon-based space where fitness, music, art and community converge. The Warehouse hosts events; the Garden is a space to train. A bold, modular brand system was built to hold both worlds — and the many events, installations and collaborations that happen within them.",
   "challenge": "Design a brand flexible enough to serve a wellness studio, a warehouse events venue and a curated arts programme — all under one identity — without feeling generic.",
-  "approach": "An isometric geometric logomark creates immediate spatial depth, referencing architecture and structure. Two bold sub-brand colours — blue for Warehouse, yellow for Garden — allow the identity to flex across radically different contexts while staying unmistakably FISGA.",
+  "approach": "An isometric geometric logomark creates immediate spatial depth, referencing architecture and structure. Two bold sub-brand colours (blue for Warehouse, yellow for Garden) allow the identity to flex across radically different contexts while staying unmistakably FISGA.",
   "outcome": "A coherent identity that scales from signage and floor maps to social event posters. The geometric mark and colour system give FISGA a strong visual voice across every touchpoint.",
-  "heroImage": "assets/images/case-studies/fisga/hero.jpg",
+  "heroImage": "assets/case-study-placeholders/Fisga-Branding/Fisga-Cover.jpg",
   "gallery": [
-    ["assets/images/case-studies/fisga/logos.png"],
-    ["assets/images/case-studies/fisga/brand-blue.png", "assets/images/case-studies/fisga/brand-yellow.png"],
-    ["assets/images/case-studies/fisga/social-posters.jpg"],
-    ["assets/images/case-studies/fisga/floor-map.png", "assets/images/case-studies/fisga/signage.png"],
-    ["assets/images/case-studies/fisga/art-01.jpg", "assets/images/case-studies/fisga/art-02.png", "assets/images/case-studies/fisga/art-03.png"]
+    {
+      "type": "full",
+      "src": "assets/case-study-placeholders/Fisga-Branding/01_FISGA_Logos.png"
+    },
+    {
+      "type": "grid",
+      "cols": 2,
+      "items": [
+        { "src": "assets/case-study-placeholders/Fisga-Branding/02_Fisga_Brand-Example.png" },
+        { "src": "assets/case-study-placeholders/Fisga-Branding/04_Fisga_Brand-Example1.png" }
+      ]
+    },
+    {
+      "type": "full",
+      "src": "assets/case-study-placeholders/Fisga-Branding/08_Fisga_Social_Post-Example.jpg",
+      "hotspots": [
+        {
+          "x": 30,
+          "y": 35,
+          "label": "Colour System",
+          "title": "Warehouse Blue",
+          "body": "Sub-brand colours split across venues — blue for the Warehouse events space, yellow for the Garden training zone."
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cols": 2,
+      "items": [
+        { "src": "assets/case-study-placeholders/Fisga-Branding/10_FISGA-Warehouse_Floor-Map.png", "caption": "Wayfinding system" },
+        { "src": "assets/case-study-placeholders/Fisga-Branding/11_FISGA-Warehouse_SIGNAGE.png", "caption": "Environmental signage" }
+      ]
+    },
+    {
+      "type": "scroll",
+      "items": [
+        { "src": "assets/case-study-placeholders/Fisga-Branding/05_Fisga-Art.jpg" },
+        { "src": "assets/case-study-placeholders/Fisga-Branding/06_Fisga-Art3.png" },
+        { "src": "assets/case-study-placeholders/Fisga-Branding/07_Fisga-Art4.png" }
+      ]
+    }
   ],
   "credits": [
     { "role": "Creative Direction & Design", "name": "Emil Blum" },

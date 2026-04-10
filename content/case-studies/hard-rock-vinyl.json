@@ -10,12 +10,36 @@
   "challenge": "Create something genuinely surprising for guests who have already seen everything. The gift needed to feel premium, embody the Hard Rock music heritage, and work within an extremely short timeframe.",
   "approach": "A paper record player sleeve that guests can fold and play. Prototyping, material sourcing and testing happened simultaneously. A personalised welcome message and a custom track were recorded and pressed to vinyl. The sleeve instructions became part of the design.",
   "outcome": "The end result is a functional paper record player — fold the sleeve, place the vinyl, spin it at 45rpm. Completely analog, completely unexpected. A welcome gift that got people talking.",
-  "heroImage": "assets/images/case-studies/hard-rock/hero.jpg",
+  "heroImage": "assets/case-study-placeholders/HardRock/01_HardRock-Website-Casestudy-Hero-and-Large.jpg",
   "gallery": [
-    ["assets/images/case-studies/hard-rock/02-detail.jpg"],
-    ["assets/images/case-studies/hard-rock/03-square.jpg", "assets/images/case-studies/hard-rock/04-square.jpg"],
-    ["assets/images/case-studies/hard-rock/05-square.jpg", "assets/images/case-studies/hard-rock/06-square.jpg"],
-    ["assets/images/case-studies/hard-rock/process-1.jpg", "assets/images/case-studies/hard-rock/process-2.jpg", "assets/images/case-studies/hard-rock/process-3.jpg"]
+    {
+      "type": "full",
+      "src": "assets/case-study-placeholders/HardRock/02_HardRock-Website-Casestudy-Hero-and-Large.jpg"
+    },
+    {
+      "type": "grid",
+      "cols": 2,
+      "items": [
+        { "src": "assets/case-study-placeholders/HardRock/03_HardRock_Website-Casestudy-Square-Image.jpg" },
+        { "src": "assets/case-study-placeholders/HardRock/04_HardRock_Website-Casestudy-Square-Image.jpg" }
+      ]
+    },
+    {
+      "type": "grid",
+      "cols": 2,
+      "items": [
+        { "src": "assets/case-study-placeholders/HardRock/05_HardRock_Website-Casestudy-Square-Image.jpg" },
+        { "src": "assets/case-study-placeholders/HardRock/06_HardRock_Website-Casestudy-Square-Image.jpg" }
+      ]
+    },
+    {
+      "type": "scroll",
+      "items": [
+        { "src": "assets/case-study-placeholders/HardRock/Hardrock-Process-1.jpg", "caption": "Prototyping" },
+        { "src": "assets/case-study-placeholders/HardRock/Hardrock-Process-2.jpg", "caption": "Assembly" },
+        { "src": "assets/case-study-placeholders/HardRock/Hardrock-Process-3.jpg", "caption": "Final finish" }
+      ]
+    }
   ],
   "credits": [
     { "role": "Creative Direction & Design", "name": "Emil Blum" },

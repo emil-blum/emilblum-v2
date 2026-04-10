@@ -9,13 +9,36 @@
   "intro": "To help Oxfam fight extreme inequality, we built an engaging, light-hearted online quiz-game. In the Republic of You, users create their own country and — as its leader — make decisions on critical matters, each one impacting the wellbeing of their citizens. Just like the real world, but with better pixel art.",
   "challenge": "Make a genuinely complex global issue — inequality — feel accessible and personally relevant without trivialising it. The target audience needed to feel the weight of these decisions, not just read about statistics.",
   "approach": "Inspired by retro 8-bit games, every decision triggers illustrated consequences across the country. An equality score reflects cumulative choices, linked to real Oxfam case studies. Illustration by Katie McPherson brought the pixel world to life.",
-  "outcome": "Launched to an immediate and passionate response — and an equally passionate backlash from critics who called it oversimplified. The site received a commendation at the Scottish Design Awards 2016. Subsequent world events have since vindicated the premise.",
-  "heroImage": "assets/images/case-studies/oxfam/hero.jpg",
+  "outcome": "Launched to an immediate and passionate response — the project received a commendation at the Scottish Design Awards 2016. The backlash from online critics (who called it \"oversimplified\") turned out to be rather prescient given subsequent world events.",
+  "heroImage": "assets/case-study-placeholders/Oxfam-Republic-of-You/ROY_YT.jpg",
   "gallery": [
-    ["assets/images/case-studies/oxfam/gameplay.gif"],
-    ["assets/images/case-studies/oxfam/screen-01.jpg", "assets/images/case-studies/oxfam/screen-02.jpg"],
-    ["assets/images/case-studies/oxfam/screen-03.jpg", "assets/images/case-studies/oxfam/screen-04.jpg"],
-    ["assets/images/case-studies/oxfam/animation-01.gif", "assets/images/case-studies/oxfam/animation-02.gif"]
+    {
+      "type": "full",
+      "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/22eeb567909747.5b4a894a08bfe.gif"
+    },
+    {
+      "type": "grid",
+      "cols": 2,
+      "items": [
+        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/14195167909747.5b4aa42f2d665.jpg" },
+        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/368ffa67909747.5b4a9e7e53495.jpg" }
+      ]
+    },
+    {
+      "type": "grid",
+      "cols": 2,
+      "items": [
+        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/381cbb67909747.5b4a8c9226c0f.jpg" },
+        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/5b779f67909747.5b4aa42f2e29b.jpg" }
+      ]
+    },
+    {
+      "type": "scroll",
+      "items": [
+        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/70899e67909747.5b4a894a085da.gif", "caption": "Decision flow" },
+        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/aca63a67909747.5b4a9e7e53eb5.gif", "caption": "Consequence state" }
+      ]
+    }
   ],
   "credits": [
     { "role": "Creative Direction", "name": "Charlie Bell" },

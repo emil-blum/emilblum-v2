@@ -8,14 +8,47 @@
   "tags": ["Packaging", "Brand Identity", "Augmented Reality"],
   "intro": "Stewart Brewing's Project 7 Series represents brewers' passion for experimental beer. To give the range a new visual identity, we looked inside the brew — visualising the \"Elements of Craft\", metaphorical molecules that act as identity for each beer, communicating its flavour, colour, smell and the creativity of the people who made it.",
   "challenge": "Create a label system that communicated the craft and character of seven experimental beers without resorting to the usual rustic or heritage visual clichés common in craft brewing.",
-  "approach": "Each beer's label is built from its molecular fingerprint — abstract forms derived from the ingredients and process. An augmented reality app was developed alongside the labels, letting customers point their phone at any bottle to unlock deeper stories about each brew.",
+  "approach": "Each beer's label is built from its \"molecular fingerprint\" — abstract forms derived from the ingredients and process. An augmented reality app layer was developed alongside the labels, letting customers point their phone at any bottle to unlock deeper stories about each brew.",
   "outcome": "A complete packaging system with a built-in interactive dimension. The AR experience encouraged a deeper, more curious relationship with the beer — and gave the range a genuinely distinctive shelf presence.",
-  "heroImage": "assets/images/case-studies/stewart/hero.jpg",
+  "heroImage": "assets/case-study-placeholders/Stewart-Brewings/upload-08bd448a-80b4-4127-94c2-c84ff2b3d66b.webp",
   "gallery": [
-    ["assets/images/case-studies/stewart/labels-01.jpg", "assets/images/case-studies/stewart/labels-02.jpg"],
-    ["assets/images/case-studies/stewart/full-range.jpg"],
-    ["assets/images/case-studies/stewart/ar-01.jpg", "assets/images/case-studies/stewart/ar-02.jpg"],
-    ["assets/images/case-studies/stewart/detail-01.jpg", "assets/images/case-studies/stewart/detail-02.jpg", "assets/images/case-studies/stewart/detail-03.jpg"]
+    {
+      "type": "grid",
+      "cols": 2,
+      "items": [
+        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-2e92202c-a587-4c3a-8b29-d4dc55610a97.webp" },
+        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-303c2168-9ffc-4fb9-b488-a31a7d58a644.webp" }
+      ]
+    },
+    {
+      "type": "full",
+      "src": "assets/case-study-placeholders/Stewart-Brewings/upload-35d27559-b54a-4b40-8d79-9200963ec97b.webp",
+      "hotspots": [
+        {
+          "x": 72,
+          "y": 48,
+          "label": "Design System",
+          "title": "Molecular Fingerprint",
+          "body": "Each label is built from abstract forms derived from the ingredients and brewing process — unique to every beer in the series."
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cols": 2,
+      "items": [
+        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-5687f772-9823-49c4-ac17-d0cf14c60ecf.webp" },
+        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-71aaec08-c36e-4d86-a6b0-a018daabba6a.webp" }
+      ]
+    },
+    {
+      "type": "scroll",
+      "items": [
+        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-73700c31-8f9d-47a7-9335-647213dd554f.webp", "caption": "Bottle 1" },
+        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-7b2a063f-1b70-4d06-a36e-cf4caa6286b4.webp", "caption": "Bottle 2" },
+        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-b83e7f1b-39f9-401d-b4fe-79e518076463.webp", "caption": "Bottle 3" }
+      ]
+    }
   ],
   "credits": [
     { "role": "Creative Direction & Design", "name": "Emil Blum" }
