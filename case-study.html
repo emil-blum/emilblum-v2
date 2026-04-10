@@ -504,15 +504,12 @@
 
       if (block.type === 'full') {
         wrap.classList.add('cs-block-full');
-        const inner = document.createElement('div');
-        inner.className = 'cs-block-full-inner';
         const img = document.createElement('img');
-        img.className = 'cs-parallax-img';
+        img.className = 'cs-full-img';
         img.src = block.src;
         img.alt = block.alt || '';
         img.loading = 'lazy';
-        inner.appendChild(img);
-        wrap.appendChild(inner);
+        wrap.appendChild(img);
 
         // Hotspot markers
         if (block.hotspots && block.hotspots.length) {
@@ -618,8 +615,6 @@
     function buildHotspot(h) {
       const btn = document.createElement('button');
       btn.className = 'cs-hotspot-btn';
-      btn.style.left = h.x + '%';
-      btn.style.top  = h.y + '%';
       btn.setAttribute('aria-label', h.title || 'More info');
       btn.dataset.cursor = 'Info';
       btn.innerHTML = `
@@ -632,8 +627,6 @@
           <h4 class="cs-hotspot-title">${h.title || ''}</h4>
           <p class="cs-hotspot-body">${h.body || ''}</p>
         </div>`;
-      // Flip panel below hotspot if it's in the top third of the image
-      if (h.y < 33) btn.classList.add('panel-below');
       return btn;
     }
 
@@ -669,22 +662,20 @@
       });
     }
 
-    /* ── Parallax on full-width images ─────────────────── */
+    /* ── Parallax on hero image only ───────────────────── */
     function initParallax() {
-      const imgs = document.querySelectorAll('.cs-parallax-img');
-      if (!imgs.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const heroImg = document.getElementById('cs-hero-img');
+      const hero    = document.querySelector('.cs-hero');
+      if (!heroImg || !hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       function update() {
-        imgs.forEach(img => {
-          const inner = img.parentElement;
-          const rect  = inner.getBoundingClientRect();
-          if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-          // progress: 0 when center of element at viewport bottom, 1 at viewport top
-          const progress = 1 - (rect.top + rect.height / 2) / window.innerHeight;
-          // Move image ±5% of its height around the initial -5% offset
-          const shift = (progress - 0.5) * img.offsetHeight * 0.12;
-          img.style.transform = `translateY(${-5 + shift * 0.3}%)`;
-        });
+        const rect = hero.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+        // progress: 0 when hero center at viewport bottom, 1 at viewport top
+        const progress = 1 - (rect.top + rect.height / 2) / window.innerHeight;
+        // Move ±4% around the initial -5% offset (stays within 110% height bounds)
+        const pct = -5 + (progress - 0.5) * 8;
+        heroImg.style.transform = `translateY(${pct.toFixed(2)}%)`;
       }
 
       window.addEventListener('scroll', update, { passive: true });

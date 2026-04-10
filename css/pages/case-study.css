@@ -79,12 +79,14 @@
 
 .cs-hero-img {
   position: absolute;
-  inset: 0;
+  top: -5%;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 110%;
   object-fit: cover;
   object-position: center;
   display: block;
+  will-change: transform;
 }
 
 /* Gradient overlay: subtle top, heavy bottom */
@@ -176,7 +178,17 @@
   gap: 8px;
   padding-top: 28px;
   padding-bottom: 28px;
-  border-bottom: 1px solid rgba(30, 30, 40, 0.09);
+  position: relative;
+}
+
+.cs-meta-bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: var(--px-desktop);
+  right: var(--px-desktop);
+  height: 1px;
+  background: rgba(30, 30, 40, 0.09);
 }
 
 .cs-meta-pair {
@@ -246,10 +258,20 @@
 .cs-three-col {
   padding-top: 64px;
   padding-bottom: 80px;
-  border-top: 1px solid rgba(30, 30, 40, 0.09);
+  position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 48px;
+}
+
+.cs-three-col::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--px-desktop);
+  right: var(--px-desktop);
+  height: 1px;
+  background: rgba(30, 30, 40, 0.09);
 }
 
 .cs-col-label {
@@ -295,32 +317,17 @@
 
 /* ── Full-width block ────────────────────────────── */
 .cs-block-full {
-  max-width: min(1440px, calc(100% - 48px));
+  max-width: var(--max-w);
   margin-inline: auto;
+  padding-inline: var(--px-desktop);
   position: relative;
-  border-radius: 2px;
-  overflow: hidden;
-  background: var(--n100, #e8ddd0);
 }
 
-/* Parallax container needs defined height for image to fill correctly */
-.cs-block-full-inner {
-  position: relative;
-  overflow: hidden;
-  border-radius: 2px;
-  aspect-ratio: 16 / 7;   /* default; overridden for tall/square images */
-}
-
-/* Absolutely positioned so height: 110% works relative to parent */
-.cs-parallax-img {
-  position: absolute;
-  top: -5%;
-  left: 0;
-  width: 100%;
-  height: 110%;
-  object-fit: cover;
+.cs-full-img {
   display: block;
-  will-change: transform;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
 }
 
 /* ── Grid block ──────────────────────────────────── */
@@ -358,9 +365,7 @@
   display: block;
   width: 100%;
   height: auto;
-  transition: transform 700ms var(--spring);
 }
-.cs-grid-item:hover img { transform: scale(1.025); }
 
 .cs-item-caption {
   padding-top: 9px;
@@ -414,11 +419,8 @@
 .cs-scroll-item img {
   display: block;
   width: 100%;
-  height: clamp(180px, 28vw, 380px);
-  object-fit: cover;
-  transition: transform 600ms var(--spring);
+  height: auto;
 }
-.cs-scroll-item:hover img { transform: scale(1.02); }
 
 .cs-scroll-btn {
   width: 36px;
@@ -531,7 +533,10 @@
 /* ── Hotspot markers ─────────────────────────────── */
 .cs-hotspot-btn {
   position: absolute;
-  transform: translate(-50%, -50%);
+  bottom: 10px;
+  left: 50%;
+  top: auto;
+  transform: translateX(-50%);
   background: none;
   border: none;
   padding: 10px;
@@ -634,10 +639,20 @@
 .cs-footer {
   padding-top: 72px;
   padding-bottom: 88px;
-  border-top: 1px solid rgba(30, 30, 40, 0.09);
+  position: relative;
   display: flex;
   gap: 80px;
   flex-wrap: wrap;
+}
+
+.cs-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--px-desktop);
+  right: var(--px-desktop);
+  height: 1px;
+  background: rgba(30, 30, 40, 0.09);
 }
 
 .cs-credits-col,
@@ -746,16 +761,18 @@
 }
 
 @media (max-width: 768px) {
-  .cs-block-grid { padding-inline: var(--px-mobile); }
+  .cs-block-full  { padding-inline: var(--px-mobile); }
+  .cs-block-grid  { padding-inline: var(--px-mobile); }
   .cs-block-video { padding-inline: var(--px-mobile); }
   .cs-scroll-header { padding-inline: var(--px-mobile); }
 
-  /* Full-width block goes true edge-to-edge on mobile */
-  .cs-block-full {
-    max-width: 100%;
-    border-radius: 0;
+  /* Dividers follow mobile padding */
+  .cs-meta-bar::after,
+  .cs-three-col::before,
+  .cs-footer::before {
+    left: var(--px-mobile);
+    right: var(--px-mobile);
   }
-  .cs-block-full-inner { border-radius: 0; }
 
   /* 2-col grids stack */
   .cs-grid-inner--2 {
@@ -769,7 +786,6 @@
   }
 
   .cs-scroll-item { flex: 0 0 min(320px, 82vw); }
-  .cs-scroll-item img { height: clamp(160px, 55vw, 280px); }
 }
 
 @media (max-width: 640px) {
