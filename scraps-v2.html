@@ -346,7 +346,7 @@
     const VW   = window.innerWidth;
     const VH   = window.innerHeight;
     // Tablet and mobile both use 3× — 5× created a world too large relative to image sizes
-    const MULT = VW > 1024 ? 2 : 3;
+    const MULT = VW > 1024 ? 2.3 : 3.5;
 
     const WORLD_W = Math.round(VW * MULT);
     const WORLD_H = Math.round(VH * MULT);
