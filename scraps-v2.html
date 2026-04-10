@@ -306,6 +306,7 @@
   <!-- ── BOTTOM-RIGHT HINT ── -->
   <div id="scraps-desc-right">
     <span>Drag canvas to look around</span>
+    <span>Hold space to pan over images</span>
     <span>Click on image to see detail</span>
   </div>
 
@@ -394,6 +395,26 @@
       requestAnimationFrame(tick);
     }
 
+    /* ── Spacebar pan mode ───────────────────────────── */
+    let spaceDown = false;
+
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space' && !e.repeat && !spaceDown) {
+        // Don't hijack space in input fields (lightbox could have some in future)
+        if (e.target !== document.body && e.target !== canvasWrap) return;
+        spaceDown = true;
+        canvasWrap.style.cursor = 'grab';
+        e.preventDefault(); // stop page scroll on spacebar
+      }
+    });
+
+    document.addEventListener('keyup', e => {
+      if (e.code === 'Space') {
+        spaceDown = false;
+        canvasWrap.style.cursor = '';
+      }
+    });
+
     /* ── Item (individual image) drag ────────────────── */
     let itemDragEl    = null;
     let itemDragOffX  = 0;
@@ -410,6 +431,23 @@
       return { x: sx - C.tx, y: sy - C.ty };
     }
 
+    /* ── Shared helper: start a canvas pan ───────────── */
+    function startPan(e, captureTarget) {
+      C.panning = true;
+      C.lastX = e.clientX;
+      C.lastY = e.clientY;
+      C.velX = C.velY = 0;
+      captureTarget.setPointerCapture(e.pointerId);
+      canvasWrap.classList.add('is-panning');
+      document.body.classList.add('is-panning');
+    }
+
+    function endPan() {
+      C.panning = false;
+      canvasWrap.classList.remove('is-panning');
+      document.body.classList.remove('is-panning');
+    }
+
     /* ── Canvas pan events ───────────────────────────── */
     canvasWrap.addEventListener('pointerdown', e => {
       activePointers++;
@@ -417,15 +455,28 @@
       // Second finger down: cancel any ongoing pan to prevent pinch wild-scroll
       if (activePointers > 1) {
         if (C.panning) {
-          C.panning = false;
           C.velX = C.velY = 0;
-          canvasWrap.classList.remove('is-panning');
-          document.body.classList.remove('is-panning');
+          endPan();
         }
         return;
       }
 
+      // Middle-mouse button → always pan
+      if (e.button === 1) {
+        e.preventDefault();
+        startPan(e, canvasWrap);
+        return;
+      }
+
       const item = e.target.closest('.scrap-item');
+
+      // Space held → force pan even over images
+      if (item && spaceDown) {
+        canvasWrap.style.cursor = 'grabbing';
+        startPan(e, canvasWrap);
+        return;
+      }
+
       if (item) {
         itemDragEl = item;
         itemDragMoved = false;
@@ -441,13 +492,7 @@
         item.setPointerCapture(e.pointerId);
         e.stopPropagation();
       } else {
-        C.panning = true;
-        C.lastX = e.clientX;
-        C.lastY = e.clientY;
-        C.velX = C.velY = 0;
-        canvasWrap.setPointerCapture(e.pointerId);
-        canvasWrap.classList.add('is-panning');
-        document.body.classList.add('is-panning');
+        startPan(e, canvasWrap);
       }
     });
 
@@ -485,9 +530,11 @@
         itemDragEl = null;
         return;
       }
-      C.panning = false;
-      canvasWrap.classList.remove('is-panning');
-      document.body.classList.remove('is-panning');
+      if (C.panning) {
+        endPan();
+        // Restore spacebar cursor if still held
+        if (spaceDown) canvasWrap.style.cursor = 'grab';
+      }
     });
 
     canvasWrap.addEventListener('pointercancel', () => {
@@ -496,10 +543,18 @@
         itemDragEl.classList.remove('is-dragging-item');
         itemDragEl = null;
       }
-      C.panning = false;
-      canvasWrap.classList.remove('is-panning');
-      document.body.classList.remove('is-panning');
+      endPan();
     });
+
+    /* ── Wheel / trackpad pan ────────────────────────── */
+    canvasWrap.addEventListener('wheel', e => {
+      e.preventDefault();
+      C.tx -= e.deltaX;
+      C.ty -= e.deltaY;
+      C.velX = C.velY = 0; // kill any inertia — wheel has its own feel
+      clampPan();
+      applyTransform();
+    }, { passive: false });
 
     function resetView() {
       // Centre the world in the viewport — edges extend beyond screen on all sides
