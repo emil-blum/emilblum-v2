@@ -62,20 +62,21 @@
 
     /* Shadow directly on element — no pseudo-element artifacts */
     .scrap-item {
-      box-shadow: 0 4px 20px rgba(30,30,40,0.13), 0 1px 4px rgba(30,30,40,0.08);
+      border-radius: 2px; /* matches img — so outline follows rounded corners */
+      box-shadow: 0 4px 22px rgba(30,30,40,0.22), 0 1px 5px rgba(30,30,40,0.14);
       outline: 2px solid transparent;
-      outline-offset: 0px;
+      outline-offset: 3px;
       transition: box-shadow 0.2s ease, outline-color 0.2s ease;
     }
 
-    /* Maroon outline on hover */
+    /* Cream outline on hover — blends with canvas background */
     .scrap-item:hover {
-      outline-color: var(--maroon);
+      outline-color: var(--cream-alt);
     }
 
     .scrap-item:hover,
     .scrap-item.is-dragging-item {
-      box-shadow: 0 12px 36px rgba(30,30,40,0.2), 0 3px 10px rgba(30,30,40,0.10);
+      box-shadow: 0 14px 40px rgba(30,30,40,0.28), 0 3px 10px rgba(30,30,40,0.14);
     }
 
     /* ── Bottom-left description ── */
@@ -401,7 +402,7 @@
     let itemDragStartY = 0;
     let itemDragMoved  = false;
     const DRAG_THRESHOLD = 6;
-    let topZ = 10;
+    let topZ = 100; // start above max initial z-index (1–31) so first drag always brings item to front
     let activePointers = 0;  // track simultaneous touches to block pinch-pan chaos
 
     /* Convert screen coords to world coords (scale=1, so direct subtract) */
