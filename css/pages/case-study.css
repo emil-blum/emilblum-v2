@@ -111,33 +111,10 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 28px 48px 52px;
   box-sizing: border-box;
 }
-
-/* Back link */
-.cs-back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: rgba(255, 251, 243, 0.55);
-  font-family: var(--font-meta);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: color 0.2s ease;
-  align-self: flex-start;
-}
-
-.cs-back-link:hover { color: var(--cream); }
-
-.cs-back-link svg {
-  transition: transform 0.25s var(--spring);
-}
-
-.cs-back-link:hover svg { transform: translateX(-4px); }
 
 /* Hero text: stacked at bottom */
 .cs-hero-text { }
@@ -222,24 +199,7 @@
   flex-shrink: 0;
 }
 
-.cs-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.cs-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 9px;
-  border: 1px solid rgba(30, 30, 40, 0.14);
-  border-radius: 2px;
-  font-family: var(--font-meta);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(30, 30, 40, 0.42);
-}
+/* Solutions (tags) now rendered as plain comma-separated meta-val text */
 
 /* ── LEAD TEXT ─────────────────────────────────────── */
 .cs-lead {
@@ -298,17 +258,23 @@
   padding-bottom: clamp(80px, 10vw, 120px);
 }
 
-/* Spacing between blocks — visible by default.
-   Scroll-reveal is progressive: JS adds .will-animate then .is-visible */
+/* Spacing between blocks — airy on desktop, tight on mobile */
 .cs-block {
-  margin-bottom: clamp(48px, 7vw, 88px);
+  margin-bottom: clamp(96px, 12vw, 160px);
 }
 .cs-block:last-child { margin-bottom: 0; }
 
+@media (max-width: 768px) {
+  .cs-block { margin-bottom: 14px; }
+}
+
+/* Scroll-reveal matches Featured page animation */
 .cs-block.will-animate {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.75s var(--spring), transform 0.75s var(--spring);
+  transform: translateY(48px);
+  transition:
+    opacity  0.85s cubic-bezier(0.215, 0.61, 0.355, 1),
+    transform 0.85s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 .cs-block.is-visible {
   opacity: 1;
@@ -326,7 +292,8 @@
 .cs-full-img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 500px;
+  object-fit: cover;
   border-radius: 2px;
 }
 
@@ -345,7 +312,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(14px, 2vw, 28px);
-  align-items: start;
+  align-items: stretch;
 }
 .cs-grid-inner--3 {
   display: grid;
@@ -357,14 +324,13 @@
 .cs-grid-item {
   overflow: hidden;
   border-radius: 2px;
-  background: var(--n100, #e8ddd0);
 }
 
-/* Natural aspect ratio — no forced crop */
 .cs-grid-item img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 500px;
+  object-fit: cover;
 }
 
 .cs-item-caption {
@@ -393,7 +359,7 @@
 
 .cs-scroll-track {
   display: flex;
-  gap: clamp(12px, 1.5vw, 20px);
+  gap: clamp(14px, 2vw, 28px);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -414,12 +380,12 @@
   scroll-snap-align: start;
   overflow: hidden;
   border-radius: 2px;
-  background: var(--n100, #e8ddd0);
 }
 .cs-scroll-item img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 500px;
+  object-fit: cover;
 }
 
 .cs-scroll-btn {
@@ -777,12 +743,12 @@
   /* 2-col grids stack */
   .cs-grid-inner--2 {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 14px;
   }
   /* 3-col becomes 2-col */
   .cs-grid-inner--3 {
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 14px;
   }
 
   .cs-scroll-item { flex: 0 0 min(320px, 82vw); }

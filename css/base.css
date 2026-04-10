@@ -247,10 +247,10 @@ body.cursor-hover #cursor-label {
 /* Elements are hidden by default, JS adds .is-visible */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(48px);
   transition:
-    opacity  0.8s var(--spring),
-    transform 0.8s var(--spring);
+    opacity  0.85s cubic-bezier(0.215, 0.61, 0.355, 1),
+    transform 0.85s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 [data-reveal].is-visible {

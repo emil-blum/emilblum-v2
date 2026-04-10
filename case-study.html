@@ -80,13 +80,6 @@
         <img class="cs-hero-img" id="cs-hero-img" alt="" loading="eager">
         <div class="cs-hero-content">
 
-          <a href="featured.html" class="cs-back-link" data-cursor="Back">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M13 8H3M7 4L3 8l4 4"/>
-            </svg>
-            Selected Work
-          </a>
-
           <div class="cs-hero-text">
             <p class="cs-hero-eyebrow" id="cs-category">Category</p>
             <h1 class="cs-hero-title" id="cs-title">Project Title</h1>
@@ -97,7 +90,7 @@
       </section>
 
       <!-- 2. META BAR -->
-      <div class="cs-meta-bar container" id="cs-meta-bar">
+      <div class="cs-meta-bar container" id="cs-meta-bar" data-reveal>
         <div class="cs-meta-pair">
           <span class="cs-meta-key">Year</span>
           <span class="cs-meta-val" id="cs-year">—</span>
@@ -108,16 +101,24 @@
           <span class="cs-meta-val" id="cs-client">—</span>
         </div>
         <span class="cs-meta-divider" aria-hidden="true"></span>
-        <div class="cs-tags" id="cs-tags"></div>
+        <div class="cs-meta-pair">
+          <span class="cs-meta-key">Industry</span>
+          <span class="cs-meta-val" id="cs-industry">—</span>
+        </div>
+        <span class="cs-meta-divider" aria-hidden="true"></span>
+        <div class="cs-meta-pair">
+          <span class="cs-meta-key">Solutions</span>
+          <span class="cs-meta-val" id="cs-tags">—</span>
+        </div>
       </div>
 
       <!-- 3. LEAD TEXT -->
-      <section class="cs-lead container" aria-label="Project introduction">
+      <section class="cs-lead container" aria-label="Project introduction" data-reveal>
         <p class="cs-lead-text" id="cs-intro">Project introduction text.</p>
       </section>
 
       <!-- 4. CHALLENGE / APPROACH / OUTCOME -->
-      <section class="cs-three-col container" aria-label="Project overview">
+      <section class="cs-three-col container" aria-label="Project overview" data-reveal>
         <div>
           <p class="cs-col-label">Challenge</p>
           <p class="cs-col-body" id="cs-challenge"></p>
@@ -171,6 +172,7 @@
         year: '2019',
         category: 'Print & Craft',
         client: 'Hard Rock Hotels',
+        industry: 'Hospitality',
         tags: ['Print', 'Craft', 'Experiential'],
         intro: 'Hard Rock Hotels asked for a custom welcome gift for selected high-profile guests. Several ideas of varying complexity were presented — the client loved the idea of a bespoke paper vinyl player. From that brief came prototypes, cut fingers, broken vinyl records, and one of the most satisfying things ever made in a studio.',
         challenge: 'Create something genuinely surprising for guests who have already seen everything. The gift needed to feel premium, embody the Hard Rock music heritage, and work within an extremely short timeframe.',
@@ -220,6 +222,7 @@
         year: '2015–2016',
         category: 'Digital & Interactive',
         client: 'Oxfam GB',
+        industry: 'Charity & NGO',
         tags: ['Interactive', 'Game Design', 'Campaign', 'Digital'],
         intro: 'To help Oxfam fight extreme inequality, we built an engaging, light-hearted online quiz-game. In the Republic of You, users create their own country and — as its leader — make decisions on critical matters, each one impacting the wellbeing of their citizens. Just like the real world, but with better pixel art.',
         challenge: 'Make a genuinely complex global issue — inequality — feel accessible and personally relevant without trivialising it. The target audience needed to feel the weight of these decisions, not just read about statistics.',
@@ -272,6 +275,7 @@
         year: '2019',
         category: 'Packaging & Brand',
         client: 'Stewart Brewing',
+        industry: 'Food & Drink',
         tags: ['Packaging', 'Brand Identity', 'Augmented Reality'],
         intro: 'Stewart Brewing\'s Project 7 Series represents brewers\' passion for experimental beer. To give the range a new visual identity, we looked inside the brew — visualising the "Elements of Craft", metaphorical molecules that act as identity for each beer, communicating its flavour, colour, smell and the creativity of the people who made it.',
         challenge: 'Create a label system that communicated the craft and character of seven experimental beers without resorting to the usual rustic or heritage visual clichés common in craft brewing.',
@@ -327,6 +331,7 @@
         year: '2023',
         category: 'Brand Identity',
         client: 'FISGA',
+        industry: 'Wellness & Events',
         tags: ['Brand Identity', 'Events', 'Environmental'],
         intro: 'FISGA is a Lisbon-based space where fitness, music, art and community converge. The Warehouse hosts events; the Garden is a space to train. A bold, modular brand system was built to hold both worlds — and the many events, installations and collaborations that happen within them.',
         challenge: 'Design a brand flexible enough to serve a wellness studio, a warehouse events venue and a curated arts programme — all under one identity — without feeling generic.',
@@ -422,14 +427,13 @@
       set('cs-subtitle', data.subtitle);
 
       // Meta bar
-      set('cs-year',   data.year);
-      set('cs-client', data.client);
+      set('cs-year',     data.year);
+      set('cs-client',   data.client);
+      set('cs-industry', data.industry);
 
       const tagsEl = document.getElementById('cs-tags');
       if (tagsEl && data.tags && data.tags.length) {
-        tagsEl.innerHTML = data.tags.map(t =>
-          `<span class="cs-tag">${t}</span>`
-        ).join('');
+        tagsEl.textContent = data.tags.join(', ');
       }
 
       // Lead + three-col
