@@ -378,15 +378,16 @@
 }
 
 .cs-scroll-item {
-  flex: 0 0 clamp(240px, 40vw, 520px);
+  flex: 0 0 auto; /* width driven by image aspect ratio at fixed height */
+  height: clamp(260px, 42vh, 520px);
   scroll-snap-align: start;
   overflow: hidden;
   border-radius: 2px;
 }
 .cs-scroll-item img {
   display: block;
-  width: 100%;
-  height: auto;
+  height: 100%;
+  width: auto;
 }
 
 .cs-scroll-btn {
