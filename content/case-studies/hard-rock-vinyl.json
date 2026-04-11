@@ -11,34 +11,44 @@
   "challenge": "Create something genuinely surprising for guests who have already seen everything. The gift needed to feel premium, embody the Hard Rock music heritage, and work within an extremely short timeframe.",
   "approach": "A paper record player sleeve that guests can fold and play. Prototyping, material sourcing and testing happened simultaneously. A personalised welcome message and a custom track were recorded and pressed to vinyl. The sleeve instructions became part of the design.",
   "outcome": "The end result is a functional paper record player — fold the sleeve, place the vinyl, spin it at 45rpm. Completely analog, completely unexpected. A welcome gift that got people talking.",
-  "heroImage": "assets/case-study-placeholders/HardRock/01_HardRock-Website-Casestudy-Hero-and-Large.jpg",
+  "heroImage": "assets/case-studies/hard-rock-vinyl/01-HC-Vinyl-HERO.avif",
   "gallery": [
     {
       "type": "full",
-      "src": "assets/case-study-placeholders/HardRock/02_HardRock-Website-Casestudy-Hero-and-Large.jpg"
+      "src": "assets/case-studies/hard-rock-vinyl/02-HC-Vinyl.avif"
     },
     {
       "type": "grid",
       "cols": 2,
       "items": [
-        { "src": "assets/case-study-placeholders/HardRock/03_HardRock_Website-Casestudy-Square-Image.jpg" },
-        { "src": "assets/case-study-placeholders/HardRock/04_HardRock_Website-Casestudy-Square-Image.jpg" }
+        { "src": "assets/case-studies/hard-rock-vinyl/03-HC-Vinyl-1.avif" },
+        { "src": "assets/case-studies/hard-rock-vinyl/04-HC-Vinyl-2.avif" }
       ]
     },
     {
+      "type": "full",
+      "src": "assets/case-studies/hard-rock-vinyl/05-HC-Vinyl.avif"
+    },
+    {
+      "type": "full",
+      "src": "assets/case-studies/hard-rock-vinyl/06-HC-Vinyl.avif"
+    },
+    {
       "type": "grid",
       "cols": 2,
       "items": [
-        { "src": "assets/case-study-placeholders/HardRock/05_HardRock_Website-Casestudy-Square-Image.jpg" },
-        { "src": "assets/case-study-placeholders/HardRock/06_HardRock_Website-Casestudy-Square-Image.jpg" }
+        { "src": "assets/case-studies/hard-rock-vinyl/07-HC-Vinyl-1.avif" },
+        { "src": "assets/case-studies/hard-rock-vinyl/08-HC-Vinyl-2.avif" }
       ]
     },
     {
       "type": "scroll",
       "items": [
-        { "src": "assets/case-study-placeholders/HardRock/Hardrock-Process-1.jpg", "caption": "Prototyping" },
-        { "src": "assets/case-study-placeholders/HardRock/Hardrock-Process-2.jpg", "caption": "Assembly" },
-        { "src": "assets/case-study-placeholders/HardRock/Hardrock-Process-3.jpg", "caption": "Final finish" }
+        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-1.avif" },
+        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-2.avif" },
+        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-3.avif" },
+        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-4.avif" },
+        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-5.avif" }
       ]
     }
   ],
