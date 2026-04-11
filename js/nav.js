@@ -25,10 +25,12 @@
       }
     });
 
-    // Animate nav + outside logo in after brief delay
+    // Animate nav + outside logo + fixed CTA in after brief delay
+    const fixedCta = document.querySelector('.nav-cta-fixed');
     setTimeout(() => {
       nav.classList.add('is-visible');
       if (outsideLogo) outsideLogo.classList.add('is-visible');
+      if (fixedCta) fixedCta.classList.add('is-visible');
     }, 300);
 
     // Scroll-based opacity

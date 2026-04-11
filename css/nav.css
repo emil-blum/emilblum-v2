@@ -230,14 +230,17 @@
   background: rgba(30, 30, 40, 0.05);
 }
 
-/* ── CTA BUTTON — "Meet Me"
-   Sits as a direct .site-nav child, outside .nav-links,
-   so it reads as a separate element at the far right of the pill. ── */
-.nav-cta {
+/* ── CTA BUTTON — "Meet Me" ── */
+
+/* Desktop: fixed top-right, completely outside the nav pill */
+.nav-cta-fixed {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 200;
   display: inline-flex;
   align-items: center;
-  padding: 5px 12px;
-  margin: 0 8px 0 0;
+  padding: 7px 14px;
   font-family: var(--font-meta);
   font-size: 12px;
   font-weight: 500;
@@ -245,16 +248,23 @@
   text-transform: uppercase;
   color: var(--cream);
   background: var(--maroon);
-  border-radius: 3px;
-  transition: opacity 0.2s ease;
+  border-radius: 4px;
+  text-decoration: none;
   white-space: nowrap;
   font-feature-settings: "ss02" on, "ss03" on;
-  text-decoration: none;
-  flex-shrink: 0;
+  /* Entry animation — matches nav pill */
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.6s var(--spring), transform 0.6s var(--spring);
 }
 
-.nav-cta:hover {
-  opacity: 0.8;
+.nav-cta-fixed.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-cta-fixed:hover {
+  opacity: 0.82;
   color: var(--cream);
 }
 
@@ -435,17 +445,32 @@
     font-size: 12px;
   }
 
-  /* CTA — hidden by default on mobile; appears at bottom of pill when menu opens */
-  .nav-cta {
+  /* Fixed CTA hidden on mobile — mobile uses nav-cta-mobile inside the menu */
+  .nav-cta-fixed {
     display: none;
-    justify-content: center;
-    margin: 0;
-    padding: 11px 12px;
-    border-top: 1px solid rgba(255, 251, 243, 0.15);
-    border-radius: 0 0 3px 3px;
   }
 
-  .site-nav.is-open .nav-cta {
+  /* Mobile CTA — last item inside nav-links, full-width maroon block */
+  .nav-cta-mobile {
+    display: none; /* shown via nav-links flex when menu opens */
+    justify-content: center;
+    margin: 4px 0 0;
+    padding: 10px 12px;
+    font-family: var(--font-meta);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--maroon);
+    border-radius: 2px;
+    text-decoration: none;
+    white-space: nowrap;
+    font-feature-settings: "ss02" on, "ss03" on;
+  }
+
+  /* nav-links is display:flex when open, so this child becomes visible */
+  .site-nav.is-open .nav-links .nav-cta-mobile {
     display: flex;
   }
 }
