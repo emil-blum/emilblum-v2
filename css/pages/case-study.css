@@ -347,6 +347,8 @@
 /* ── Scroll (horizontal carousel) block ─────────── */
 .cs-block-scroll {
   overflow: hidden;
+  /* Right padding clips the track at the same edge as the buttons */
+  padding-right: max(var(--px-desktop), calc((100vw - var(--max-w)) / 2 + var(--px-desktop)));
 }
 
 .cs-scroll-header {
@@ -404,10 +406,16 @@
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 .cs-scroll-btn:hover {
-  background: rgba(30, 30, 40, 0.05);
-  border-color: rgba(30, 30, 40, 0.35);
+  background: var(--maroon);
+  border-color: var(--maroon);
+  color: var(--cream);
 }
 .cs-scroll-btn:disabled { opacity: 0.22; cursor: default; }
+.cs-scroll-btn:disabled:hover {
+  background: transparent;
+  border-color: rgba(30, 30, 40, 0.18);
+  color: var(--dark);
+}
 
 /* ── Video block ─────────────────────────────────── */
 .cs-block-video {
@@ -733,6 +741,7 @@
   .cs-block-grid  { padding-inline: var(--px-mobile); }
   .cs-block-video { padding-inline: var(--px-mobile); }
   .cs-scroll-header { padding-inline: var(--px-mobile); }
+  .cs-block-scroll { padding-right: var(--px-mobile); }
 
   /* Dividers follow mobile padding */
   .cs-meta-bar::after,
