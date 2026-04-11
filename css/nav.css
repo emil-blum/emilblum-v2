@@ -76,7 +76,7 @@
   font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--n500);
+  color: var(--dark);
   border-radius: 2px;
   transition: color 0.2s ease;
   white-space: nowrap;
@@ -98,18 +98,13 @@
   pointer-events: none;
 }
 
-.nav-link:hover {
-  color: var(--dark);
-}
+.nav-link:hover {}
 
 .nav-link:hover::before {
   transform: scaleX(1);
 }
 
 /* Active state — dot, no background */
-.nav-link.is-active {
-  color: var(--dark);
-}
 
 .nav-link.is-active::after {
   content: '';
@@ -139,7 +134,7 @@
   font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--n500);
+  color: var(--dark);
   border-radius: 2px;
   transition: color 0.2s ease;
   white-space: nowrap;
@@ -165,9 +160,7 @@
   pointer-events: none;
 }
 
-.nav-dropdown-toggle:hover {
-  color: var(--dark);
-}
+.nav-dropdown-toggle:hover {}
 
 .nav-dropdown-toggle:hover::before {
   transform: scaleX(1);
@@ -218,7 +211,7 @@
   font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--n500);
+  color: var(--dark);
   border-radius: 2px;
   transition: color 0.2s ease, background 0.2s ease;
   white-space: nowrap;
@@ -226,7 +219,6 @@
 }
 
 .nav-dropdown-item:hover {
-  color: var(--dark);
   background: rgba(30, 30, 40, 0.05);
 }
 
@@ -356,7 +348,7 @@ body.is-dark-page .nav-cta-fixed:hover {
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--n500);
+    color: var(--dark);
     transition: color 0.2s ease;
   }
 
