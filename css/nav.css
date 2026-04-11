@@ -240,22 +240,26 @@
   z-index: 200;
   display: inline-flex;
   align-items: center;
-  padding: 7px 14px;
+  /* Match nav pill link padding + font exactly */
+  padding: 9px 14px;
   font-family: var(--font-meta);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--cream);
-  background: var(--maroon);
   border-radius: 4px;
+  border: 1px solid transparent;
   text-decoration: none;
   white-space: nowrap;
   font-feature-settings: "ss02" on, "ss03" on;
+  /* Light pages: dark blue bg */
+  background: var(--dark);
+  color: var(--cream);
+  transition: background 0.2s ease, color 0.2s ease,
+              opacity 0.6s var(--spring), transform 0.6s var(--spring);
   /* Entry animation — matches nav pill */
   opacity: 0;
   transform: translateY(-8px);
-  transition: opacity 0.6s var(--spring), transform 0.6s var(--spring);
 }
 
 .nav-cta-fixed.is-visible {
@@ -264,7 +268,19 @@
 }
 
 .nav-cta-fixed:hover {
-  opacity: 0.82;
+  background: var(--maroon);
+  color: var(--cream);
+}
+
+/* Dark pages: cream bg, maroon hover */
+body.is-dark-page .nav-cta-fixed {
+  background: var(--cream);
+  color: var(--dark);
+  border-color: transparent;
+}
+
+body.is-dark-page .nav-cta-fixed:hover {
+  background: var(--maroon);
   color: var(--cream);
 }
 
