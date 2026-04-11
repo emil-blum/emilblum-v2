@@ -62,37 +62,9 @@
     });
   }
 
-  /* ── DROPDOWN TOGGLE (click-based, stable) ── */
-  function initDropdowns() {
-    const dropdowns = document.querySelectorAll('.nav-dropdown');
-    if (!dropdowns.length) return;
-
-    dropdowns.forEach(dd => {
-      const btn = dd.querySelector('.nav-dropdown-toggle');
-      if (!btn) return;
-
-      btn.addEventListener('click', e => {
-        e.stopPropagation();
-        const isOpen = dd.classList.contains('is-open');
-        // Close all other dropdowns
-        dropdowns.forEach(other => other.classList.remove('is-open'));
-        // Toggle this one
-        if (!isOpen) dd.classList.add('is-open');
-      });
-    });
-
-    // Close on click outside
-    document.addEventListener('click', () => {
-      dropdowns.forEach(dd => dd.classList.remove('is-open'));
-    });
-
-    // Close when a dropdown item is clicked
-    document.querySelectorAll('.nav-dropdown-item').forEach(item => {
-      item.addEventListener('click', () => {
-        dropdowns.forEach(dd => dd.classList.remove('is-open'));
-      });
-    });
-  }
+  /* ── DROPDOWN — handled entirely by CSS :hover on desktop.
+       Mobile always shows sub-items via display:flex in nav.css.
+       No JS click-toggle needed. ── */
 
   /* ── CUSTOM CURSOR ── */
   function initCursor() {
@@ -165,7 +137,6 @@
   document.addEventListener('DOMContentLoaded', () => {
     initNav();
     initMobileMenu();
-    initDropdowns();
     initCursor();
     initReveal();
   });

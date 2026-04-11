@@ -1,13 +1,9 @@
 /* =====================================================
    EMIL BLUM — NAVIGATION
-   Floating nav pill, outside logo, dropdown, all pages
+   Floating nav pill, outside logo, dropdown, CTA
    ===================================================== */
 
 /* ── OUTSIDE LOGO (desktop only) ── */
-/* Sits fixed top-left, outside the nav pill.
-   mix-blend-mode: difference makes it readable on any background:
-   the logo SVG is rendered white (via filter: invert), so on light
-   backgrounds it appears dark, on dark backgrounds it appears light. */
 .nav-logo-outside {
   position: fixed;
   top: 20px;
@@ -30,8 +26,6 @@
   width: auto;
   display: block;
   filter: invert(1);
-  /* invert makes the dark SVG white — difference blend then reads
-     correctly against both cream and dark backgrounds */
 }
 
 /* ── FLOATING NAV PILL ── */
@@ -41,19 +35,14 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
-
   display: flex;
   align-items: center;
-  gap: 0;
-
   background: rgba(255, 251, 243, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 251, 243, 0.5);
   box-shadow: 0 2px 16px rgba(30, 30, 40, 0.08), 0 1px 3px rgba(30, 30, 40, 0.06);
   border-radius: 4px;
-
-  /* Enter animation — slides down on page load */
   opacity: 0;
   transform: translateX(-50%) translateY(-12px);
   transition: opacity 0.6s var(--spring), transform 0.6s var(--spring);
@@ -64,7 +53,7 @@
   transform: translateX(-50%) translateY(0);
 }
 
-/* ── NAV HEADER — hidden on desktop (wordmark lives outside) ── */
+/* ── NAV HEADER — hidden on desktop ── */
 .nav-header {
   display: none;
 }
@@ -76,7 +65,7 @@
   padding: 0 8px;
 }
 
-/* Individual nav link */
+/* ── INDIVIDUAL NAV LINK ── */
 .nav-link {
   position: relative;
   display: flex;
@@ -89,20 +78,37 @@
   text-transform: uppercase;
   color: var(--n500);
   border-radius: 2px;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: color 0.2s ease;
   white-space: nowrap;
   font-feature-settings: "ss02" on, "ss03" on;
 }
 
-.nav-link:hover {
-  color: var(--dark);
-  background: rgba(30, 30, 40, 0.05);
+/* Hover underline — maroon line scales in from centre */
+.nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 14px;
+  right: 14px;
+  height: 1px;
+  background: var(--maroon);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.22s ease;
+  pointer-events: none;
 }
 
-/* Active state — current page */
+.nav-link:hover {
+  color: var(--dark);
+}
+
+.nav-link:hover::before {
+  transform: scaleX(1);
+}
+
+/* Active state — dot, no background */
 .nav-link.is-active {
   color: var(--dark);
-  background: rgba(30, 30, 40, 0.06);
 }
 
 .nav-link.is-active::after {
@@ -114,10 +120,10 @@
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: var(--dark);
+  background: var(--maroon);
 }
 
-/* ── DROPDOWN NAV ITEM ── */
+/* ── DROPDOWN ── */
 .nav-dropdown {
   position: relative;
 }
@@ -135,7 +141,7 @@
   text-transform: uppercase;
   color: var(--n500);
   border-radius: 2px;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: color 0.2s ease;
   white-space: nowrap;
   font-feature-settings: "ss02" on, "ss03" on;
   cursor: pointer;
@@ -144,10 +150,27 @@
   user-select: none;
 }
 
-.nav-dropdown-toggle:hover,
-.nav-dropdown.is-open .nav-dropdown-toggle {
+/* Hover underline on dropdown toggle */
+.nav-dropdown-toggle::before {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 14px;
+  right: 20px; /* leave room for the chevron */
+  height: 1px;
+  background: var(--maroon);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.22s ease;
+  pointer-events: none;
+}
+
+.nav-dropdown-toggle:hover {
   color: var(--dark);
-  background: rgba(30, 30, 40, 0.05);
+}
+
+.nav-dropdown-toggle:hover::before {
+  transform: scaleX(1);
 }
 
 .nav-dropdown-toggle svg {
@@ -157,10 +180,12 @@
   flex-shrink: 0;
 }
 
-.nav-dropdown.is-open .nav-dropdown-toggle svg {
+/* Rotate chevron when dropdown is open (hover on desktop) */
+.nav-dropdown:hover .nav-dropdown-toggle svg {
   transform: rotate(180deg);
 }
 
+/* Dropdown panel */
 .nav-dropdown-menu {
   position: absolute;
   top: 100%;
@@ -173,7 +198,6 @@
   border-radius: 4px;
   box-shadow: 0 8px 24px rgba(30, 30, 40, 0.12);
   min-width: 140px;
-  /* Invisible padding bridges the gap between button and menu */
   padding: 8px 6px 6px;
   display: none;
   flex-direction: column;
@@ -181,13 +205,8 @@
   z-index: 200;
 }
 
-/* Open via JS class — click-based so it stays open while user moves cursor */
-.nav-dropdown.is-open .nav-dropdown-menu {
-  display: flex;
-}
-
-/* Keep open if hovering (belt and braces) */
-.nav-dropdown:focus-within .nav-dropdown-menu {
+/* Desktop: show on hover of parent container (covers both toggle + panel) */
+.nav-dropdown:hover .nav-dropdown-menu {
   display: flex;
 }
 
@@ -211,6 +230,32 @@
   background: rgba(30, 30, 40, 0.05);
 }
 
+/* ── CTA BUTTON — "Meet Me" ── */
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  margin: 0 6px 0 4px;
+  font-family: var(--font-meta);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--maroon);
+  border-radius: 3px;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+  font-feature-settings: "ss02" on, "ss03" on;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-cta:hover {
+  opacity: 0.8;
+  color: var(--cream);
+}
+
 /* ── NAV SCROLL BEHAVIOUR ── */
 .site-nav.is-scrolled {
   background: rgba(255, 251, 243, 0.75);
@@ -219,20 +264,17 @@
 /* ── MOBILE NAV — switches at 900px ── */
 @media (max-width: 900px) {
 
-  /* Hide outside logo on mobile — wordmark lives inside nav */
   .nav-logo-outside {
     display: none;
   }
 
   .site-nav {
     top: 16px;
-    bottom: auto;
     left: 16px;
     right: 16px;
     transform: none;
     flex-direction: column;
     align-items: stretch;
-
     opacity: 0;
     transform: translateY(-12px);
   }
@@ -243,21 +285,21 @@
     transition: opacity 0.6s var(--spring), transform 0.6s var(--spring);
   }
 
-  /* Show nav header (wordmark + toggle) on mobile */
   .nav-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
+  /* Taller header bar — logo scales up ~30% */
   .nav-wordmark {
-    padding: 10px 16px;
+    padding: 13px 16px;
     display: flex;
     align-items: center;
   }
 
   .nav-wordmark img {
-    height: 20px;
+    height: 26px;
     width: auto;
     opacity: 0.75;
     transition: opacity 0.2s ease;
@@ -268,12 +310,11 @@
     opacity: 1;
   }
 
-  /* Show menu toggle button on mobile */
   .nav-menu-toggle {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 10px 16px;
+    padding: 13px 16px;
     background: none;
     border: none;
     cursor: pointer;
@@ -290,7 +331,6 @@
     color: var(--dark);
   }
 
-  /* Hamburger icon lines */
   .nav-menu-toggle .toggle-icon {
     display: flex;
     flex-direction: column;
@@ -311,7 +351,6 @@
     width: 10px;
   }
 
-  /* Open state — X icon */
   .site-nav.is-open .nav-menu-toggle .toggle-icon span:nth-child(1) {
     transform: translateY(5.75px) rotate(45deg);
   }
@@ -323,7 +362,6 @@
     transform: translateY(-5.75px) rotate(-45deg);
   }
 
-  /* Nav links — hidden by default, revealed when open */
   .nav-links {
     display: none;
     flex-direction: column;
@@ -337,12 +375,17 @@
     display: flex;
   }
 
-  /* Full-width link rows on mobile */
   .nav-link {
     padding: 10px 12px;
     font-size: 13px;
     justify-content: space-between;
     border-radius: 2px;
+  }
+
+  /* No hover underline on touch */
+  .nav-link::before,
+  .nav-dropdown-toggle::before {
+    display: none;
   }
 
   /* Active dot: left side on mobile */
@@ -353,7 +396,7 @@
     transform: translateY(-50%);
   }
 
-  /* Dropdown on mobile — always visible as flat sub-items */
+  /* Dropdown on mobile — flat sub-items */
   .nav-dropdown {
     position: static;
   }
@@ -367,6 +410,11 @@
     text-align: left;
   }
 
+  /* Chevron always pointing up — dropdown is always open on mobile */
+  .nav-dropdown-toggle svg {
+    transform: rotate(180deg);
+  }
+
   .nav-dropdown-menu {
     position: static;
     transform: none;
@@ -377,11 +425,20 @@
     padding: 0 0 0 16px;
     border-left: 1px solid rgba(30, 30, 40, 0.1);
     margin-left: 12px;
-    display: flex; /* always show on mobile */
+    display: flex; /* always visible on mobile */
   }
 
   .nav-dropdown-item {
     padding: 8px 8px;
     font-size: 12px;
+  }
+
+  /* CTA — full-width maroon block at bottom of mobile menu */
+  .nav-cta {
+    display: flex;
+    justify-content: center;
+    margin: 6px 0 2px;
+    padding: 10px 12px;
+    border-radius: 2px;
   }
 }
