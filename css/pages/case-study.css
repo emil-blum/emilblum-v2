@@ -347,8 +347,6 @@
 /* ── Scroll (horizontal carousel) block ─────────── */
 .cs-block-scroll {
   overflow: hidden;
-  /* Right padding clips the track at the same edge as the buttons */
-  padding-right: max(var(--px-desktop), calc((100vw - var(--max-w)) / 2 + var(--px-desktop)));
 }
 
 .cs-scroll-header {
@@ -365,7 +363,7 @@
   display: flex;
   gap: clamp(14px, 2vw, 28px);
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
   scrollbar-width: none;
   -ms-overflow-style: none;
   /* scroll-padding matches the spacer pad width */
@@ -741,7 +739,11 @@
   .cs-block-grid  { padding-inline: var(--px-mobile); }
   .cs-block-video { padding-inline: var(--px-mobile); }
   .cs-scroll-header { padding-inline: var(--px-mobile); }
-  .cs-block-scroll { padding-right: var(--px-mobile); }
+  /* Mobile: natural proportions — fixed width, auto height */
+  .cs-scroll-pad {
+    flex: 0 0 var(--px-mobile);
+    min-width: var(--px-mobile);
+  }
 
   /* Dividers follow mobile padding */
   .cs-meta-bar::after,
@@ -762,7 +764,15 @@
     gap: 14px;
   }
 
-  .cs-scroll-item { flex: 0 0 min(320px, 82vw); }
+  /* Fixed width on mobile so images show at natural proportions */
+  .cs-scroll-item {
+    flex: 0 0 min(320px, 82vw);
+    height: auto;
+  }
+  .cs-scroll-item img {
+    height: auto;
+    width: 100%;
+  }
 }
 
 @media (max-width: 640px) {
