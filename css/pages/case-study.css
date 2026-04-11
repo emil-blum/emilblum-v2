@@ -315,7 +315,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(14px, 2vw, 28px);
-  align-items: stretch;
+  align-items: start;
 }
 .cs-grid-inner--3 {
   display: grid;
@@ -332,8 +332,7 @@
 .cs-grid-item img {
   display: block;
   width: 100%;
-  height: 500px;
-  object-fit: cover;
+  height: auto;
 }
 
 .cs-item-caption {
