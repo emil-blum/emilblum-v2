@@ -83,7 +83,7 @@
   font-feature-settings: "ss02" on, "ss03" on;
 }
 
-/* Hover underline — maroon line scales in from centre */
+/* Hover underline — maroon line grows left → right */
 .nav-link::before {
   content: '';
   position: absolute;
@@ -93,7 +93,7 @@
   height: 1px;
   background: var(--maroon);
   transform: scaleX(0);
-  transform-origin: center;
+  transform-origin: left;
   transition: transform 0.22s ease;
   pointer-events: none;
 }
@@ -160,7 +160,7 @@
   height: 1px;
   background: var(--maroon);
   transform: scaleX(0);
-  transform-origin: center;
+  transform-origin: left;
   transition: transform 0.22s ease;
   pointer-events: none;
 }
@@ -230,12 +230,14 @@
   background: rgba(30, 30, 40, 0.05);
 }
 
-/* ── CTA BUTTON — "Meet Me" ── */
+/* ── CTA BUTTON — "Meet Me"
+   Sits as a direct .site-nav child, outside .nav-links,
+   so it reads as a separate element at the far right of the pill. ── */
 .nav-cta {
   display: inline-flex;
   align-items: center;
   padding: 5px 12px;
-  margin: 0 6px 0 4px;
+  margin: 0 8px 0 0;
   font-family: var(--font-meta);
   font-size: 12px;
   font-weight: 500;
@@ -433,12 +435,17 @@
     font-size: 12px;
   }
 
-  /* CTA — full-width maroon block at bottom of mobile menu */
+  /* CTA — hidden by default on mobile; appears at bottom of pill when menu opens */
   .nav-cta {
-    display: flex;
+    display: none;
     justify-content: center;
-    margin: 6px 0 2px;
-    padding: 10px 12px;
-    border-radius: 2px;
+    margin: 0;
+    padding: 11px 12px;
+    border-top: 1px solid rgba(255, 251, 243, 0.15);
+    border-radius: 0 0 3px 3px;
+  }
+
+  .site-nav.is-open .nav-cta {
+    display: flex;
   }
 }
