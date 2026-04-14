@@ -18,7 +18,7 @@
     html, body {
       height: 100%;
       overflow: hidden;
-      background: #1e1e28;
+      background: var(--dark);
       user-select: none;
       -webkit-user-select: none;
       touch-action: none;
@@ -63,7 +63,7 @@
       font-family: 'Manrope', sans-serif;
       font-weight: 300;
       font-size: clamp(28px, 5vw, 52px);
-      color: rgba(250, 160, 0, 0.14);
+      color: rgba(255, 251, 243, 0.10);
       letter-spacing: 0.02em;
     }
 
@@ -72,7 +72,7 @@
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: lowercase;
-      color: rgba(250, 160, 0, 0.10);
+      color: rgba(255, 251, 243, 0.07);
     }
 
     /* ── UI bar ───────────────────────────────────────── */
@@ -92,11 +92,11 @@
     #ui.visible { opacity: 1; }
 
     .btn {
-      background: rgba(250, 160, 0, 0.06);
-      border: 1px solid rgba(250, 160, 0, 0.14);
-      color: rgba(250, 160, 0, 0.50);
+      background: rgba(255, 251, 243, 0.05);
+      border: 1px solid rgba(255, 251, 243, 0.14);
+      color: rgba(255, 251, 243, 0.45);
       padding: 8px 18px;
-      border-radius: 24px;
+      border-radius: 4px;
       cursor: pointer;
       font-family: 'Space Grotesk', sans-serif;
       font-size: 11px;
@@ -109,36 +109,9 @@
     }
 
     .btn:hover {
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.75);
-      border-color: rgba(255,255,255,0.18);
-    }
-
-    .btn.recording {
-      background: rgba(255, 70, 70, 0.10);
-      border-color: rgba(255, 70, 70, 0.28);
-      color: rgba(255, 100, 80, 0.90);
-    }
-
-    .btn.recording:hover {
-      background: rgba(255, 70, 70, 0.18);
-    }
-
-    .btn.recording::before {
-      content: '';
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(255, 100, 80, 0.90);
-      margin-right: 7px;
-      vertical-align: middle;
-      animation: pulse-dot 1.1s ease-in-out infinite;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1;   transform: scale(1);   }
-      50%       { opacity: 0.4; transform: scale(1.45); }
+      background: rgba(255, 251, 243, 0.10);
+      color: rgba(255, 251, 243, 0.80);
+      border-color: rgba(255, 251, 243, 0.24);
     }
 
     /* ── Note label ───────────────────────────────────── */
@@ -147,7 +120,7 @@
       font-family: 'Space Grotesk', sans-serif;
       font-size: 10px;
       letter-spacing: 0.12em;
-      color: rgba(250, 160, 0, 0.40);
+      color: rgba(255, 251, 243, 0.45);
       pointer-events: none;
       animation: note-rise 1.8s ease forwards;
       z-index: 10;
@@ -159,7 +132,7 @@
     }
   </style>
 </head>
-<body>
+<body class="is-dark-page">
 
   <!-- ── CUSTOM CURSOR ── -->
   <div id="cursor"><span id="cursor-label"></span></div>
@@ -212,7 +185,6 @@
   <!-- ── UI CONTROLS ── -->
   <div id="ui">
     <button class="btn" id="clearBtn">clear</button>
-    <button class="btn" id="recordBtn">&#x23FA; record</button>
   </div>
 
   <!-- ── RIPPLE MUSIC ENGINE ── -->
@@ -220,6 +192,7 @@
   'use strict';
 
   // ── Brand colours ──────────────────────────────────
+  // --dark: #1e1e28 | --maroon: #6e0a0a | --brown: #825a28 | --yellow: #faa000
   const BG_COLOR = '#1e1e28';
 
   // ══════════════════════════════════════════════════
@@ -273,20 +246,23 @@
     return nearestNote(Math.sqrt(f1 * f2));
   }
 
-  // Remap hue: brand yellow is ~38°, keep warm amber range
+  // Map frequency to brand warm palette:
+  // Low notes  → maroon-red  (H 355° — brand --maroon)
+  // Mid-low    → warm brown  (H 25°  — brand --brown)
+  // Mid        → amber-gold  (H 38°  — brand --yellow)
+  // High notes → bright gold (H 50°  — warm accent)
+  // Canvas HSL wraps naturally: 410° = 50°, so lerp 355→410 crosses 0° cleanly.
   function freqToHue(freq) {
     const t = (Math.log2(freq) - Math.log2(FREQ_MIN)) /
               (Math.log2(FREQ_MAX) - Math.log2(FREQ_MIN));
-    // Warm yellow-amber range: 32° (deep amber) → 48° (bright yellow)
-    return 32 + t * 16;
+    return 355 + t * 55; // 355° (maroon-red) → 410° (≡ 50°, bright gold)
   }
 
   // ══════════════════════════════════════════════════
   //  AUDIO ENGINE
   // ══════════════════════════════════════════════════
-  let audioCtx      = null;
-  let masterGain    = null;
-  let recordingDest = null;
+  let audioCtx   = null;
+  let masterGain = null;
 
   function initAudio() {
     if (audioCtx) return;
@@ -314,10 +290,6 @@
     masterGain.connect(convolver);
     convolver.connect(reverbGain);
     reverbGain.connect(audioCtx.destination);
-
-    recordingDest = audioCtx.createMediaStreamDestination();
-    masterGain.connect(recordingDest);
-    reverbGain.connect(recordingDest);
   }
 
   function playNote(freq, vol, dur = 2.2, soft = false) {
@@ -567,62 +539,6 @@
         if (!live.has(a) || !live.has(b)) activePairs.delete(key);
       }
     }
-  }
-
-  // ══════════════════════════════════════════════════
-  //  RECORDING
-  // ══════════════════════════════════════════════════
-  let mediaRecorder  = null;
-  let chunks         = [];
-  let isRecording    = false;
-
-  const recordBtn = document.getElementById('recordBtn');
-
-  recordBtn.addEventListener('click', () => {
-    isRecording ? stopRecording() : startRecording();
-  });
-
-  function startRecording() {
-    initAudio();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    if (!recordingDest) return;
-
-    const videoTracks = canvas.captureStream(30).getVideoTracks();
-    const audioTracks = recordingDest.stream.getAudioTracks();
-    const stream      = new MediaStream([...videoTracks, ...audioTracks]);
-
-    const mime = ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm']
-      .find(m => MediaRecorder.isTypeSupported(m)) || '';
-
-    chunks        = [];
-    mediaRecorder = new MediaRecorder(stream, mime ? { mimeType: mime } : {});
-    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
-    mediaRecorder.onstop          = exportVideo;
-    mediaRecorder.start(100);
-
-    isRecording = true;
-    recordBtn.textContent = 'save';
-    recordBtn.classList.add('recording');
-  }
-
-  function stopRecording() {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
-    isRecording = false;
-    recordBtn.textContent = '⏺ record';
-    recordBtn.classList.remove('recording');
-  }
-
-  function exportVideo() {
-    const blob = new Blob(chunks, { type: 'video/webm' });
-    const url  = URL.createObjectURL(blob);
-    const a    = Object.assign(document.createElement('a'), {
-      href: url,
-      download: `ripple-${new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')}.webm`
-    });
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 3000);
   }
 
   // ── Clear ─────────────────────────────────────────
