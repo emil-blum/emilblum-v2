@@ -98,7 +98,7 @@ button {
 /* ── TYPOGRAPHY ── */
 .t-display {
   font-family: var(--font-body);
-  font-size: clamp(3.5rem, 8vw, 7.5rem);
+  font-size: clamp(2.2rem, 5vw, 5rem);
   font-weight: 600;
   line-height: 0.92;
   letter-spacing: -0.04em;
