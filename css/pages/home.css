@@ -147,7 +147,7 @@
 }
 
 .hero-bio {
-  max-width: 520px;
+  max-width: 540px;
   color: var(--n600);
 }
 
@@ -163,6 +163,7 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  min-width: 340px;
 }
 
 .hero-info-row {
