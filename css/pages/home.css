@@ -136,34 +136,33 @@
 .hero-headline {
   max-width: 900px;
   margin-bottom: 64px;
-}
-
-.hero-headline em {
-  font-style: italic;
-  font-weight: 300;
-  color: var(--n400);
+  line-height: 1.08;
 }
 
 .hero-meta {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  max-width: 840px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 80px;
+}
+
+.hero-bio {
+  max-width: 520px;
+  color: var(--n600);
 }
 
 @media (max-width: 640px) {
   .hero-meta {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 32px;
   }
 }
 
-.hero-bio { color: var(--n600); }
 
 .hero-info-table {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  flex-shrink: 0;
 }
 
 .hero-info-row {
