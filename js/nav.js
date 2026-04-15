@@ -119,17 +119,41 @@
   }
 
   /* ── SCROLL REVEAL ── */
+  /* Batching approach: all elements that fire in the same IO callback are
+     collected, sorted by DOM order, then assigned staggered delays
+     automatically — no manual data-delay attributes needed in HTML. */
   function initReveal() {
-    const elements = document.querySelectorAll('[data-reveal]');
+    const STAGGER_MS = 65;
+    const elements = Array.from(document.querySelectorAll('[data-reveal]'));
     if (!elements.length) return;
+
+    let batch = [];
+    let rafId  = null;
+
+    function flush() {
+      // Sort batch by DOM position (top → bottom)
+      batch.sort((a, b) => {
+        const pos = a.compareDocumentPosition(b);
+        return (pos & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
+      });
+      batch.forEach((el, i) => {
+        el.style.transitionDelay = (i * STAGGER_MS) + 'ms';
+        el.classList.add('is-visible');
+      });
+      batch = [];
+      rafId = null;
+    }
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        batch.push(entry.target);
       });
+      // Defer to next frame so all entries in the same callback are collected
+      if (batch.length && !rafId) {
+        rafId = requestAnimationFrame(flush);
+      }
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     elements.forEach(el => observer.observe(el));

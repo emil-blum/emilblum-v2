@@ -244,25 +244,21 @@ body.cursor-hover #cursor-label {
 }
 
 /* ── REVEAL ANIMATIONS ── */
-/* Elements are hidden by default, JS adds .is-visible */
+/* Elements are hidden by default, JS adds .is-visible.
+   Stagger delays are assigned dynamically by nav.js —
+   no manual data-delay attributes needed in HTML. */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(48px);
+  transform: translateY(28px);
   transition:
-    opacity  0.85s cubic-bezier(0.215, 0.61, 0.355, 1),
-    transform 0.85s cubic-bezier(0.215, 0.61, 0.355, 1);
+    opacity  0.75s cubic-bezier(0.215, 0.61, 0.355, 1),
+    transform 0.75s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 [data-reveal].is-visible {
   opacity: 1;
   transform: translateY(0);
 }
-
-[data-reveal][data-delay="100"] { transition-delay: 0.1s; }
-[data-reveal][data-delay="200"] { transition-delay: 0.2s; }
-[data-reveal][data-delay="300"] { transition-delay: 0.3s; }
-[data-reveal][data-delay="400"] { transition-delay: 0.4s; }
-[data-reveal][data-delay="500"] { transition-delay: 0.5s; }
 
 /* ── DARK SECTION ── */
 .bg-dark   { background-color: var(--dark);   color: var(--cream); }
