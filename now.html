@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Now — Emil Blum</title>
+  <meta name="description" content="What Emil Blum is currently working on, learning, and thinking about.">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <style>
+    .now-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .now-list li {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--n600);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .now-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--n300);
+      font-weight: 400;
+    }
+
+    .now-section-label {
+      font-family: var(--font-meta);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--n400);
+      margin-bottom: 20px;
+      margin-top: 56px;
+    }
+
+    .now-link {
+      color: var(--dark);
+      text-decoration: underline;
+      text-decoration-color: var(--maroon);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+
+    .now-link:hover {
+      color: var(--maroon);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <!-- ── OUTSIDE LOGO (desktop) ── -->
+  <a href="/" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+
+  <!-- ── MEET ME CTA (desktop, fixed top-right) ── -->
+  <a href="https://cal.com/emil-blum/45min" target="_blank" rel="noopener" class="nav-cta-fixed" aria-label="Book a meeting">Meet Me</a>
+
+  <!-- ── FLOATING NAVIGATION ── -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="/" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
+      <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
+      <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
+      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
+        <div class="nav-dropdown-menu">
+          <a href="play.html" class="nav-dropdown-item">Ripple Music</a>
+        </div>
+      </div>
+      <a href="https://cal.com/emil-blum/45min" target="_blank" rel="noopener" class="nav-cta-mobile" aria-label="Book a meeting">Meet Me</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container" style="padding-top: 140px; padding-bottom: 120px; max-width: 760px;">
+
+      <p class="t-label" style="color: var(--n400); margin-bottom: 32px;">Now</p>
+      <h1 class="t-headline-xl" style="margin-bottom: 24px;">What I'm doing now</h1>
+      <p class="t-body" style="color: var(--n500); margin-bottom: 56px;">
+        This is a <a href="https://nownownow.com/about" target="_blank" rel="noopener" class="now-link">now page</a> — a snapshot of what I'm currently working on, learning, and thinking about. Last updated: 14 April 2026.
+      </p>
+
+      <ul class="now-list">
+        <li>Setting up <strong>Rebellious Optimists Org</strong> — a platform to champion, highlight, and support leaders who are at the forefront of environmental conservation, social impact initiatives, and innovative technology development, with the focus on societal good.</li>
+        <li>Digging deep into healthcare biomarker tracker technology and exploring product manufacturing opportunities in China.</li>
+        <li>Educating myself in AI-coding tools to make playful experiments and produce generative, process-driven visual and musical tools for unique branding and artistic expressions.</li>
+        <li>2nd year into brewing kombucha and just started to read <a href="https://www.wired.com/story/noma-guide-to-fermentation-book-review/" target="_blank" rel="noopener" class="now-link">The Noma Guide to Fermentation</a> for more ideas.</li>
+        <li>Looking into the best sewing machines for home use, to begin making my own streetwear pieces inspired by traditional Japanese garment silhouettes.</li>
+      </ul>
+
+      <p class="now-section-label">Listening to</p>
+
+      <ul class="now-list">
+        <li><a href="https://open.spotify.com/album/0yBlUg27MbywASeGd1uNIA?si=X5AEuCdFT8iX92pcEZuamw" target="_blank" rel="noopener" class="now-link">Cabin In The Sky</a> by De La Soul</li>
+        <li><a href="https://open.spotify.com/album/4RsSlnwkUAvEtg0Tk86HnM?si=5wIlwmAKQR6dBvTp57pteg" target="_blank" rel="noopener" class="now-link">Honora</a> by Flea</li>
+        <li><a href="https://open.spotify.com/album/4aHYmpZP3G7wdXb3X3G58R?si=jsBKhqujQkut97kmyimWjA" target="_blank" rel="noopener" class="now-link">Computer Jazz</a> by Computer Jazz</li>
+      </ul>
+
+    </div>
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+</body>
+</html>
