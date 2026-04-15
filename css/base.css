@@ -280,13 +280,6 @@ body.cursor-hover #cursor-label {
   margin-bottom: 32px;
 }
 
-.section-label::after {
-  content: '';
-  display: block;
-  height: 1px;
-  width: 40px;
-  background: var(--n300);
-}
 
 /* Divider */
 .divider {
