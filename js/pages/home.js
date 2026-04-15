@@ -86,7 +86,17 @@
       opacity: 1,
       duration: 0.7,
       ease: 'power2.out',
-      onStart: () => { homeContent && homeContent.classList.add('is-visible'); }
+      onStart: () => {
+        homeContent && homeContent.classList.add('is-visible');
+        // Cascade hero [data-reveal] elements in DOM order
+        const heroEls = Array.from(document.querySelectorAll('.hero [data-reveal]'));
+        heroEls.forEach((el, i) => {
+          setTimeout(() => {
+            el.style.transitionDelay = '0ms';
+            el.classList.add('is-visible');
+          }, i * 65);
+        });
+      }
     }, '-=0.45');
   }
 
@@ -100,6 +110,13 @@
         setTimeout(() => {
           loader.style.display = 'none';
           if (homeContent) homeContent.classList.add('is-visible');
+          const heroEls = Array.from(document.querySelectorAll('.hero [data-reveal]'));
+          heroEls.forEach((el, i) => {
+            setTimeout(() => {
+              el.style.transitionDelay = '0ms';
+              el.classList.add('is-visible');
+            }, i * 65);
+          });
         }, 600);
       }
     }

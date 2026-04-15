@@ -121,10 +121,17 @@
   /* ── SCROLL REVEAL ── */
   /* Batching approach: all elements that fire in the same IO callback are
      collected, sorted by DOM order, then assigned staggered delays
-     automatically — no manual data-delay attributes needed in HTML. */
+     automatically — no manual data-delay attributes needed in HTML.
+     Exception: elements inside .hero on pages with #loader are skipped —
+     home.js sequences those after the loader exits. */
   function initReveal() {
-    const STAGGER_MS = 65;
-    const elements = Array.from(document.querySelectorAll('[data-reveal]'));
+    const STAGGER_MS  = 65;
+    const heroSection = document.querySelector('.hero');
+    const hasLoader   = !!document.getElementById('loader');
+
+    const elements = Array.from(document.querySelectorAll('[data-reveal]')).filter(el =>
+      !(hasLoader && heroSection && heroSection.contains(el))
+    );
     if (!elements.length) return;
 
     let batch = [];
