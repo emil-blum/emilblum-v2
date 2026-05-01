@@ -100,7 +100,115 @@
     }, '-=0.45');
   }
 
+  // ── HOVER SCATTER ──────────────────────────────────────────
+  const HOVER_PREVIEWS = {
+    featured: [
+      'assets/images/hover-previews/featured/placeholder-1.jpg',
+      'assets/images/hover-previews/featured/placeholder-2.jpg',
+      'assets/images/hover-previews/featured/placeholder-3.jpg',
+    ],
+    code: [
+      'assets/images/hover-previews/code/placeholder-4.jpg',
+      'assets/images/hover-previews/code/placeholder-5.jpg',
+      'assets/images/hover-previews/code/placeholder-6.png',
+    ],
+    art: [
+      'assets/images/hover-previews/art/placeholder-7.png',
+      'assets/images/hover-previews/art/placeholder-8.jpg',
+      'assets/images/hover-previews/art/placeholder-9.png',
+    ],
+    moments: [
+      'assets/images/hover-previews/moments/placeholder-10.png',
+      'assets/images/hover-previews/moments/placeholder-11.png',
+      'assets/images/hover-previews/moments/placeholder-12.jpg',
+    ],
+    swarf: [
+      'assets/images/hover-previews/swarf/placeholder-13.jpg',
+      'assets/images/hover-previews/swarf/placeholder-14.jpg',
+      'assets/images/hover-previews/swarf/placeholder-15.jpg',
+    ],
+    about: [
+      'assets/images/hover-previews/about/placeholder-16.gif',
+      'assets/images/hover-previews/about/placeholder-17.gif',
+      'assets/images/hover-previews/about/placeholder-18.jpg',
+    ],
+    play: [
+      'assets/images/hover-previews/play/placeholder-19.jpg',
+      'assets/images/hover-previews/play/placeholder-20.webp',
+      'assets/images/hover-previews/play/placeholder-21.webp',
+    ],
+    connect: [
+      'assets/images/hover-previews/connect/placeholder-22.webp',
+      'assets/images/hover-previews/connect/placeholder-23.webp',
+      'assets/images/hover-previews/connect/placeholder-24.webp',
+    ],
+  };
+
+  // Widths for three size tiers (px) — varies each image for natural feel
+  const SIZE_TIERS = [400, 480, 580];
+
+  function initScatter() {
+    const container = document.getElementById('hover-scatter');
+    if (!container) return;
+
+    // Preload all images so first hover is instant
+    Object.values(HOVER_PREVIEWS).flat().forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+
+    let hideTimer = null;
+
+    function showScatter(key) {
+      clearTimeout(hideTimer);
+      container.innerHTML = '';
+
+      const srcs = HOVER_PREVIEWS[key];
+      if (!srcs || !srcs.length) return;
+
+      srcs.forEach((src, i) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.className = 'scatter-img';
+        img.alt = '';
+        img.draggable = false;
+
+        // Random position — spread across full viewport with slight edge bleed
+        const x   = 3  + Math.random() * 75;   // 3–78% left
+        const y   = 4  + Math.random() * 72;   // 4–76% top
+        const rot = (Math.random() - 0.5) * 30; // ±15°
+        const w   = SIZE_TIERS[i % SIZE_TIERS.length];
+
+        img.style.cssText = `left:${x}%;top:${y}%;width:${w}px;transform:rotate(${rot}deg);`;
+
+        container.appendChild(img);
+
+        // Double rAF so the opacity transition fires after element is painted
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          img.style.opacity = '1';
+        }));
+      });
+    }
+
+    function hideScatter() {
+      clearTimeout(hideTimer);
+      // Short debounce so moving between adjacent grid cells doesn't flicker
+      hideTimer = setTimeout(() => {
+        const imgs = container.querySelectorAll('.scatter-img');
+        imgs.forEach(img => { img.style.opacity = '0'; });
+        setTimeout(() => { container.innerHTML = ''; }, 240);
+      }, 80);
+    }
+
+    document.querySelectorAll('.home-nav-item[data-section]').forEach(item => {
+      item.addEventListener('mouseenter', () => showScatter(item.dataset.section));
+      item.addEventListener('mouseleave', hideScatter);
+    });
+  }
+  // ────────────────────────────────────────────────────────────
+
   document.addEventListener('DOMContentLoaded', () => {
+    initScatter();
     if (typeof gsap !== 'undefined') {
       initLoader();
     } else {

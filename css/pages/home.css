@@ -269,3 +269,24 @@
   opacity: 1;
   transform: translateX(0);
 }
+
+/* ── HOVER SCATTER OVERLAY ── */
+#hover-scatter {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.scatter-img {
+  position: absolute;
+  height: auto;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  will-change: opacity;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
