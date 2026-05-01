@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/transitions.css">
   <link rel="stylesheet" href="fragment-collage/assets/fragment-collage.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 
   <style>
     /* ── Page header ──────────────────────────────────── */
@@ -319,7 +320,7 @@
     <header class="cv-header container">
       <p class="t-label section-label" data-reveal>About</p>
       <h1 class="t-headline-xl" data-reveal>
-        I specialise in curiosity.
+        I specialise in <span id="curiosity-trigger">curiosity</span>.
       </h1>
     </header>
 
@@ -600,6 +601,186 @@
     <div id="fragment-collage"></div>
   </section>
   <script src="fragment-collage/assets/fragment-collage.js"></script>
+
+  <!-- ── CURIOSITY EASTER EGG (desktop pointer only, no visual tells) ── -->
+  <script>
+  (function () {
+    'use strict';
+
+    if (!window.matchMedia('(hover: hover)').matches) return;
+    if (typeof Matter === 'undefined') return;
+
+    const trigger = document.getElementById('curiosity-trigger');
+    if (!trigger) return;
+
+    const IMAGES = [
+      'assets/images/hover-previews/curiosity/01.jpg',
+      'assets/images/hover-previews/curiosity/02.jpg',
+      'assets/images/hover-previews/curiosity/03.jpg',
+      'assets/images/hover-previews/curiosity/04.jpg',
+      'assets/images/hover-previews/curiosity/05.jpg',
+      'assets/images/hover-previews/curiosity/06.jpg',
+    ];
+    const IMG_WIDTHS  = [320, 400, 480];
+    const SHOW_COUNT  = 5;
+    const AUTO_FADE_MS = 8000;
+
+    let isActive = false, canvasEl = null, clearBtn = null;
+    let engineRef = null, renderRef = null, runnerRef = null;
+    let fadeTimer = null, scrollHandler = null;
+
+    // Idle preload — images cached before first hover
+    const preload = () => IMAGES.forEach(src => { new Image().src = src; });
+    'requestIdleCallback' in window
+      ? requestIdleCallback(preload, { timeout: 4000 })
+      : setTimeout(preload, 2500);
+
+    function startFade() {
+      clearTimeout(fadeTimer);
+      if (scrollHandler) { window.removeEventListener('scroll', scrollHandler); scrollHandler = null; }
+      if (clearBtn)  { clearBtn.style.opacity  = '0'; clearBtn.style.pointerEvents = 'none'; }
+      if (canvasEl)  { canvasEl.style.opacity  = '0'; }
+      setTimeout(cleanup, 750);
+    }
+
+    function cleanup() {
+      if (renderRef) { Matter.Render.stop(renderRef); renderRef = null; }
+      if (runnerRef) { Matter.Runner.stop(runnerRef); runnerRef = null; }
+      if (engineRef) { Matter.World.clear(engineRef.world); Matter.Engine.clear(engineRef); engineRef = null; }
+      if (canvasEl  && canvasEl.parentNode)  { canvasEl.parentNode.removeChild(canvasEl);   canvasEl  = null; }
+      if (clearBtn  && clearBtn.parentNode)  { clearBtn.parentNode.removeChild(clearBtn);   clearBtn  = null; }
+      isActive = false;
+    }
+
+    function launch() {
+      if (isActive) return;
+      isActive = true;
+
+      const VW = window.innerWidth;
+      const VH = window.innerHeight;
+      const { Engine, Render, Runner, Bodies, Body, World, Events } = Matter;
+
+      // Full-viewport canvas overlay
+      canvasEl = document.createElement('canvas');
+      canvasEl.style.cssText = 'position:fixed;inset:0;z-index:50;pointer-events:none;opacity:0;transition:opacity 0.7s ease;';
+      document.body.appendChild(canvasEl);
+
+      // Manual clear button — × with dark bg, "Clear" label lives in cursor circle
+      clearBtn = document.createElement('button');
+      clearBtn.textContent = '×';
+      clearBtn.setAttribute('data-cursor', 'Clear');
+      clearBtn.style.cssText = [
+        'position:fixed', 'bottom:32px', 'right:32px', 'z-index:51',
+        'width:36px', 'height:36px',
+        'background:var(--dark)', 'color:var(--cream)',
+        'font-size:18px', 'line-height:1',
+        'display:flex', 'align-items:center', 'justify-content:center',
+        'border-radius:2px', 'border:none',
+        'opacity:0', 'pointer-events:none', 'transition:opacity 0.3s ease',
+      ].join(';');
+      clearBtn.addEventListener('click', startFade);
+      document.body.appendChild(clearBtn);
+
+      // Physics world
+      const engine = Engine.create({ gravity: { y: 2 } });
+      engineRef = engine;
+
+      const render = Render.create({
+        canvas: canvasEl,
+        engine,
+        options: {
+          width: VW, height: VH,
+          background: 'transparent',
+          wireframes: false,
+          pixelRatio: window.devicePixelRatio || 1,
+        }
+      });
+      renderRef = render;
+
+      // Static boundaries — floor + side walls
+      World.add(engine.world, [
+        Bodies.rectangle(VW / 2, VH + 30,   VW + 100, 60,  { isStatic: true, render: { visible: false } }),
+        Bodies.rectangle(-30,    VH / 2,     60, VH * 3,    { isStatic: true, render: { visible: false } }),
+        Bodies.rectangle(VW + 30, VH / 2,   60, VH * 3,    { isStatic: true, render: { visible: false } }),
+      ]);
+
+      // Pick images and start engine once all have loaded
+      const pool = [...IMAGES].sort(() => Math.random() - 0.5).slice(0, SHOW_COUNT);
+      const bodies = [];
+      let callbacks = 0;
+
+      function onAllReady() {
+        if (bodies.length === 0) { cleanup(); return; }
+        Render.run(render);
+        const runner = Runner.create();
+        Runner.run(runner, engine);
+        runnerRef = runner;
+
+        // Fade in canvas immediately
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          if (canvasEl) canvasEl.style.opacity = '1';
+        }));
+
+        // Show clear button only once all bodies have settled
+        Events.on(engine, 'afterUpdate', function onSettle() {
+          if (!bodies.length || !clearBtn) return;
+          const allSettled = bodies.every(b =>
+            Math.abs(b.velocity.x) < 0.5 && Math.abs(b.velocity.y) < 0.5
+          );
+          if (allSettled) {
+            Events.off(engine, 'afterUpdate', onSettle);
+            if (clearBtn) { clearBtn.style.opacity = '1'; clearBtn.style.pointerEvents = 'auto'; }
+          }
+        });
+
+        // Auto-fade after timeout
+        fadeTimer = setTimeout(startFade, AUTO_FADE_MS);
+
+        // Fade on scroll
+        scrollHandler = () => { clearTimeout(fadeTimer); startFade(); };
+        window.addEventListener('scroll', scrollHandler, { once: true });
+      }
+
+      pool.forEach((src, i) => {
+        const img = new Image();
+        img.onload = () => {
+          const targetW = IMG_WIDTHS[i % IMG_WIDTHS.length];
+          const ratio   = img.naturalHeight / img.naturalWidth;
+          const targetH = Math.round(targetW * ratio);
+
+          // Spawn above viewport, staggered so images arrive in sequence
+          const x = 100 + Math.random() * (VW - 200);
+          const y = -(targetH * 0.5 + 20 + i * 120);
+
+          const body = Bodies.rectangle(x, y, targetW, targetH, {
+            restitution: 0.25,
+            friction: 0.6,
+            frictionAir: 0.012,
+            angle: (Math.random() - 0.5) * 0.4,
+            render: {
+              sprite: {
+                texture: src,
+                xScale: targetW / img.naturalWidth,
+                yScale: targetH / img.naturalHeight,
+              }
+            }
+          });
+
+          // Slight random horizontal drift
+          Body.setVelocity(body, { x: (Math.random() - 0.5) * 4, y: 0 });
+          World.add(engine.world, body);
+          bodies.push(body);
+
+          if (++callbacks === pool.length) onAllReady();
+        };
+        img.onerror = () => { if (++callbacks === pool.length) onAllReady(); };
+        img.src = src;
+      });
+    }
+
+    trigger.addEventListener('mouseenter', launch);
+  })();
+  </script>
 
   <!-- ── FOOTER ── -->
   <footer class="site-footer">
