@@ -121,6 +121,9 @@
       'assets/images/hover-previews/moments/placeholder-10.png',
       'assets/images/hover-previews/moments/placeholder-11.png',
       'assets/images/hover-previews/moments/placeholder-12.jpg',
+      'assets/images/hover-previews/moments/placeholder-4.jpg',
+      'assets/images/hover-previews/moments/placeholder-5.jpg',
+      'assets/images/hover-previews/moments/placeholder-6.png',
     ],
     swarf: [
       'assets/images/hover-previews/swarf/placeholder-13.jpg',
@@ -131,6 +134,10 @@
       'assets/images/hover-previews/about/placeholder-16.gif',
       'assets/images/hover-previews/about/placeholder-17.gif',
       'assets/images/hover-previews/about/placeholder-18.jpg',
+      'assets/images/hover-previews/about/05_eb-home-archive-AAguitars.webp',
+      'assets/images/hover-previews/about/06_eb-home-archive-Mindful-illustrations.webp',
+      'assets/images/hover-previews/about/07_eb-home-archive-GType.webp',
+      'assets/images/hover-previews/about/08_eb-home-archive-FTLOTGTitles.webp',
     ],
     play: [
       'assets/images/hover-previews/play/placeholder-19.jpg',
@@ -141,30 +148,79 @@
       'assets/images/hover-previews/connect/placeholder-22.webp',
       'assets/images/hover-previews/connect/placeholder-23.webp',
       'assets/images/hover-previews/connect/placeholder-24.webp',
+      'assets/images/hover-previews/connect/placeholder-7.png',
+      'assets/images/hover-previews/connect/placeholder-8.jpg',
+      'assets/images/hover-previews/connect/placeholder-9.png',
     ],
   };
 
   // Widths for three size tiers (px) — varies each image for natural feel
   const SIZE_TIERS = [400, 480, 580];
+  // How many images to show per hover (picked randomly from the full pool)
+  const SCATTER_COUNT = 3;
 
   function initScatter() {
     const container = document.getElementById('hover-scatter');
     if (!container) return;
 
-    // Preload all images so first hover is instant
-    Object.values(HOVER_PREVIEWS).flat().forEach(src => {
-      const img = new Image();
-      img.src = src;
-    });
+    // No hover interaction on touch-only devices — skip entirely
+    if (!window.matchMedia('(hover: hover)').matches) return;
+
+    // Preload during browser idle time so it doesn't compete with page load
+    const preloadAll = () => {
+      Object.values(HOVER_PREVIEWS).flat().forEach(src => {
+        new Image().src = src;
+      });
+    };
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(preloadAll, { timeout: 4000 });
+    } else {
+      setTimeout(preloadAll, 2500);
+    }
 
     let hideTimer = null;
+
+    // Divide viewport into a 3×2 grid of zones, shuffle, return one position per image.
+    // Guarantees images are always spread across the screen rather than clustering.
+    function spreadPositions(count) {
+      const COLS = 3, ROWS = 2;
+      const cells = [];
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) cells.push([c, r]);
+      }
+      // Fisher-Yates shuffle
+      for (let i = cells.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cells[i], cells[j]] = [cells[j], cells[i]];
+      }
+      // Each zone is cw×ch percent of viewport; jitter places image within its zone
+      const cw = 75 / COLS;   // 25% per column
+      const ch = 70 / ROWS;   // 35% per row
+      return cells.slice(0, count).map(([c, r]) => ({
+        x: 3 + c * cw + Math.random() * cw * 0.65,
+        y: 5 + r * ch + Math.random() * ch * 0.70,
+      }));
+    }
+
+    // Pick n random items from an array without mutating it
+    function pickRandom(arr, n) {
+      const pool = [...arr];
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      return pool.slice(0, Math.min(n, pool.length));
+    }
 
     function showScatter(key) {
       clearTimeout(hideTimer);
       container.innerHTML = '';
 
-      const srcs = HOVER_PREVIEWS[key];
-      if (!srcs || !srcs.length) return;
+      const all  = HOVER_PREVIEWS[key];
+      if (!all || !all.length) return;
+      const srcs = pickRandom(all, SCATTER_COUNT);
+
+      const positions = spreadPositions(srcs.length);
 
       srcs.forEach((src, i) => {
         const img = document.createElement('img');
@@ -173,9 +229,7 @@
         img.alt = '';
         img.draggable = false;
 
-        // Random position — spread across full viewport with slight edge bleed
-        const x   = 3  + Math.random() * 75;   // 3–78% left
-        const y   = 4  + Math.random() * 72;   // 4–76% top
+        const { x, y } = positions[i];
         const rot = (Math.random() - 0.5) * 30; // ±15°
         const w   = SIZE_TIERS[i % SIZE_TIERS.length];
 
