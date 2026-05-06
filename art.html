@@ -307,43 +307,9 @@
   <script>
     'use strict';
 
-    /* ── Artwork data ────────────────────────────────────── */
-    const BASE = 'assets/art/';
-    const artworks = [
-      { src: BASE + '01_Emil-Art_Virtual-Spirit.avif',        alt: 'Virtual Spirit',          title: 'Virtual Spirit',          meta: '', w: 2000, h: 2000 },
-      { src: BASE + '02_Emil-Art_Observe.avif',               alt: 'Observe',                 title: 'Observe',                 meta: '', w: 1080, h: 1350 },
-      { src: BASE + '03_Emil-Art_Camouflage.avif',            alt: 'Camouflage',              title: 'Camouflage',              meta: '', w: 2000, h: 2000 },
-      { src: BASE + '04_Emil-Art_Connected-To-Living.avif',   alt: 'Connected To Living',     title: 'Connected To Living',     meta: '', w: 1333, h: 2000 },
-      { src: BASE + '05_Emil-Art_Country-Side.avif',          alt: 'Country Side',            title: 'Country Side',            meta: '', w: 2000, h: 2000 },
-      { src: BASE + '06_Emil-Art_Splitting-Self.avif',        alt: 'Splitting Self',          title: 'Splitting Self',          meta: '', w: 1332, h: 2000 },
-      { src: BASE + '07_Emil-Art_Thy-God.avif',               alt: 'Thy God',                 title: 'Thy God',                 meta: '', w: 1920, h: 1920 },
-      { src: BASE + '08_Emil-Art_Your-Path.avif',             alt: 'Your Path',               title: 'Your Path',               meta: '', w: 1920, h: 1080 },
-      { src: BASE + '09_Emil-Art_Beginner.avif',              alt: 'Beginner',                title: 'Beginner',                meta: '', w: 1332, h: 2000 },
-      { src: BASE + '10_Emil-Art_Colouriment-v1.avif',        alt: 'Colouriment v1',          title: 'Colouriment v1',          meta: '', w: 2000, h: 2000 },
-      { src: BASE + '11_Emil-Art_Motheverse.avif',            alt: 'Motheverse',              title: 'Motheverse',              meta: '', w: 1080, h: 1350 },
-      { src: BASE + '12_Emil-Art_Artefact-of-soul-001.avif',  alt: 'Artefact of Soul 001',    title: 'Artefact of Soul 001',    meta: '', w: 1000, h: 1000 },
-      { src: BASE + '13_Emil-Art_Morning-Jay.avif',           alt: 'Morning Jay',             title: 'Morning Jay',             meta: '', w: 1440, h: 1440 },
-      { src: BASE + '14_Emil-Art_Spirit-Animal.avif',         alt: 'Spirit Animal',           title: 'Spirit Animal',           meta: '', w: 1414, h: 2000 },
-      { src: BASE + '15_Emil-Art_Believe-You-Can-Soar.avif',  alt: 'Believe You Can Soar',    title: 'Believe You Can Soar',    meta: '', w: 1600, h: 2000 },
-      { src: BASE + '16_Emil-Art_Escape-To-Find.avif',        alt: 'Escape To Find',          title: 'Escape To Find',          meta: '', w: 1080, h: 1080 },
-      { src: BASE + '17_Emil-Art_Living-Outside-The-Box.avif',alt: 'Living Outside The Box',  title: 'Living Outside The Box',  meta: '', w: 2000, h: 2000 },
-      { src: BASE + '18_Emil-Art_Colouriment-v2.avif',        alt: 'Colouriment v2',          title: 'Colouriment v2',          meta: '', w: 2000, h: 2000 },
-      { src: BASE + '19_Emil-Art_Gravity-v1.avif',            alt: 'Gravity v1',              title: 'Gravity v1',              meta: '', w: 1080, h: 1080 },
-      { src: BASE + '20_Emil-Art_Grand-Adventure.avif',       alt: 'Grand Adventure',         title: 'Grand Adventure',         meta: '', w: 1080, h: 1080 },
-      { src: BASE + '21_Emil-Art_Gravity-v2.avif',            alt: 'Gravity v2',              title: 'Gravity v2',             meta: '', w: 1080, h: 1080 },
-      { src: BASE + '22_Emil-Art_Diamond_Dimention_v1.avif',  alt: 'Diamond Dimention v1',    title: 'Diamond Dimention v1',    meta: '', w: 1414, h: 2000 },
-      { src: BASE + '23_Emil-Art_Diamond_Dimention_v2.avif',  alt: 'Diamond Dimention v2',    title: 'Diamond Dimention v2',    meta: '', w: 1414, h: 2000 },
-      { src: BASE + '24_Emil-Art_Diamond_Dimention_v3.avif',  alt: 'Diamond Dimention v3',    title: 'Diamond Dimention v3',    meta: '', w: 1414, h: 2000 },
-      { src: BASE + '25_Emil-Art_Papilio_Pacem-01.avif',      alt: 'Papilio Pacem 01',        title: 'Papilio Pacem 01',        meta: '', w: 2000, h: 2000 },
-      { src: BASE + '26_Emil-Art_Papilio_Pacem-02.avif',      alt: 'Papilio Pacem 02',        title: 'Papilio Pacem 02',        meta: '', w: 2000, h: 2000 },
-      { src: BASE + '27_Emil-Art_Papilio_Pacem-03.avif',      alt: 'Papilio Pacem 03',        title: 'Papilio Pacem 03',        meta: '', w: 2000, h: 2000 },
-      { src: BASE + '28_Emil-Art_Prioritise-Peace.avif',      alt: 'Prioritise Peace',        title: 'Prioritise Peace',        meta: '', w: 1497, h: 2000 },
-      { src: BASE + '29_Emil-Art_Embody-Love.avif',           alt: 'Embody Love',             title: 'Embody Love',             meta: '', w: 1497, h: 2000 },
-      { src: BASE + '30_Emil-Art_Cultivate-Wisdom.avif',      alt: 'Cultivate Wisdom',        title: 'Cultivate Wisdom',        meta: '', w: 1497, h: 2000 },
-    ];
-
     /* ── State ─────────────────────────────────────────── */
-    let lbIndex = 0;
+    let artworks = [];
+    let lbIndex  = 0;
 
     /* ── Build: grid ───────────────────────────────────── */
     function buildGrid() {
@@ -423,7 +389,12 @@
     });
 
     /* ── Init ──────────────────────────────────────────── */
-    document.addEventListener('DOMContentLoaded', buildGrid);
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('assets/art/manifest.json')
+        .then(r => r.json())
+        .then(data => { artworks = data; buildGrid(); })
+        .catch(err => console.error('Could not load art manifest:', err));
+    });
   </script>
 
 </body>
