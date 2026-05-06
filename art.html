@@ -104,13 +104,13 @@
       flex-direction: column;
       align-items: center;
       gap: 20px;
-      max-width: 88vw;
+      max-width: 92vw;
     }
 
     .lb-img {
       display: block;
-      max-width: 80vw;
-      max-height: 72vh;
+      max-width: 90vw;
+      max-height: 84vh;
       object-fit: contain;
       border-radius: 3px;
     }
@@ -375,6 +375,7 @@
 
     function shiftLightbox(dir) { openLightbox(lbIndex + dir); }
 
+    document.getElementById('artLightbox').addEventListener('contextmenu', e => e.preventDefault());
     document.getElementById('lbClose').addEventListener('click', closeLightbox);
     document.getElementById('lbBackdrop').addEventListener('click', closeLightbox);
     document.getElementById('lbPrev').addEventListener('click', () => shiftLightbox(-1));
