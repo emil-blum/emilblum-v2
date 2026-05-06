@@ -335,35 +335,11 @@
   (function () {
     'use strict';
 
-    /* ── Photos — 74 unique images ──────────────────────── */
+    /* ── Photos — 73 files (67 AVIFs + 6 GIFs) ─────────── */
     const PHOTOS = (() => {
-      const files = [
-        '01_Emil-Swarf.avif','02_Emil-Swarf.avif','03_Emil-Swarf.gif',
-        '04_Emil-Swarf.avif','05_Emil-Swarf.avif','06_Emil-Swarf.avif',
-        '07_Emil-Swarf.avif','08_Emil-Swarf.avif','09_Emil-Swarf.avif',
-        '10_Emil-Swarf.avif','11_Emil-Swarf.avif','12_Emil-Swarf.avif',
-        '13_Emil-Swarf.avif','14_Emil-Swarf.gif', '15_Emil-Swarf.avif',
-        '16_Emil-Swarf.avif','17_Emil-Swarf.avif','18_Emil-Swarf.avif',
-        '19_Emil-Swarf.avif','20_Emil-Swarf.avif','21_Emil-Swarf.avif',
-        '22_Emil-Swarf.avif','23_Emil-Swarf.avif','24_Emil-Swarf.avif',
-        '25_Emil-Swarf.avif','26_Emil-Swarf.avif','27_Emil-Swarf.avif',
-        '28_Emil-Swarf.avif','29_Emil-Swarf.avif','30_Emil-Swarf.avif',
-        '31_Emil-Swarf.avif','32_Emil-Swarf.avif','33_Emil-Swarf.avif',
-        '34_Emil-Swarf.avif','35_Emil-Swarf.avif','36_Emil-Swarf.avif',
-        '37_Emil-Swarf.avif','38_Emil-Swarf.avif','39_Emil-Swarf.avif',
-        '40_Emil-Swarf.avif','41_Emil-Swarf.avif','42_Emil-Swarf.avif',
-        '43_Emil-Swarf.avif','44_Emil-Swarf.avif','45_Emil-Swarf.avif',
-        '46_Emil-Swarf.avif','47_Emil-Swarf.avif','48_Emil-Swarf.avif',
-        '49_Emil-Swarf.gif', '50_Emil-Swarf.avif','51_Emil-Swarf.avif',
-        '52_Emil-Swarf.avif','53_Emil-Swarf.avif','54_Emil-Swarf.avif',
-        '55_Emil-Swarf.avif','56_Emil-Swarf.avif','57_Emil-Swarf.avif',
-        '58_Emil-Swarf.avif','59_Emil-Swarf.avif','60_Emil-Swarf.avif',
-        '61_Emil-Swarf.avif','62_Emil-Swarf.avif','63_Emil-Swarf.avif',
-        '64_Emil-Swarf.avif','65_Emil-Swarf.avif','66_Emil-Swarf.avif',
-        '67_Emil-Swarf.avif','68_Emil-Swarf.avif','69_Emil-Swarf.avif',
-        '70_Emil-Swarf.avif','71_Emil-Swarf.avif','72_Emil-Swarf.gif',
-        '73_Emil-Swarf.gif', '74_Emil-Swarf.gif',
-      ];
+      const files = [];
+      for (let i = 1; i <= 67; i++) files.push(`${String(i).padStart(2,'0')}_Emil-Swarf-S.avif`);
+      for (let i = 68; i <= 73; i++) files.push(`${String(i).padStart(2,'0')}_Emil-Swarf-S.gif`);
       return files.map(f => `swarf/${f}`);
     })();
 
@@ -626,13 +602,12 @@
         `;
 
         const img = document.createElement('img');
-        img.src = src;
+        img.dataset.src = src;
         img.width = w;
         img.draggable = false;
-        img.loading = 'lazy';
+        img.decoding = 'async';
         img.alt = `Scrap ${i + 1}`;
-        const delay = sr() * 900;
-        img.onload  = () => setTimeout(() => { item.style.opacity = '1'; }, delay);
+        img.onload  = () => setTimeout(() => { item.style.opacity = '1'; }, sr() * 900);
         img.onerror = () => { item.style.opacity = '1'; };
 
         item.appendChild(img);
@@ -682,10 +657,23 @@
       if (e.key === 'ArrowRight') nextPhoto();
     });
 
+    /* ── Batch-load images (8 per tick, 220ms apart) ────── */
+    function startBatchLoad() {
+      const imgs = Array.from(world.querySelectorAll('img[data-src]'));
+      const BATCH = 8, GAP = 220;
+      imgs.forEach((img, i) => {
+        setTimeout(() => {
+          img.src = img.dataset.src;
+          img.removeAttribute('data-src');
+        }, Math.floor(i / BATCH) * GAP);
+      });
+    }
+
     /* ── Init ────────────────────────────────────────── */
     buildLayout();
     resetView();
     tick();
+    startBatchLoad();
 
   })();
   </script>
