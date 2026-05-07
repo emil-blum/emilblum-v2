@@ -31,8 +31,8 @@
 
   /* Spacing */
   --px-mobile: 20px;
-  --px-desktop: 48px;
-  --max-w: 1280px;
+  --px-desktop: 40px;
+  --max-w: 1360px;
 
   /* Typography */
   --font-body: 'Manrope', sans-serif;
