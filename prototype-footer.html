@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prototype — Footer Reveal</title>
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/transitions.css">
+
+  <style>
+
+    /* ── Reveal footer system ────────────────────────────────
+       body bg is maroon — it shows in the 280px gap below
+       .page-main as the user scrolls to the bottom.
+       Footer is fixed behind page content (z-index: 0).
+    ─────────────────────────────────────────────────────── */
+    body {
+      background: var(--maroon);
+      overflow-x: hidden;
+    }
+
+    .page-main {
+      position: relative;
+      z-index: 1;
+      background: var(--cream);
+    }
+
+    /* Creates the scrollable gap that reveals the footer */
+    .footer-spacer { height: 280px; }
+
+    .site-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 280px;
+      background: var(--maroon);
+      z-index: 0;
+    }
+
+    /* Links anchored to the bottom of the 280px footer */
+    .footer-inner {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-social {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      font-family: var(--font-meta);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 251, 243, 0.45);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+    .footer-link:hover { color: var(--cream); }
+
+    .footer-copy {
+      font-family: var(--font-meta);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: rgba(255, 251, 243, 0.25);
+      white-space: nowrap;
+    }
+
+    /* ── Page content ─────────────────────────────────────── */
+
+    .proto-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 40px 80px;
+    }
+
+    .proto-headline {
+      font-size: clamp(4rem, 11vw, 10rem);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 0.92;
+      color: var(--dark);
+    }
+
+    .proto-sub {
+      margin-top: 28px;
+      font-family: var(--font-meta);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--n400);
+    }
+
+    .proto-section {
+      padding: 80px 40px;
+    }
+
+    .proto-divider {
+      border: none;
+      border-top: 1px solid var(--n200);
+      margin: 0;
+    }
+
+    .proto-label {
+      font-family: var(--font-meta);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--n400);
+      margin-bottom: 36px;
+    }
+
+    .proto-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 768px) { .proto-grid { grid-template-columns: 1fr; } }
+
+    .proto-card {
+      aspect-ratio: 4 / 3;
+      background: var(--n100);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .proto-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .proto-card-title {
+      margin-top: 10px;
+      font-family: var(--font-meta);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--n500);
+    }
+
+    .proto-about {
+      padding: 80px 40px 120px;
+      max-width: 760px;
+    }
+    .proto-about p {
+      font-size: clamp(18px, 2.2vw, 26px);
+      line-height: 1.65;
+      color: var(--dark);
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="cursor"><span id="cursor-label"></span></div>
+
+  <a href="/" class="nav-logo-outside" aria-label="Home">
+    <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+  </a>
+  <a href="https://cal.com/emil-blum/45min" target="_blank" rel="noopener" class="nav-cta-fixed">Meet Me</a>
+
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-header">
+      <a href="/" class="nav-wordmark" aria-label="Home">
+        <img src="assets/wordmarks/emil.svg" alt="Emil Blum">
+      </a>
+      <button class="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <div class="toggle-icon"><span></span><span></span><span></span></div>
+        <span class="toggle-label">Menu</span>
+      </button>
+    </div>
+    <div class="nav-links">
+      <a href="featured.html" class="nav-link">Featured</a>
+      <a href="code.html"     class="nav-link">Code</a>
+      <a href="art.html"      class="nav-link">Art</a>
+      <a href="moments-v2.html" class="nav-link">Moments</a>
+      <a href="scraps-v2.html"  class="nav-link">Swarf</a>
+      <a href="about.html"    class="nav-link">About</a>
+    </div>
+  </nav>
+
+  <!-- ── All page content — cream background, sits above footer ── -->
+  <main class="page-main">
+
+    <section class="proto-hero">
+      <h1 class="proto-headline">Emil<br>Blūm</h1>
+      <p class="proto-sub">Creative Director &amp; Designer</p>
+    </section>
+
+    <hr class="proto-divider">
+
+    <section class="proto-section">
+      <p class="proto-label">Selected Work</p>
+      <div class="proto-grid">
+        <div>
+          <div class="proto-card">
+            <img src="assets/case-studies/hard-rock-vinyl/02-HC-Vinyl.avif" alt="Hard Rock Hotels" loading="lazy">
+          </div>
+          <p class="proto-card-title">Hard Rock Hotels — Print &amp; Craft</p>
+        </div>
+        <div>
+          <div class="proto-card">
+            <img src="assets/art/11_Emil-Art_Motheverse.avif" alt="Oxfam Republic" loading="lazy">
+          </div>
+          <p class="proto-card-title">Oxfam — Republic of You</p>
+        </div>
+        <div>
+          <div class="proto-card">
+            <img src="assets/art/25_Emil-Art_Papilio_Pacem-01.avif" alt="Stewart Brewing" loading="lazy">
+          </div>
+          <p class="proto-card-title">Stewart Brewing — Brand Identity</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="proto-divider">
+
+    <section class="proto-section proto-about">
+      <p>A designer and creative director working at the intersection of craft, culture, and digital. Based in Edinburgh — making things that feel considered.</p>
+    </section>
+
+  </main>
+
+  <!-- Gap between page content and footer — body's maroon bg shows here -->
+  <div class="footer-spacer" aria-hidden="true"></div>
+
+  <!-- ── FOOTER — fixed reveal layer, always behind .page-main ── -->
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="footer-inner">
+      <a href="tos.html" class="footer-link">Terms of Service</a>
+      <div class="footer-social">
+        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+      </div>
+      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="js/nav.js"></script>
+  <script src="js/transitions.js"></script>
+
+</body>
+</html>
