@@ -228,10 +228,10 @@ export default function App() {
         )}
       </div>
 
-      {/* Refresh button — icon only, anchored to top-right of the section */}
+      {/* Refresh button — icon only, anchored to bottom-right of the section */}
       <motion.button
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: image ? 1 : 0, y: image ? 0 : -8 }}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: image ? 1 : 0, y: image ? 0 : 8 }}
         transition={{ duration: 0.4, delay: 0.6 }}
         onClick={handleRefresh}
         disabled={isGenerating}

@@ -29,7 +29,7 @@
        .container's margin: 0 auto and shift the whole block
        off the left edge. Width is constrained on inner children. */
     .cv-bio {
-      padding-bottom: 100px;
+      padding-bottom: 240px;
     }
 
     .cv-bio-text {
@@ -273,6 +273,18 @@
       width: 100%;
       height: 100%;
     }
+
+    /* ── Curiosity hint — flash maroon once on load ──────── */
+    @keyframes curiosity-hint {
+      0%   { color: var(--dark); }
+      30%  { color: var(--maroon); }
+      70%  { color: var(--maroon); }
+      100% { color: var(--dark); }
+    }
+
+    #curiosity-trigger {
+      animation: curiosity-hint 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2s 1 both;
+    }
   </style>
 </head>
 <body>
@@ -318,6 +330,11 @@
 
   <!-- ── PAGE CONTENT ── -->
   <main class="page-main">
+
+    <!-- Fragment collage — top of page, full-width visual before text -->
+    <section class="collage-section">
+      <div id="fragment-collage"></div>
+    </section>
 
     <header class="cv-header container">
       <p class="t-label section-label" data-reveal>About</p>
@@ -598,10 +615,6 @@
   <script src="js/nav.js"></script>
   <script src="js/transitions.js"></script>
 
-  <!-- ── FRAGMENT COLLAGE ── -->
-  <section class="collage-section">
-    <div id="fragment-collage"></div>
-  </section>
   <script src="fragment-collage/assets/fragment-collage.js"></script>
 
   <!-- ── CURIOSITY EASTER EGG (desktop pointer only, no visual tells) ── -->

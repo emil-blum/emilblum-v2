@@ -3,7 +3,7 @@
 /* Refresh button — styled to match the site nav and controls */
 .fc-refresh-btn {
   position: absolute;
-  top: 20px;
+  bottom: 20px;
   right: 20px;
   z-index: 50;
   display: flex;
