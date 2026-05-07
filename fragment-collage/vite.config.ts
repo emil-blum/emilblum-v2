@@ -18,7 +18,7 @@ function imageListPlugin(): Plugin {
     load(id) {
       if (id !== resolved) return;
       const dir = resolve(__dirname, 'images');
-      const files = readdirSync(dir).filter(f => /\.(jpe?g|png|webp)$/i.test(f));
+      const files = readdirSync(dir).filter(f => /\.(jpe?g|png|webp|avif)$/i.test(f));
       return `export const imageList = ${JSON.stringify(files)};`;
     },
   };
