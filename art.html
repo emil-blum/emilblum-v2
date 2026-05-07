@@ -262,7 +262,9 @@
     </div>
   </div>
 
-  <!-- ── LIGHTBOX ── -->
+  </main>
+
+  <!-- ── LIGHTBOX — outside page-main so it's in the root stacking context ── -->
   <div class="art-lightbox" id="artLightbox" role="dialog" aria-modal="true" aria-label="Artwork viewer">
     <div class="lb-backdrop" id="lbBackdrop"></div>
     <button class="lb-close" id="lbClose" aria-label="Close">&#x2715;</button>
@@ -280,8 +282,6 @@
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3l5 5-5 5"/></svg>
     </button>
   </div>
-
-  </main>
 
   <script src="js/nav.js"></script>
   <script src="js/transitions.js"></script>
@@ -348,10 +348,12 @@
       document.getElementById('lbCaptionTitle').textContent = art.title;
       document.getElementById('lbCaptionMeta').textContent  = art.meta;
       lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox() {
       document.getElementById('artLightbox').classList.remove('open');
+      document.body.style.overflow = '';
       setTimeout(() => { document.getElementById('lbImg').src = ''; }, 350);
     }
 
