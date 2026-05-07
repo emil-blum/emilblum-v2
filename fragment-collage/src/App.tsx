@@ -2,15 +2,11 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { RefreshCw } from 'lucide-react';
 
-// Auto-discovers every image in public/images/ at build time.
-// To add images: drop files into fragment-collage/public/images/ and rebuild.
-// Paths are prefixed with ./fragment-collage/images/ so they resolve correctly
-// from Development/about.html → Development/fragment-collage/images/.
-const _imageGlob = import.meta.glob('/public/images/*.{jpg,jpeg,png,webp}');
-const IMAGES = Object.keys(_imageGlob).map((path) => {
-  const filename = path.split('/').pop()!;
-  return './fragment-collage/images/' + encodeURIComponent(filename);
-});
+// Image list generated at build time by the imageListPlugin in vite.config.ts.
+// To add images: drop files into fragment-collage/images/ and rebuild.
+// The plugin reads the directory and emits only filenames — no image data is bundled.
+import { imageList } from 'virtual:image-list';
+const IMAGES = imageList.map(filename => './fragment-collage/images/' + encodeURIComponent(filename));
 
 interface Fragment {
   id: string;

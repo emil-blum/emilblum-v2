@@ -262,7 +262,7 @@
     /* ── Fragment collage section ──────────────────────── */
     .collage-section {
       width: 100%;
-      height: 80vh;
+      height: 60vh;
       overflow: hidden;
       position: relative;
       z-index: 1;
@@ -274,16 +274,14 @@
       height: 100%;
     }
 
-    /* ── Curiosity hint — flash maroon once on load ──────── */
-    @keyframes curiosity-hint {
-      0%   { color: var(--dark); }
-      30%  { color: var(--maroon); }
-      70%  { color: var(--maroon); }
-      100% { color: var(--dark); }
+    /* ── Curiosity trigger — maroon while hovering or effect is active ── */
+    #curiosity-trigger {
+      transition: color 0.25s ease;
     }
 
-    #curiosity-trigger {
-      animation: curiosity-hint 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2s 1 both;
+    #curiosity-trigger:hover,
+    #curiosity-trigger.is-active {
+      color: var(--maroon);
     }
   </style>
 </head>
@@ -664,12 +662,14 @@
       if (engineRef) { Matter.World.clear(engineRef.world); Matter.Engine.clear(engineRef); engineRef = null; }
       if (canvasEl  && canvasEl.parentNode)  { canvasEl.parentNode.removeChild(canvasEl);   canvasEl  = null; }
       if (clearBtn  && clearBtn.parentNode)  { clearBtn.parentNode.removeChild(clearBtn);   clearBtn  = null; }
+      trigger.classList.remove('is-active');
       isActive = false;
     }
 
     function launch() {
       if (isActive) return;
       isActive = true;
+      trigger.classList.add('is-active');
 
       const VW = window.innerWidth;
       const VH = window.innerHeight;
