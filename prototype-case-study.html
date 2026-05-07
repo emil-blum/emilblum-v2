@@ -31,32 +31,12 @@
       padding-right: var(--cs-px);
     }
 
-    /* ── Back link ───────────────────────────────────────── */
-    .cs-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-meta);
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--maroon);
-      text-decoration: none;
-      transition: gap 0.2s var(--spring);
-      padding-top: 120px; /* nav clearance */
-      padding-bottom: 48px;
-    }
-    .cs-back:hover { gap: 14px; }
-    .cs-back svg { flex-shrink: 0; }
-
     /* ── Title block — centred on cream background ───────── */
     .cs-title-block {
       text-align: center;
-      padding-bottom: 64px;
+      padding: 130px var(--cs-px) 64px;
       max-width: 800px;
       margin: 0 auto;
-      padding-left: var(--cs-px);
-      padding-right: var(--cs-px);
     }
 
     .cs-eyebrow {
@@ -294,16 +274,6 @@
       <a href="about.html"    class="nav-link">About</a>
     </div>
   </nav>
-
-  <!-- ── BACK LINK ── -->
-  <div class="cs-container">
-    <a href="featured.html" class="cs-back">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M10 3L5 8l5 5"/>
-      </svg>
-      Featured
-    </a>
-  </div>
 
   <!-- ── TITLE BLOCK — centred, cream background, above hero ── -->
   <div class="cs-title-block">
