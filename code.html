@@ -90,7 +90,9 @@
       display: flex;
       gap: 16px;
       overflow-x: auto;
+      overflow-y: hidden;
       scroll-snap-type: x mandatory;
+      overscroll-behavior-x: contain;
       -ms-overflow-style: none;
       scrollbar-width: none;
       padding-bottom: 8px;
@@ -243,7 +245,7 @@
   </nav>
 
   <!-- ── PAGE CONTENT ── -->
-  <main>
+  <main class="page-main">
     <section class="code-section">
 
       <!-- Header -->
@@ -349,22 +351,6 @@
 
     </section>
   </main>
-
-  <!-- ── FOOTER ── -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <a href="tos.html" class="footer-link">Terms of Service</a>
-      <div class="footer-social">
-        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
-        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
-        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
-        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
-        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
-        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
-      </div>
-      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
-    </div>
-  </footer>
 
   <!-- Scripts -->
   <script src="js/nav.js"></script>

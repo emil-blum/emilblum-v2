@@ -166,12 +166,64 @@
     elements.forEach(el => observer.observe(el));
   }
 
+  /* ── FOOTER INJECT ── */
+  /* Only runs on pages that have .page-main — skips canvas/full-screen pages.
+     On pages with a GSAP loader (#loader), injection is deferred until the
+     loader sets display:none (preventing footer from showing through the
+     transparent homeContent during the loader animation). */
+  function initFooter() {
+    if (!document.querySelector('.page-main')) return;
+
+    function inject() {
+      if (document.querySelector('.site-footer')) return; // guard against double-inject
+
+      const spacer = document.createElement('div');
+      spacer.className = 'footer-spacer';
+      spacer.setAttribute('aria-hidden', 'true');
+
+      const footer = document.createElement('footer');
+      footer.className = 'site-footer';
+      footer.setAttribute('aria-label', 'Site footer');
+      footer.innerHTML = `
+        <div class="footer-inner">
+          <a href="tos.html" class="footer-link">Terms of Service</a>
+          <div class="footer-social">
+            <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
+            <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+            <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+            <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+            <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
+            <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+          </div>
+          <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
+        </div>`;
+
+      document.body.appendChild(spacer);
+      document.body.appendChild(footer);
+    }
+
+    const loader = document.getElementById('loader');
+    if (loader) {
+      // Wait for GSAP to set display:none on the loader before injecting
+      const obs = new MutationObserver(() => {
+        if (loader.style.display === 'none') {
+          obs.disconnect();
+          inject();
+        }
+      });
+      obs.observe(loader, { attributes: true, attributeFilter: ['style'] });
+    } else {
+      inject();
+    }
+  }
+
   /* ── BOOT ── */
   document.addEventListener('DOMContentLoaded', () => {
     initNav();
     initMobileMenu();
     initCursor();
     initReveal();
+    initFooter();
   });
 
 })();

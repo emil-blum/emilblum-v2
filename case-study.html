@@ -53,7 +53,7 @@
   </nav>
 
   <!-- ── PAGE CONTENT ── -->
-  <main>
+  <main class="page-main">
 
     <!-- Loading -->
     <div class="cs-loading" id="cs-loading" aria-live="polite">
@@ -79,18 +79,16 @@
     <!-- Case study content — populated by JS -->
     <div class="cs-content" id="cs-content">
 
-      <!-- 1. HERO — full bleed, title overlay -->
+      <!-- 1. TITLE BLOCK — above the hero, cream background -->
+      <div class="cs-title-block">
+        <p class="cs-eyebrow" id="cs-category">Category</p>
+        <h1 class="cs-title" id="cs-title">Project Title</h1>
+        <p class="cs-subtitle" id="cs-subtitle"></p>
+      </div>
+
+      <!-- 2. HERO — full bleed image, no overlay -->
       <section class="cs-hero" id="cs-hero" aria-label="Project hero image">
         <img class="cs-hero-img" id="cs-hero-img" alt="" loading="eager">
-        <div class="cs-hero-content">
-
-          <div class="cs-hero-text">
-            <p class="cs-hero-eyebrow" id="cs-category">Category</p>
-            <h1 class="cs-hero-title" id="cs-title">Project Title</h1>
-            <p class="cs-hero-subtitle" id="cs-subtitle"></p>
-          </div>
-
-        </div>
       </section>
 
       <!-- 2. META BAR -->
@@ -776,21 +774,6 @@
   <script src="js/nav.js"></script>
   <script src="js/transitions.js"></script>
 
-  <!-- ── FOOTER ── -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <a href="tos.html" class="footer-link">Terms of Service</a>
-      <div class="footer-social">
-        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
-        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
-        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
-        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
-        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
-        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
-      </div>
-      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
-    </div>
-  </footer>
 
 </body>
 </html>

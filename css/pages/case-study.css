@@ -68,11 +68,44 @@
 .cs-content { display: none; }
 .cs-content.is-visible { display: block; }
 
-/* ── HERO ─────────────────────────────────────────── */
+/* ── TITLE BLOCK — centred, cream bg, above hero ─── */
+.cs-title-block {
+  text-align: center;
+  padding: 120px var(--px-desktop) 64px;
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.cs-eyebrow {
+  font-family: var(--font-meta);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(30, 30, 40, 0.38);
+  margin-bottom: 18px;
+}
+
+.cs-title {
+  font-size: clamp(2.6rem, 7vw, 6.5rem);
+  font-weight: 500;
+  color: var(--dark);
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+  margin: 0 0 20px;
+}
+
+.cs-subtitle {
+  font-size: clamp(15px, 1.8vw, 20px);
+  color: rgba(30, 30, 40, 0.5);
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+/* ── HERO — full-bleed image, parallax ───────────── */
 .cs-hero {
   position: relative;
-  height: 92vh;
-  min-height: 520px;
+  height: 80vh;
+  min-height: 480px;
   overflow: hidden;
   background: var(--dark);
 }
@@ -87,64 +120,6 @@
   object-position: center;
   display: block;
   will-change: transform;
-}
-
-/* Gradient overlay: subtle top, heavy bottom */
-.cs-hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to bottom,
-      rgba(30, 30, 40, 0.25) 0%,
-      rgba(30, 30, 40, 0.0) 25%,
-      rgba(30, 30, 40, 0.0) 45%,
-      rgba(30, 30, 40, 0.65) 80%,
-      rgba(30, 30, 40, 0.88) 100%
-    );
-  pointer-events: none;
-}
-
-.cs-hero-content {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 28px 48px 52px;
-  box-sizing: border-box;
-}
-
-/* Hero text: stacked at bottom */
-.cs-hero-text { }
-
-.cs-hero-eyebrow {
-  font-family: var(--font-meta);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255, 251, 243, 0.45);
-  margin-bottom: 14px;
-}
-
-.cs-hero-title {
-  font-size: clamp(2.4rem, 6.5vw, 6rem);
-  font-weight: 500;
-  color: var(--cream);
-  line-height: 1.0;
-  letter-spacing: -0.02em;
-  max-width: 16ch;
-  margin: 0;
-}
-
-.cs-hero-subtitle {
-  margin-top: 18px;
-  font-size: clamp(14px, 1.6vw, 18px);
-  color: rgba(255, 251, 243, 0.5);
-  line-height: 1.55;
-  max-width: 52ch;
-  font-weight: 400;
 }
 
 /* ── META BAR ──────────────────────────────────────── */
@@ -777,10 +752,13 @@
 
 @media (max-width: 640px) {
   .cs-hero {
-    height: 75vh;
-    min-height: 440px;
+    height: 60vh;
+    min-height: 360px;
   }
-  .cs-hero-content { padding: 20px 24px 36px; }
+
+  .cs-title-block {
+    padding: 80px var(--px-mobile) 48px;
+  }
 
   .cs-three-col { grid-template-columns: 1fr; gap: 36px; }
 

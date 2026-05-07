@@ -14,7 +14,6 @@
 
     /* ── Page base — dark theme ───────────────────────────── */
     body {
-      background: #0e1628;
       overflow: auto;
     }
 
@@ -176,18 +175,6 @@
     .lb-arrow.prev { left: 20px; }
     .lb-arrow.next { right: 20px; }
 
-    /* ── Footer — dark-styled ─────────────────────────────── */
-    .site-footer {
-      border-top-color: rgba(255, 251, 243, 0.08);
-    }
-    .site-footer .footer-link,
-    .site-footer .footer-copy {
-      color: rgba(255, 251, 243, 0.3);
-    }
-    .site-footer .footer-link:hover {
-      color: rgba(255, 251, 243, 0.75);
-    }
-
     @media (max-width: 600px) {
       .lb-img { max-width: 92vw; max-height: 74vh; }
 
@@ -262,6 +249,8 @@
     </div>
   </nav>
 
+  <main class="page-main" style="background: #0e1628">
+
   <!-- ── GRID ── -->
   <div class="art-grid">
     <div class="container">
@@ -292,21 +281,7 @@
     </button>
   </div>
 
-  <!-- ── FOOTER ── -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <a href="tos.html" class="footer-link">Terms of Service</a>
-      <div class="footer-social">
-        <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
-        <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
-        <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
-        <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
-        <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
-        <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
-      </div>
-      <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
-    </div>
-  </footer>
+  </main>
 
   <script src="js/nav.js"></script>
   <script src="js/transitions.js"></script>

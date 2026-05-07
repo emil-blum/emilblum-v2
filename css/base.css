@@ -59,10 +59,17 @@ html {
 
 body {
   font-family: var(--font-body);
-  background-color: var(--cream);
+  background-color: var(--maroon);
   color: var(--dark);
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+/* ── PAGE MAIN — sits above the maroon body/footer ── */
+.page-main {
+  position: relative;
+  z-index: 1;
+  background: var(--cream);
 }
 
 img, video {
@@ -330,27 +337,30 @@ body.cursor-hover #cursor-label {
   flex-shrink: 0;
 }
 
-/* ── SITE FOOTER ── */
-/* Thin horizontal bar at bottom of content pages.
-   Adapts to page background via .bg-dark / .bg-maroon context,
-   but by default inherits the page (cream) background. */
+/* ── SITE FOOTER — maroon reveal layer, fixed behind page content ── */
+/* .footer-spacer after .page-main creates scrollable gap; body's maroon
+   shows through as the user scrolls down, revealing the footer below. */
 
-.site-footer {
-  padding: 0 24px;
+.footer-spacer {
+  height: 280px;
 }
 
-/* Border is a pseudo-element on the outer container so it spans the
-   full viewport width minus the 24px side padding — matching the logo
-   position. The .footer-inner max-width only constrains the link content. */
-.site-footer::before {
-  content: '';
-  display: block;
-  height: 1px;
+.site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 280px;
   background: var(--maroon);
+  z-index: 0;
 }
 
 .footer-inner {
-  padding: 18px 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -363,7 +373,6 @@ body.cursor-hover #cursor-label {
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .footer-link {
@@ -372,49 +381,25 @@ body.cursor-hover #cursor-label {
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--n400);
+  color: var(--cream);
+  text-decoration: none;
   transition: color 0.2s ease;
   white-space: nowrap;
-  font-feature-settings: "ss02" on, "ss03" on;
 }
 
-.footer-link:hover { color: var(--dark); }
+.footer-link:hover { color: rgba(255, 251, 243, 0.85); }
 
 .footer-copy {
   font-family: var(--font-meta);
   font-size: 10px;
   letter-spacing: 0.06em;
-  color: var(--n400);
+  color: rgba(255, 251, 243, 0.55);
   white-space: nowrap;
 }
 
-/* Dark-background pages */
-.bg-dark .site-footer::before,
-.bg-maroon .site-footer::before,
-.bg-green .site-footer::before {
-  background: rgba(255, 251, 243, 0.2);
-}
-
-.bg-dark  .footer-link,
-.bg-dark  .footer-copy,
-.bg-maroon .footer-link,
-.bg-maroon .footer-copy,
-.bg-green  .footer-link,
-.bg-green  .footer-copy {
-  color: rgba(255, 251, 243, 0.4);
-}
-
-.bg-dark  .footer-link:hover,
-.bg-maroon .footer-link:hover,
-.bg-green  .footer-link:hover {
-  color: var(--cream);
-}
-
 @media (max-width: 640px) {
-  .site-footer {
-    padding: 0 var(--px-mobile); /* 20px on mobile */
-  }
   .footer-inner {
+    padding: 20px var(--px-mobile);
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
