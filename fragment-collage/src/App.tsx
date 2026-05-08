@@ -164,7 +164,7 @@ export default function App() {
 
   return (
     // Outer shell: fills the parent container (height set by the about page section)
-    <div className="relative w-full h-full overflow-hidden bg-black">
+    <div className="relative w-full h-full overflow-hidden">
       <canvas ref={canvasRef} className="hidden" />
 
       {/*

@@ -641,11 +641,7 @@
     let engineRef = null, renderRef = null, runnerRef = null;
     let fadeTimer = null, scrollHandler = null;
 
-    // Idle preload — images cached before first hover
-    const preload = () => IMAGES.forEach(src => { new Image().src = src; });
-    'requestIdleCallback' in window
-      ? requestIdleCallback(preload, { timeout: 4000 })
-      : setTimeout(preload, 2500);
+    // No preload — curiosity images are only needed on hover, loaded on demand in launch()
 
     function startFade() {
       clearTimeout(fadeTimer);
