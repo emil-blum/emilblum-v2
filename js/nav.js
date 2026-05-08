@@ -204,11 +204,13 @@
 
     const loader = document.getElementById('loader');
     if (loader) {
-      // Wait for GSAP to set display:none on the loader before injecting
+      // Wait for GSAP to set display:none on the loader, then delay a further
+      // 350ms so home-content finishes fading in before the footer appears —
+      // otherwise footer links bleed through the still-transparent page-main.
       const obs = new MutationObserver(() => {
         if (loader.style.display === 'none') {
           obs.disconnect();
-          inject();
+          setTimeout(inject, 350);
         }
       });
       obs.observe(loader, { attributes: true, attributeFilter: ['style'] });

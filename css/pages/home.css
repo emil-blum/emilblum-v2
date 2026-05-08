@@ -84,19 +84,19 @@
 .loader-image-wrap {
   position: absolute;
   inset: 0;
-  transform: translateZ(0); /* single GPU composite layer — eliminates inter-image seam */
 }
 
-/* All images fill the wrap absolutely — 1px bleed prevents sub-pixel gap on retina */
+/* All images fill the wrap absolutely */
 .loader-img-main,
 .loader-img-extra {
   position: absolute;
-  inset: -1px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
-  backface-visibility: hidden;
 }
 
 /* Extra images stack on top, cycle out (highest z = first shown) */

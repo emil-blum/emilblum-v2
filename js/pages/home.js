@@ -47,6 +47,7 @@
       { width: targetW, duration: 0.9, ease: 'expo.inOut' },
       `-=${DUR - 0.05}`
     );
+    tl.addLabel('boxOpen', '<'); // anchor for image-cycle timing
 
     /* Image scales up at the same time as box */
     tl.fromTo(imageGrow,
@@ -59,19 +60,20 @@
     tl.fromTo(wordStart, { x: 0 }, { x: -6, duration: 1.0 }, '<');
     tl.fromTo(wordEnd,   { x: 0 }, { x:  6, duration: 1.0 }, '<');
 
-    /* Images cycle DURING the scale-up — start early, each visible ~0.28s */
-    if (extras.length) {
-      tl.to(extras, {
+    /* Images cycle one-by-one during scale-up.
+       Each is hidden (display:none) immediately after fading so no transparent
+       layer remains in the compositor — eliminates the sub-pixel seam artifact. */
+    Array.from(extras).forEach((extra, i) => {
+      tl.to(extra, {
         opacity: 0,
         duration: 0.06,
         ease: 'none',
-        stagger: 0.28
-      }, '<+=0.15');
-    }
+        onComplete() { extra.style.display = 'none'; }
+      }, `boxOpen+=${0.15 + i * 0.28}`);
+    });
 
-    /* Slide up 0.4s after last image — short hold then exit */
-    const cycleEnd = extras.length * 0.28 + 0.15 + 0.06; // approx time cycling takes
-    tl.to({}, { duration: 0.4 }); // 0.4s beat after last image
+    /* Short hold after last image cycles, then exit */
+    tl.to({}, { duration: 0.4 });
 
     /* Loader exits upward */
     tl.to(loader, {
@@ -176,10 +178,10 @@
       setTimeout(preloadAll, 2500);
     }
 
-    const FADE_IN_MS   = 600;  // duration of each image fade-in
-    const FADE_OUT_MS  = 300;  // duration of each image fade-out
-    const IN_STAGGER   = 400;  // ms between each successive image appearing
-    const OUT_STAGGER  = 200;  // ms between each successive image disappearing
+    const FADE_IN_MS   = 300;  // duration of each image fade-in
+    const FADE_OUT_MS  = 150;  // duration of each image fade-out
+    const IN_STAGGER   = 200;  // ms between each successive image appearing
+    const OUT_STAGGER  = 100;  // ms between each successive image disappearing
 
     let currentKey = null;
     let allTimers  = [];
