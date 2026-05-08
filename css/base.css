@@ -393,7 +393,7 @@ body.cursor-hover #cursor-label {
   font-family: var(--font-meta);
   font-size: 10px;
   letter-spacing: 0.06em;
-  color: rgba(255, 251, 243, 0.55);
+  color: var(--cream);
   white-space: nowrap;
 }
 

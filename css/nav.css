@@ -37,11 +37,11 @@
   z-index: 100;
   display: flex;
   align-items: center;
-  background: rgba(255, 251, 243, 0.88);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 251, 243, 0.5);
-  box-shadow: 0 2px 16px rgba(30, 30, 40, 0.08), 0 1px 3px rgba(30, 30, 40, 0.06);
+  border: 1px solid rgba(30, 30, 40, 0.08);
+  box-shadow: 0 2px 20px rgba(30, 30, 40, 0.10), 0 1px 3px rgba(30, 30, 40, 0.05);
   border-radius: 4px;
   opacity: 0;
   transform: translateX(-50%) translateY(-12px);
@@ -104,7 +104,10 @@
   transform: scaleX(1);
 }
 
-/* Active state — dot, no background */
+/* Active state — dot only; suppress hover underline on the active page */
+.nav-link.is-active::before {
+  display: none;
+}
 
 .nav-link.is-active::after {
   content: '';
@@ -283,7 +286,7 @@ body.is-dark-page .nav-cta-fixed:hover {
 
 /* ── NAV SCROLL BEHAVIOUR ── */
 .site-nav.is-scrolled {
-  background: rgba(255, 251, 243, 0.75);
+  background: rgba(255, 255, 255, 0.88);
 }
 
 /* ── MOBILE NAV — switches at 900px ── */

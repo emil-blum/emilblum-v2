@@ -168,9 +168,7 @@
 
     // Preload during browser idle time so it doesn't compete with page load
     const preloadAll = () => {
-      Object.values(HOVER_PREVIEWS).flat().forEach(src => {
-        new Image().src = src;
-      });
+      Object.values(HOVER_PREVIEWS).flat().forEach(src => { new Image().src = src; });
     };
     if ('requestIdleCallback' in window) {
       requestIdleCallback(preloadAll, { timeout: 4000 });
@@ -178,31 +176,41 @@
       setTimeout(preloadAll, 2500);
     }
 
-    let hideTimer = null;
+    const FADE_IN_MS   = 600;  // duration of each image fade-in
+    const FADE_OUT_MS  = 300;  // duration of each image fade-out
+    const IN_STAGGER   = 400;  // ms between each successive image appearing
+    const OUT_STAGGER  = 200;  // ms between each successive image disappearing
+
+    let currentKey = null;
+    let allTimers  = [];
+
+    function clearTimers() {
+      allTimers.forEach(clearTimeout);
+      allTimers = [];
+    }
+
+    function later(fn, ms) {
+      const t = setTimeout(fn, ms);
+      allTimers.push(t);
+    }
 
     // Divide viewport into a 3×2 grid of zones, shuffle, return one position per image.
-    // Guarantees images are always spread across the screen rather than clustering.
     function spreadPositions(count) {
       const COLS = 3, ROWS = 2;
       const cells = [];
-      for (let r = 0; r < ROWS; r++) {
+      for (let r = 0; r < ROWS; r++)
         for (let c = 0; c < COLS; c++) cells.push([c, r]);
-      }
-      // Fisher-Yates shuffle
       for (let i = cells.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [cells[i], cells[j]] = [cells[j], cells[i]];
       }
-      // Each zone is cw×ch percent of viewport; jitter places image within its zone
-      const cw = 75 / COLS;   // 25% per column
-      const ch = 70 / ROWS;   // 35% per row
+      const cw = 75 / COLS, ch = 70 / ROWS;
       return cells.slice(0, count).map(([c, r]) => ({
         x: 3 + c * cw + Math.random() * cw * 0.65,
         y: 5 + r * ch + Math.random() * ch * 0.70,
       }));
     }
 
-    // Pick n random items from an array without mutating it
     function pickRandom(arr, n) {
       const pool = [...arr];
       for (let i = pool.length - 1; i > 0; i--) {
@@ -212,52 +220,73 @@
       return pool.slice(0, Math.min(n, pool.length));
     }
 
-    function showScatter(key) {
-      clearTimeout(hideTimer);
-      container.innerHTML = '';
+    function showSection(key) {
+      if (key === currentKey) return;
+      clearTimers();
 
-      const all  = HOVER_PREVIEWS[key];
-      if (!all || !all.length) return;
-      const srcs = pickRandom(all, SCATTER_COUNT);
+      // Fade out + remove any existing images, with per-image stagger
+      const existing = Array.from(container.querySelectorAll('.scatter-img'));
+      existing.forEach((img, i) => {
+        const opacity = parseFloat(img.style.opacity || '0');
+        if (opacity <= 0.01) {
+          // Not yet visible — remove immediately, no transition needed
+          img.remove();
+        } else {
+          img.style.transition = `opacity ${FADE_OUT_MS}ms ease`;
+          later(() => { img.style.opacity = '0'; }, i * OUT_STAGGER);
+          later(() => { img.remove(); }, i * OUT_STAGGER + FADE_OUT_MS + 40);
+        }
+      });
 
+      currentKey = key;
+      if (!key) return;
+
+      const pool = HOVER_PREVIEWS[key];
+      if (!pool || !pool.length) return;
+
+      const srcs      = pickRandom(pool, SCATTER_COUNT);
       const positions = spreadPositions(srcs.length);
 
       srcs.forEach((src, i) => {
         const img = document.createElement('img');
-        img.src = src;
+        img.src       = src;
         img.className = 'scatter-img';
-        img.alt = '';
+        img.alt       = '';
         img.draggable = false;
 
         const { x, y } = positions[i];
         const rot = (Math.random() - 0.5) * 30; // ±15°
         const w   = SIZE_TIERS[i % SIZE_TIERS.length];
 
-        img.style.cssText = `left:${x}%;top:${y}%;width:${w}px;transform:rotate(${rot}deg);`;
+        img.style.cssText = [
+          `left:${x}%`,
+          `top:${y}%`,
+          `width:${w}px`,
+          `transform:rotate(${rot}deg)`,
+          `opacity:0`,
+          `transition:opacity ${FADE_IN_MS}ms ease`,
+        ].join(';');
 
         container.appendChild(img);
 
-        // Double rAF so the opacity transition fires after element is painted
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          img.style.opacity = '1';
-        }));
+        // Stagger each image's fade-in start by IN_STAGGER ms
+        later(() => { img.style.opacity = '1'; }, i * IN_STAGGER);
       });
     }
 
-    function hideScatter() {
-      clearTimeout(hideTimer);
-      // Short debounce so moving between adjacent grid cells doesn't flicker
-      hideTimer = setTimeout(() => {
-        const imgs = container.querySelectorAll('.scatter-img');
-        imgs.forEach(img => { img.style.opacity = '0'; });
-        setTimeout(() => { container.innerHTML = ''; }, 240);
-      }, 80);
-    }
+    // Use mousemove on the grid rather than per-cell mouseenter —
+    // mouseenter can be skipped on fast pointer movements, mousemove never is.
+    const grid = document.querySelector('.home-nav-grid');
+    if (!grid) return;
 
-    document.querySelectorAll('.home-nav-item[data-section]').forEach(item => {
-      item.addEventListener('mouseenter', () => showScatter(item.dataset.section));
-      item.addEventListener('mouseleave', hideScatter);
+    grid.addEventListener('mousemove', e => {
+      const item = e.target.closest('.home-nav-item[data-section]');
+      const key  = item ? item.dataset.section : null;
+      // Only respond to real sections; null (gap between cells) is ignored
+      if (key && key !== currentKey) showSection(key);
     });
+
+    grid.addEventListener('mouseleave', () => showSection(null));
   }
   // ────────────────────────────────────────────────────────────
 
