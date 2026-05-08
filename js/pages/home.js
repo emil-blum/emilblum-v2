@@ -282,10 +282,16 @@
     if (!grid) return;
 
     grid.addEventListener('mousemove', e => {
-      const item = e.target.closest('.home-nav-item[data-section]');
-      const key  = item ? item.dataset.section : null;
-      // Only respond to real sections; null (gap between cells) is ignored
-      if (key && key !== currentKey) showSection(key);
+      const sectionItem = e.target.closest('.home-nav-item[data-section]');
+      const anyItem     = e.target.closest('.home-nav-item');
+      const key         = sectionItem ? sectionItem.dataset.section : null;
+
+      if (key && key !== currentKey) {
+        showSection(key);                          // section tile → show images
+      } else if (!key && anyItem && currentKey) {
+        showSection(null);                         // non-section tile (Connect) → clear
+      }
+      // null + no tile = gap between cells → preserve current images
     });
 
     grid.addEventListener('mouseleave', () => showSection(null));
