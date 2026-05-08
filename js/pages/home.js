@@ -278,20 +278,30 @@
 
     // Use mousemove on the grid rather than per-cell mouseenter —
     // mouseenter can be skipped on fast pointer movements, mousemove never is.
+    // DOM work is deferred to rAF so the mousemove handler stays weightless
+    // and CSS :hover on cells paints in the current frame without delay.
     const grid = document.querySelector('.home-nav-grid');
     if (!grid) return;
+
+    let rafPending    = false;
+    let pendingSection = undefined;
 
     grid.addEventListener('mousemove', e => {
       const sectionItem = e.target.closest('.home-nav-item[data-section]');
       const anyItem     = e.target.closest('.home-nav-item');
       const key         = sectionItem ? sectionItem.dataset.section : null;
 
-      if (key && key !== currentKey) {
-        showSection(key);                          // section tile → show images
-      } else if (!key && anyItem && currentKey) {
-        showSection(null);                         // non-section tile (Connect) → clear
+      if (key)       pendingSection = key;   // section tile
+      else if (anyItem) pendingSection = null; // Connect → clear
+      else           return;                  // gap between cells → no change
+
+      if (!rafPending) {
+        rafPending = true;
+        requestAnimationFrame(() => {
+          rafPending = false;
+          if (pendingSection !== currentKey) showSection(pendingSection);
+        });
       }
-      // null + no tile = gap between cells → preserve current images
     });
 
     grid.addEventListener('mouseleave', () => showSection(null));
