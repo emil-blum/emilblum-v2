@@ -715,7 +715,13 @@
       ]);
 
       // Pick images and start engine once all have loaded
-      const pool = [...IMAGES].sort(() => Math.random() - 0.5).slice(0, SHOW_COUNT);
+      // GIFs are excluded — canvas drawImage() only captures the first frame,
+      // so animated GIFs render as a static black square in Matter.js sprites.
+      // Replace with a static AVIF to include in the physics drop.
+      const pool = [...IMAGES]
+        .filter(src => !src.toLowerCase().endsWith('.gif'))
+        .sort(() => Math.random() - 0.5)
+        .slice(0, SHOW_COUNT);
       const bodies = [];
       let callbacks = 0;
 
