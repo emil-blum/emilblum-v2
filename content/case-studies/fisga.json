@@ -1,5 +1,5 @@
 {
-  "id": "fisga-branding",
+  "id": "fisga",
   "title": "FISGA",
   "subtitle": "Brand identity for a multidisciplinary arts, fitness and events space",
   "year": "2023",
@@ -60,5 +60,5 @@
     { "role": "Studio", "name": "Calumma Design" }
   ],
   "awards": [],
-  "next": { "id": "hard-rock-vinyl", "title": "Hard Rock Hotels" }
+  "next": { "id": "hard-rock-hotel", "title": "Hard Rock Hotels" }
 }

@@ -39,8 +39,8 @@
       <a href="featured.html"       class="nav-link" data-cursor="View">Featured</a>
       <a href="code.html"           class="nav-link" data-cursor="Explore">Code</a>
       <a href="art.html"            class="nav-link" data-cursor="Look">Art</a>
-      <a href="moments-v2.html"     class="nav-link" data-cursor="Wander">Moments</a>
-      <a href="scraps-v2.html"      class="nav-link" data-cursor="Browse">Swarf</a>
+      <a href="moments.html"     class="nav-link" data-cursor="Wander">Moments</a>
+      <a href="swarf.html"      class="nav-link" data-cursor="Browse">Swarf</a>
       <a href="about.html"          class="nav-link" data-cursor="Read">About</a>
       <div class="nav-dropdown">
         <button class="nav-dropdown-toggle">Play <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></button>
@@ -168,7 +168,7 @@
     /* ── Inline fallback data (works on file://) ───────── */
     const INLINE = {
 
-      'hard-rock-vinyl': {
+      'hard-rock-hotel': {
         title: 'Hard Rock Hotels',
         subtitle: 'A hand-crafted paper record player for very important guests',
         year: '2019',
@@ -215,10 +215,10 @@
           { role: 'Studio', name: 'Campfire Agency' }
         ],
         awards: [],
-        next: { id: 'oxfam-republic', title: 'Oxfam: Republic of You' }
+        next: { id: 'oxfam-republic-of-you', title: 'Oxfam: Republic of You' }
       },
 
-      'oxfam-republic': {
+      'oxfam-republic-of-you': {
         title: 'Republic of You',
         subtitle: 'A retro browser game exploring global inequality — for Oxfam',
         year: '2015–2016',
@@ -324,10 +324,10 @@
           { role: 'Creative Direction & Design', name: 'Emil Blum' }
         ],
         awards: [],
-        next: { id: 'fisga-branding', title: 'FISGA' }
+        next: { id: 'fisga', title: 'FISGA' }
       },
 
-      'fisga-branding': {
+      'fisga': {
         title: 'FISGA',
         subtitle: 'Brand identity for a multidisciplinary arts, fitness and events space',
         year: '2023',
@@ -385,7 +385,7 @@
           { role: 'Studio', name: 'Calumma Design' }
         ],
         awards: [],
-        next: { id: 'hard-rock-vinyl', title: 'Hard Rock Hotels' }
+        next: { id: 'hard-rock-hotel', title: 'Hard Rock Hotels' }
       }
 
     };
@@ -473,7 +473,7 @@
       if (data.next) {
         const nextEl   = document.getElementById('cs-next');
         const nextTitle = document.getElementById('cs-next-title');
-        if (nextEl && data.next.id)    nextEl.href = `case-study.html?id=${data.next.id}`;
+        if (nextEl && data.next.id)    nextEl.href = `/featured/${data.next.id}`;
         if (nextTitle && data.next.title) nextTitle.textContent = data.next.title;
       }
 
@@ -749,7 +749,9 @@
     }
 
     /* ── Load ──────────────────────────────────────────── */
-    const id = new URLSearchParams(window.location.search).get('id') || '';
+    // Support both /featured/:slug (clean URL via Vercel rewrite) and ?id=:slug (legacy)
+    const _pathMatch = window.location.pathname.match(/\/featured\/([^\/]+)$/);
+    const id = (_pathMatch && _pathMatch[1]) || new URLSearchParams(window.location.search).get('id') || '';
 
     if (!id) {
       showNotFound();

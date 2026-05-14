@@ -1,3 +1,11 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/featured/:slug", "destination": "/case-study?id=:slug" }
+  ],
+  "redirects": [
+    { "source": "/moments-v2", "destination": "/moments", "permanent": true },
+    { "source": "/scraps-v2",  "destination": "/swarf",   "permanent": true },
+    { "source": "/scraps",     "destination": "/swarf",   "permanent": true }
+  ]
 }

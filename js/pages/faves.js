@@ -424,7 +424,7 @@ function bindInfoButtons() {
     const btn = e.target.closest('.card__info-btn');
     if (!btn) return;
     const id = btn.dataset.projectId;
-    if (id) window.location.href = `case-study.html?id=${id}`;
+    if (id) window.location.href = `/featured/${id}`;
   });
 }
 
@@ -498,9 +498,9 @@ function init(loadedProjects) {
 
 /* ── INLINE DATA (fallback for file:// local dev; fetch takes priority on server) ── */
 const FAVES_INLINE = [
-  { id: 'hard-rock-vinyl',   title: 'Hard Rock Hotels',     year: '2019', category: 'Print & Craft',            holoVariant: 'galaxy',    thumbnail: 'assets/images/01_eb-home-archive-friendapp.webp',      tags: ['Print','Craft','Experiential'] },
+  { id: 'hard-rock-hotel',   title: 'Hard Rock Hotels',     year: '2019', category: 'Print & Craft',            holoVariant: 'galaxy',    thumbnail: 'assets/images/01_eb-home-archive-friendapp.webp',      tags: ['Print','Craft','Experiential'] },
   { id: 'daydream-believers',title: 'Daydream Believers',   year: '2019', category: 'Brand Identity & Digital', holoVariant: 'rainbow',   thumbnail: 'assets/images/02_eb-home-archive-kombucha.webp',       tags: ['Brand','Web','Identity'] },
-  { id: 'oxfam-republic',    title: 'Republic of You',      year: '2015–2016', category: 'Digital & Interactive', holoVariant: 'radiant', thumbnail: 'assets/images/03_eb-home-archive-RType.webp',          tags: ['Interactive','Game Design','Campaign'] },
+  { id: 'oxfam-republic-of-you', title: 'Republic of You', year: '2015–2016', category: 'Digital & Interactive', holoVariant: 'radiant', thumbnail: 'assets/images/03_eb-home-archive-RType.webp',          tags: ['Interactive','Game Design','Campaign'] },
   { id: 'stewart-brewing',   title: 'Stewart Brewing',      year: '2019', category: 'Packaging & Brand',        holoVariant: 'prismatic', thumbnail: 'assets/images/04_eb-home-archive-africanwoman.webp',   tags: ['Packaging','Brand','AR'] },
   { id: 'sgma-solgelica',    title: 'SgMA / Solgelica',     year: '2025', category: 'Brand & Identity',         holoVariant: 'classic',   thumbnail: 'assets/images/05_eb-home-archive-AAguitars.webp',      tags: ['Brand','Biotech','Identity'] },
   { id: 'calumma-design',    title: 'Calumma Design',       year: 'Ongoing', category: 'Brand & Web',           holoVariant: 'galaxy',    thumbnail: 'assets/images/06_eb-home-archive-Mindful-illustrations.webp', tags: ['Brand','Web','Interior'] }
