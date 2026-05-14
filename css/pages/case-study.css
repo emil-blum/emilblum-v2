@@ -68,6 +68,32 @@
 .cs-content { display: none; }
 .cs-content.is-visible { display: block; }
 
+/* ── Hero entrance animation ───────────────────────── */
+@keyframes cs-fade-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cs-content.is-visible .cs-eyebrow {
+  animation: cs-fade-up 0.55s cubic-bezier(0.215, 0.61, 0.355, 1) both 0.05s;
+}
+.cs-content.is-visible .cs-title {
+  animation: cs-fade-up 0.65s cubic-bezier(0.215, 0.61, 0.355, 1) both 0.13s;
+}
+.cs-content.is-visible .cs-subtitle {
+  animation: cs-fade-up 0.55s cubic-bezier(0.215, 0.61, 0.355, 1) both 0.22s;
+}
+.cs-content.is-visible .cs-hero {
+  animation: cs-fade-up 0.85s cubic-bezier(0.215, 0.61, 0.355, 1) both 0.34s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-content.is-visible .cs-eyebrow,
+  .cs-content.is-visible .cs-title,
+  .cs-content.is-visible .cs-subtitle,
+  .cs-content.is-visible .cs-hero { animation: none; }
+}
+
 /* ── TITLE BLOCK — centred, cream bg, above hero ─── */
 .cs-title-block {
   text-align: center;
