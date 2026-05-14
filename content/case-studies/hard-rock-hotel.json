@@ -1,16 +1,16 @@
 {
   "id": "hard-rock-hotel",
-  "title": "Hard Rock Hotels",
-  "subtitle": "A hand-crafted paper record player for very important guests",
-  "year": "2019",
-  "category": "Print & Craft",
-  "client": "Hard Rock Hotels",
+  "title": "Hard Rock Hotel",
+  "subtitle": "A paper vinyl record player, custom-pressed and made from scratch in ten days.",
+  "category": "Craft & Product Design",
+  "year": "2018",
+  "client": "Hard Rock Hotel",
   "industry": "Hospitality",
-  "tags": ["Print", "Craft", "Experiential"],
-  "intro": "Hard Rock Hotels asked for a custom welcome gift for selected high-profile guests. Several ideas of varying complexity were presented — the client loved the idea of a bespoke paper vinyl player. From that brief came prototypes, cut fingers, broken vinyl records, and one of the most satisfying things ever made in a studio.",
-  "challenge": "Create something genuinely surprising for guests who have already seen everything. The gift needed to feel premium, embody the Hard Rock music heritage, and work within an extremely short timeframe.",
-  "approach": "A paper record player sleeve that guests can fold and play. Prototyping, material sourcing and testing happened simultaneously. A personalised welcome message and a custom track were recorded and pressed to vinyl. The sleeve instructions became part of the design.",
-  "outcome": "The end result is a functional paper record player — fold the sleeve, place the vinyl, spin it at 45rpm. Completely analog, completely unexpected. A welcome gift that got people talking.",
+  "tags": ["Craft", "Product Design", "Packaging", "Experiential"],
+  "intro": "Hard Rock Hotel needed a welcome gift for a group of health and lifestyle influencers arriving in Tenerife for their Rock Om campaign. The brief landed on my desk 14 days before the event and, after a speedy pitch with several ideas, one concept was selected: a hand-made and hand-operational paper record player housing a custom-pressed vinyl record. I had 10 days to make the idea come to life and into guests' hands.",
+  "challenge": "I needed to produce ten functional paper record players, designed and produced from scratch, to be in guests' hotel rooms in Tenerife within ten days. There was no template, no prior experience making anything like it, no existing supplier chain, and no margin for a second attempt.",
+  "approach": "Working backwards from the deadline, I sourced a small UK vinyl presser, got musician Richard Jahn to donate a track, and folded stacks of paper prototypes testing needle types and their potential for audible sound. Antique gramophone needles and custom-cut bamboo chopsticks turned out to be the right combination.",
+  "outcome": "Ten complete paper record players with individually customised vinyls — recorded, designed, hand-assembled, folded, and packaged through several intense days and nights — arrived in guests' rooms alongside flowers and merch. The influencers filmed and shared videos of themselves playing with the gifts on socials. The client was happy and I could finally take a nap.",
   "heroImage": "assets/case-studies/hard-rock-vinyl/01-HC-Vinyl-HERO.avif",
   "gallery": [
     {
@@ -18,8 +18,7 @@
       "src": "assets/case-studies/hard-rock-vinyl/02-HC-Vinyl.avif"
     },
     {
-      "type": "grid",
-      "cols": 2,
+      "type": "grid", "cols": 2,
       "items": [
         { "src": "assets/case-studies/hard-rock-vinyl/03-HC-Vinyl-1.avif" },
         { "src": "assets/case-studies/hard-rock-vinyl/04-HC-Vinyl-2.avif" }
@@ -34,8 +33,7 @@
       "src": "assets/case-studies/hard-rock-vinyl/06-HC-Vinyl.avif"
     },
     {
-      "type": "grid",
-      "cols": 2,
+      "type": "grid", "cols": 2,
       "items": [
         { "src": "assets/case-studies/hard-rock-vinyl/07-HC-Vinyl-1.avif" },
         { "src": "assets/case-studies/hard-rock-vinyl/08-HC-Vinyl-2.avif" }
@@ -44,19 +42,21 @@
     {
       "type": "scroll",
       "items": [
-        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-1.avif" },
-        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-2.avif" },
-        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-3.avif" },
+        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-1.avif", "caption": "Prototyping" },
+        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-2.avif", "caption": "Assembly" },
+        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-3.avif", "caption": "Final finish" },
         { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-4.avif" },
         { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-5.avif" }
       ]
     }
   ],
   "credits": [
-    { "role": "Creative Direction & Design", "name": "Emil Blum" },
+    { "role": "Creative Direction", "name": "Emīl Blūm" },
+    { "role": "Design", "name": "Emīl Blūm" },
     { "role": "Music", "name": "Richard Jahn" },
+    { "role": "Photography", "name": "David Wilkinson" },
     { "role": "Studio", "name": "Campfire Agency" }
   ],
   "awards": [],
-  "next": { "id": "oxfam-republic-of-you", "title": "Oxfam: Republic of You" }
+  "next": { "id": "oxfam-republic-of-you", "title": "Oxfam" }
 }

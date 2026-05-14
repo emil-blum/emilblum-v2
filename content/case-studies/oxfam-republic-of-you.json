@@ -1,16 +1,16 @@
 {
   "id": "oxfam-republic-of-you",
-  "title": "Republic of You",
-  "subtitle": "A retro browser game exploring global inequality — for Oxfam",
+  "title": "Oxfam",
+  "subtitle": "A retro-gaming-inspired political quiz giving anyone a chance to step into the shoes of a national leader.",
+  "category": "Game Design & Art Direction",
   "year": "2015–2016",
-  "category": "Digital & Interactive",
   "client": "Oxfam GB",
-  "industry": "Charity & NGO",
-  "tags": ["Interactive", "Game Design", "Campaign", "Digital"],
-  "intro": "To help Oxfam fight extreme inequality, we built an engaging, light-hearted online quiz-game. In the Republic of You, users create their own country and — as its leader — make decisions on critical matters, each one impacting the wellbeing of their citizens. Just like the real world, but with better pixel art.",
-  "challenge": "Make a genuinely complex global issue — inequality — feel accessible and personally relevant without trivialising it. The target audience needed to feel the weight of these decisions, not just read about statistics.",
-  "approach": "Inspired by retro 8-bit games, every decision triggers illustrated consequences across the country. An equality score reflects cumulative choices, linked to real Oxfam case studies. Illustration by Katie McPherson brought the pixel world to life.",
-  "outcome": "Launched to an immediate and passionate response — the project received a commendation at the Scottish Design Awards 2016. The backlash from online critics (who called it \"oversimplified\") turned out to be rather prescient given subsequent world events.",
+  "industry": "Non-profit",
+  "tags": ["Game Design", "Interactive", "Illustration", "Web Design", "Campaign"],
+  "intro": "Oxfam wanted to close the gap between abstract inequality statistics and the people who could actually care about them. The chosen solution was a 10-question political simulation — part retro game, part policy lesson — that let anyone create their own country and experience how leadership decisions could affect the population.",
+  "challenge": "Inequality is easy to care about in theory and easy to ignore in practice. The challenge was making policy feel personally consequential — without being preachy or academic — to an audience that would usually avoid the subject altogether.",
+  "approach": "Working closely with illustrator Katie McPherson and a team of copywriters, UX designers and developers, we created a retro web-based 8-bit game built around a set of deterministic questions about national policy — where every leadership decision about healthcare, wages, wealth tax and social services shaped a personalised country landscape, triggered citizen reactions, and linked directly to real Oxfam case studies about global equivalents.",
+  "outcome": "The game received a Commendation at the Scottish Design Awards 2016 and inspired Oxfam to pursue more interactive campaigns to further their work, but it also received a fair dose of criticism from the public for oversimplifying the causes of inequality and was eventually shut down. In the years that followed, the political landscape made it look considerably less oversimplified.",
   "heroImage": "assets/case-study-placeholders/Oxfam-Republic-of-You/ROY_YT.jpg",
   "gallery": [
     {
@@ -18,16 +18,14 @@
       "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/22eeb567909747.5b4a894a08bfe.gif"
     },
     {
-      "type": "grid",
-      "cols": 2,
+      "type": "grid", "cols": 2,
       "items": [
         { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/14195167909747.5b4aa42f2d665.jpg" },
         { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/368ffa67909747.5b4a9e7e53495.jpg" }
       ]
     },
     {
-      "type": "grid",
-      "cols": 2,
+      "type": "grid", "cols": 2,
       "items": [
         { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/381cbb67909747.5b4a8c9226c0f.jpg" },
         { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/5b779f67909747.5b4aa42f2e29b.jpg" }
@@ -43,13 +41,17 @@
   ],
   "credits": [
     { "role": "Creative Direction", "name": "Charlie Bell" },
-    { "role": "Art Direction & Design", "name": "Emil Blum" },
-    { "role": "Illustration", "name": "Katie McPherson & Emil Blum" },
+    { "role": "Art Direction", "name": "Emīl Blūm" },
+    { "role": "Design", "name": "Emīl Blūm" },
+    { "role": "Illustration", "name": "Katie McPherson & Emīl Blūm" },
     { "role": "Copywriting", "name": "Adam Smith" },
-    { "role": "Studio", "name": "Whitespace (now Dentsu Creative Edinburgh)" }
+    { "role": "UX Design", "name": "Alex Turnbull, Duncan Larsen-Russell" },
+    { "role": "Lead Web Development", "name": "Thijs van der Velden" },
+    { "role": "Account Management", "name": "Fiona Stirling, Stuart MacPherson" },
+    { "role": "Studio", "name": "Whitespace" }
   ],
   "awards": [
-    "Scottish Design Awards 2016 — Digital Design Commendation"
+    "Scottish Design Awards 2016 — Commendation"
   ],
-  "next": { "id": "stewart-brewing", "title": "Stewart Brewing" }
+  "next": { "id": "daydream-believers", "title": "Daydream Believers" }
 }

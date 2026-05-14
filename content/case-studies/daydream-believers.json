@@ -1,0 +1,59 @@
+{
+  "id": "daydream-believers",
+  "title": "Daydream Believers",
+  "subtitle": "A rebrand built to grow an innovative educational platform from grassroots idea to globally recognised organisation.",
+  "category": "Brand Identity & Web Design",
+  "year": "2021",
+  "client": "Daydream Believers",
+  "industry": "Education",
+  "tags": ["Brand Identity", "Illustration", "Web Design", "Educational Content"],
+  "intro": "Daydream Believers is an open educational platform I co-founded in 2019 to help bring creative thinking and problem-solving into classrooms. By 2021, the organisation had outgrown its original DIY identity and required a brand bold enough to make education policymakers take notice, teachers feel excited to use, and young learners want to engage with.",
+  "challenge": "The brand needed to speak to two very different audiences simultaneously — teachers looking for credible curriculum tools, and young people who needed a reason to engage. One visual language with the ability to inspire and stand the test of time.",
+  "approach": "We chose to embrace the messy creative process and give the brand a character both big and small could engage with. We leaned into a layered and vibrant visual language filled with scribbles and mixed-media collages, accompanied by a new brand mascot — Brua, an illustrated cloud named after the Scottish Gaelic word \"Bruadarach\" meaning dreamer or visionary. In addition to a new tone of voice and a custom-built website, over 40 unique collages were created as resource thumbnails, giving each learning resource its own distinct visual character.",
+  "outcome": "The rebrand supported the launch of an accredited Creative Thinking Qualification in the Scottish education system, opened countless doors to new partnerships (LEGO, Ellen MacArthur Foundation, Rockstar North, Skyscanner, D&AD), and helped Daydream Believers reach 50,000+ students globally. In 2023, the organisation was recognised as one of the top 100 education innovators in the world by HundrED.",
+  "heroImage": "assets/case-studies/hard-rock-vinyl/01-HC-Vinyl-HERO.avif",
+  "gallery": [
+    {
+      "type": "full",
+      "src": "assets/case-studies/hard-rock-vinyl/02-HC-Vinyl.avif"
+    },
+    {
+      "type": "grid", "cols": 2,
+      "items": [
+        { "src": "assets/case-studies/hard-rock-vinyl/03-HC-Vinyl-1.avif" },
+        { "src": "assets/case-studies/hard-rock-vinyl/04-HC-Vinyl-2.avif" }
+      ]
+    },
+    {
+      "type": "full",
+      "src": "assets/case-studies/hard-rock-vinyl/05-HC-Vinyl.avif"
+    },
+    {
+      "type": "grid", "cols": 2,
+      "items": [
+        { "src": "assets/case-studies/hard-rock-vinyl/07-HC-Vinyl-1.avif" },
+        { "src": "assets/case-studies/hard-rock-vinyl/08-HC-Vinyl-2.avif" }
+      ]
+    },
+    {
+      "type": "scroll",
+      "items": [
+        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-1.avif" },
+        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-2.avif" },
+        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-3.avif" }
+      ]
+    }
+  ],
+  "credits": [
+    { "role": "Creative Direction", "name": "Emīl Blūm" },
+    { "role": "Design", "name": "Emīl Blūm" },
+    { "role": "Illustration", "name": "Katie McPherson" },
+    { "role": "Web Design", "name": "Emīl Blūm" },
+    { "role": "Web Development", "name": "Pedro Reis" },
+    { "role": "Studio", "name": "Calumma" }
+  ],
+  "awards": [
+    "HundrED 2023 — Top 100 Education Innovators Worldwide"
+  ],
+  "next": { "id": "unseen", "title": "Unseen" }
+}

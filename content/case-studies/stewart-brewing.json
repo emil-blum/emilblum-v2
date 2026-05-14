@@ -1,21 +1,20 @@
 {
   "id": "stewart-brewing",
   "title": "Stewart Brewing",
-  "subtitle": "Molecular beer labels and an augmented reality experience",
-  "year": "2019",
-  "category": "Packaging & Brand",
+  "subtitle": "Beer labels designed from the inside out to present the hidden elements of craft in each brew.",
+  "category": "Packaging Design & AR App",
+  "year": "2018–2020",
   "client": "Stewart Brewing",
-  "industry": "Food & Drink",
-  "tags": ["Packaging", "Brand Identity", "Augmented Reality"],
-  "intro": "Stewart Brewing's Project 7 Series represents brewers' passion for experimental beer. To give the range a new visual identity, we looked inside the brew — visualising the \"Elements of Craft\", metaphorical molecules that act as identity for each beer, communicating its flavour, colour, smell and the creativity of the people who made it.",
-  "challenge": "Create a label system that communicated the craft and character of seven experimental beers without resorting to the usual rustic or heritage visual clichés common in craft brewing.",
-  "approach": "Each beer's label is built from its \"molecular fingerprint\" — abstract forms derived from the ingredients and process. An augmented reality app layer was developed alongside the labels, letting customers point their phone at any bottle to unlock deeper stories about each brew.",
-  "outcome": "A complete packaging system with a built-in interactive dimension. The AR experience encouraged a deeper, more curious relationship with the beer — and gave the range a genuinely distinctive shelf presence.",
+  "industry": "Food & Beverage",
+  "tags": ["Packaging", "3D Visuals", "Augmented Reality", "Brand Identity"],
+  "intro": "Stewart Brewing's Project 7 series exists to give its brewers complete creative freedom — each small batch a deliberate experiment in pushing what beer can taste and feel like. I was selected to bring the new range to life by creating a standalone brand and label design that would establish this experimental project in the eyes of beer lovers across the UK.",
+  "challenge": "Each beer in the series is entirely distinct — different ingredients, different processes, different character. The packaging needed a visual system flexible enough to give each beer its own identity while still reading as a coherent series on shelf.",
+  "approach": "We looked closely at the process and chose to conceptualise and present the microscopic elements and secret ingredients that make each brew special — what we called the Elements of Craft. Each beer's ingredients and process were translated into a unique 3D molecular form — inspired by medical imaging and microscopic organisms. An AR app extended the idea further: point your phone at the can, summon the element, and explore its unique character via virtual microscope.",
+  "outcome": "The system proved extensible by design — as new beers joined the series, new elements were created to match the flavours, the ingredients and the character of each beer. The project won Best Concept Design at the SIBA Business Awards 2019, recognising both the packaging concept and the AR experience as an authentic celebration of the brewing craft. Over the course of our partnership, we developed labels for 19 different beers that helped establish Stewart Brewing as true champions of the craft with thousands of new fans.",
   "heroImage": "assets/case-study-placeholders/Stewart-Brewings/upload-08bd448a-80b4-4127-94c2-c84ff2b3d66b.webp",
   "gallery": [
     {
-      "type": "grid",
-      "cols": 2,
+      "type": "grid", "cols": 2,
       "items": [
         { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-2e92202c-a587-4c3a-8b29-d4dc55610a97.webp" },
         { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-303c2168-9ffc-4fb9-b488-a31a7d58a644.webp" }
@@ -26,8 +25,7 @@
       "src": "assets/case-study-placeholders/Stewart-Brewings/upload-35d27559-b54a-4b40-8d79-9200963ec97b.webp",
       "hotspots": [
         {
-          "x": 72,
-          "y": 48,
+          "x": 72, "y": 48,
           "label": "Design System",
           "title": "Molecular Fingerprint",
           "body": "Each label is built from abstract forms derived from the ingredients and brewing process — unique to every beer in the series."
@@ -35,8 +33,7 @@
       ]
     },
     {
-      "type": "grid",
-      "cols": 2,
+      "type": "grid", "cols": 2,
       "items": [
         { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-5687f772-9823-49c4-ac17-d0cf14c60ecf.webp" },
         { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-71aaec08-c36e-4d86-a6b0-a018daabba6a.webp" }
@@ -52,8 +49,12 @@
     }
   ],
   "credits": [
-    { "role": "Creative Direction & Design", "name": "Emil Blum" }
+    { "role": "Creative Direction", "name": "Emīl Blūm" },
+    { "role": "Design", "name": "Emīl Blūm" },
+    { "role": "App Development", "name": "Chris McIntyre" }
   ],
-  "awards": [],
-  "next": { "id": "fisga", "title": "FISGA" }
+  "awards": [
+    "SIBA Business Awards 2019 — Best Concept Design"
+  ],
+  "next": { "id": "hard-rock-hotel", "title": "Hard Rock Hotel" }
 }
