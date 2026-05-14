@@ -69,4 +69,17 @@
     interceptLinks();
   });
 
+  // bfcache restore: browser Back/Forward skips DOMContentLoaded but fires pageshow.
+  // The veil was left at opacity:1 when we navigated away — fade it back out.
+  window.addEventListener('pageshow', e => {
+    if (e.persisted && veil) {
+      veil.style.transition = `opacity ${ENTER_MS}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+      veil.style.pointerEvents = 'all';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { veil.style.opacity = '0'; });
+      });
+      setTimeout(() => { veil.style.pointerEvents = 'none'; }, ENTER_MS);
+    }
+  });
+
 })();
