@@ -216,6 +216,11 @@ body.cursor-hover #cursor {
   mix-blend-mode: normal;
 }
 
+body.cursor-on-dark #cursor {
+  background-color: var(--maroon);
+  mix-blend-mode: normal;
+}
+
 #cursor-label {
   font-family: var(--font-meta);
   font-size: 10px;

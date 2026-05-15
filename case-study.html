@@ -143,20 +143,18 @@
 
       <!-- 6. CREDITS & AWARDS -->
       <div class="cs-footer container" id="cs-footer">
-        <div class="cs-credits-col" id="cs-credits-col"></div>
-        <div class="cs-awards-col"  id="cs-awards-col"></div>
+        <div class="cs-footer-left">
+          <div class="cs-credits-col" id="cs-credits-col"></div>
+          <div class="cs-awards-col"  id="cs-awards-col"></div>
+        </div>
       </div>
 
       <!-- 7. NEXT PROJECT -->
       <a class="cs-next" id="cs-next" href="featured.html" data-cursor="Next">
+        <div class="cs-next-bg" id="cs-next-bg" aria-hidden="true"></div>
         <div class="container">
           <p class="cs-next-label">Next project</p>
-          <div class="cs-next-row">
-            <span class="cs-next-title" id="cs-next-title">View all work</span>
-            <svg class="cs-next-arrow" width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M6 18h24M22 10l8 8-8 8"/>
-            </svg>
-          </div>
+          <span class="cs-next-title" id="cs-next-title">View all work</span>
         </div>
       </a>
 
@@ -314,6 +312,7 @@
         outcome: 'The experience premiered at the charity\'s headquarters in Scotland to a large crowd of politicians and council members, with great emotional impact and later showcased on YouTube and 360° video platforms where it reached new support. The campaign was recognised as one of Scotland\'s 100 Disruptors by The Hunter Foundation in 2018. Unfortunately, none of that was enough to save the charity from closure — a hard lesson in how the work can land exactly right, yet the cause it\'s fighting for can still be lost.',
         heroImage: 'assets/case-studies/hard-rock-vinyl/01-HC-Vinyl-HERO.avif',
         gallery: [
+          { type: 'video360', provider: 'mux', src: 'lZitMWAwBV9p4OTk5J8IC3r8gG02edgISiPImBbydxt00', thumb: 'assets/case-studies/unseen/Unseen_360-Thumbnail.avif', title: 'Unseen — 360° Experience', caption: 'Viewing with headphones recommended. Drag to look around or go full screen for full effect.' },
           { type: 'full', src: 'assets/case-studies/hard-rock-vinyl/02-HC-Vinyl.avif' },
           { type: 'grid', cols: 2, items: [
             { src: 'assets/case-studies/hard-rock-vinyl/03-HC-Vinyl-1.avif' },
@@ -485,12 +484,14 @@
       if (creditsCol && data.credits && data.credits.length) {
         creditsCol.innerHTML = `
           <p class="cs-section-label">Credits</p>
-          ${data.credits.map(c => `
-            <div class="cs-credit-item">
-              <span class="cs-credit-role">${c.role}</span>
-              <span class="cs-credit-name">${c.name}</span>
-            </div>
-          `).join('')}
+          <div class="cs-credits-inner">
+            ${data.credits.map(c => `
+              <div class="cs-credit-item">
+                <span class="cs-credit-role">${c.role}</span>
+                <span class="cs-credit-name">${c.name.split(' & ').map(n => `<span>${n.trim()}</span>`).join('')}</span>
+              </div>
+            `).join('')}
+          </div>
         `;
       }
 
@@ -507,10 +508,15 @@
 
       // Next project
       if (data.next) {
-        const nextEl   = document.getElementById('cs-next');
+        const nextEl    = document.getElementById('cs-next');
         const nextTitle = document.getElementById('cs-next-title');
-        if (nextEl && data.next.id)    nextEl.href = `/featured/${data.next.id}`;
+        const nextBg    = document.getElementById('cs-next-bg');
+        if (nextEl && data.next.id)       nextEl.href = `/featured/${data.next.id}`;
         if (nextTitle && data.next.title) nextTitle.textContent = data.next.title;
+        if (nextBg && data.next.id) {
+          const nextHero = (INLINE[data.next.id] || {}).heroImage;
+          if (nextHero) nextBg.style.backgroundImage = `url('${nextHero}')`;
+        }
       }
 
       // Reveal content first — gallery must be built AFTER this so
@@ -538,6 +544,7 @@
       initScrollCarousels();
       initHotspots();
       initVideos();
+      init360Players();
     }
 
     function buildBlock(block, idx) {
@@ -649,6 +656,74 @@
             : `<iframe src="" frameborder="0" allowfullscreen allow="autoplay; fullscreen"></iframe>`}
         `;
         wrap.appendChild(videoWrap);
+
+      } else if (block.type === 'video360') {
+        wrap.classList.add('cs-block-video360');
+        const streamUrl = block.provider === 'mux'
+          ? `https://stream.mux.com/${block.src}.m3u8`
+          : block.src;
+
+        const inner = document.createElement('div');
+        inner.className = 'cs-360-inner';
+        inner.dataset.src = streamUrl;
+
+        inner.innerHTML = `
+          ${block.thumb ? `<img class="cs-360-thumb" src="${block.thumb}" alt="">` : ''}
+          <div class="cs-360-overlay">
+            <button class="cs-360-play-btn" aria-label="Play 360° video">
+              <div class="cs-360-play-ring">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M2 12h20"/>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+              </div>
+              <span class="cs-360-badge">360°</span>
+            </button>
+          </div>
+          <div class="cs-360-controls">
+            <div class="cs-360-scrub-row">
+              <div class="cs-360-scrub-track" role="slider" aria-label="Seek">
+                <div class="cs-360-scrub-fill"></div>
+                <div class="cs-360-scrub-thumb"></div>
+              </div>
+            </div>
+            <div class="cs-360-btn-row">
+              <div class="cs-360-btn-left">
+                <button class="cs-360-icon-btn cs-360-pp-btn" aria-label="Pause">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+                </button>
+                <span class="cs-360-time">0:00</span>
+              </div>
+              <span class="cs-360-hint-text">Drag to look around</span>
+              <div class="cs-360-btn-right">
+                <button class="cs-360-icon-btn cs-360-mute-btn" aria-label="Mute">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                </button>
+                <button class="cs-360-icon-btn cs-360-gyro-btn" aria-label="Toggle gyroscope" title="Use device orientation" hidden>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.466 7.5C15.643 4.237 13.952 2 12 2 9.239 2 7 6.477 7 12s2.239 10 5 10c.526 0 1.037-.186 1.517-.497"/><path d="m15.194 13.707 3.814 1.86-1.86 3.814"/><path d="M19 15.57c-1.804.885-4.274 1.43-7 1.43-5.523 0-10-2.239-10-5s4.477-5 10-5c4.838 0 8.873 1.667 9.8 4"/></svg>
+                </button>
+                <button class="cs-360-icon-btn cs-360-fs-btn" aria-label="Enter fullscreen">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        wrap.appendChild(inner);
+
+        // Desktop caption
+        const capText = block.caption || 'Viewing with headphones recommended. Drag to look around or go full screen for full effect.';
+        const capDesktop = document.createElement('p');
+        capDesktop.className = 'cs-360-caption cs-360-caption-desktop';
+        capDesktop.textContent = capText;
+        wrap.appendChild(capDesktop);
+
+        // Mobile caption — references the gyro button
+        const capMobile = document.createElement('p');
+        capMobile.className = 'cs-360-caption cs-360-caption-mobile';
+        capMobile.innerHTML = 'Viewing with headphones recommended. Press <svg class="cs-360-caption-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.466 7.5C15.643 4.237 13.952 2 12 2 9.239 2 7 6.477 7 12s2.239 10 5 10c.526 0 1.037-.186 1.517-.497"/><path d="m15.194 13.707 3.814 1.86-1.86 3.814"/><path d="M19 15.57c-1.804.885-4.274 1.43-7 1.43-5.523 0-10-2.239-10-5s4.477-5 10-5c4.838 0 8.873 1.667 9.8 4"/></svg> to use device orientation when viewing.';
+        wrap.appendChild(capMobile);
       }
 
       return wrap;
@@ -784,6 +859,78 @@
       });
     }
 
+    /* ── 360° video players ─────────────────────────────── */
+    function init360Players() {
+      document.querySelectorAll('.cs-360-inner').forEach(inner => {
+        const overlay  = inner.querySelector('.cs-360-overlay');
+        const playBtn  = inner.querySelector('.cs-360-play-btn');
+        const controls = inner.querySelector('.cs-360-controls');
+        const fsBtn    = inner.querySelector('.cs-360-fs-btn');
+        const gyroBtn  = inner.querySelector('.cs-360-gyro-btn');
+        const src      = inner.dataset.src;
+        let player     = null;
+
+        // Show gyro button on touch devices
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+          gyroBtn.hidden = false;
+        }
+
+        // Make cursor visible on the dark video background
+        inner.addEventListener('mouseenter', () => document.body.classList.add('cursor-on-dark'));
+        inner.addEventListener('mouseleave', () => document.body.classList.remove('cursor-on-dark'));
+
+        playBtn.addEventListener('click', async () => {
+          playBtn.disabled = true;
+          const ring = playBtn.querySelector('.cs-360-play-ring');
+          ring.innerHTML = '<div class="cs-360-loading"></div>';
+
+          try {
+            player = new Video360Player(inner, src);
+            await player.init();
+            overlay.style.display = 'none';
+            player.initControls(controls);
+            // Fade out hint after 4s of play
+            const hint = controls.querySelector('.cs-360-hint-text');
+            if (hint) {
+              setTimeout(() => {
+                hint.style.opacity = '0';
+                setTimeout(() => { if (hint.parentNode) hint.remove(); }, 600);
+              }, 4000);
+            }
+          } catch (err) {
+            console.error('360 player failed:', err);
+            ring.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>';
+            playBtn.disabled = false;
+          }
+        });
+
+        // Fullscreen toggle
+        fsBtn.addEventListener('click', () => {
+          if (document.fullscreenElement === inner) {
+            document.exitFullscreen();
+          } else {
+            inner.requestFullscreen && inner.requestFullscreen();
+          }
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+          const isFs = document.fullscreenElement === inner;
+          // Swap icon: expand ↔ contract
+          fsBtn.querySelector('svg').innerHTML = isFs
+            ? '<path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>'
+            : '<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>';
+          if (player) player._onResize();
+        });
+
+        // Gyroscope toggle
+        gyroBtn.addEventListener('click', async () => {
+          if (!player) return;
+          const enabled = await player.enableGyro();
+          gyroBtn.classList.toggle('is-active', enabled);
+        });
+      });
+    }
+
     /* ── Load ──────────────────────────────────────────── */
     // Support both /featured/:slug (clean URL via Vercel rewrite) and ?id=:slug (legacy)
     const _pathMatch = window.location.pathname.match(/\/featured\/([^\/]+)$/);
@@ -809,6 +956,7 @@
   </script>
 
   <!-- Scripts -->
+  <script src="js/video360.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/transitions.js"></script>
 

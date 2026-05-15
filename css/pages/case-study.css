@@ -112,7 +112,7 @@
 }
 
 .cs-title {
-  font-size: clamp(2.6rem, 7vw, 6.5rem);
+  font-size: clamp(2.2rem, 5vw, 5rem);
   font-weight: 500;
   color: var(--dark);
   line-height: 1.0;
@@ -505,6 +505,231 @@
 .cs-video-wrap.is-playing iframe,
 .cs-video-wrap.is-playing video { display: block; }
 
+/* ── 360° video block ────────────────────────────── */
+.cs-block-video360 {
+  /* full-width, no side padding */
+}
+
+.cs-360-inner {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #0a0a0f;
+  overflow: hidden;
+}
+
+.cs-360-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.7;
+  transition: opacity 0.35s ease;
+}
+.cs-360-inner:hover .cs-360-thumb { opacity: 0.85; }
+
+/* Pre-play overlay */
+.cs-360-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  z-index: 2;
+}
+
+.cs-360-play-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.cs-360-play-btn:disabled { opacity: 0.6; cursor: wait; }
+
+.cs-360-play-ring {
+  width: 68px;
+  height: 68px;
+  background: rgba(255, 251, 243, 0.12);
+  border: 1px solid rgba(255, 251, 243, 0.28);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cream);
+  transition: transform 0.3s var(--spring), background 0.3s ease;
+}
+.cs-360-inner:hover .cs-360-play-ring {
+  transform: scale(1.1);
+  background: rgba(255, 251, 243, 0.2);
+}
+
+.cs-360-badge {
+  font-family: var(--font-meta);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 251, 243, 0.55);
+}
+
+/* Loading spinner (replaces play ring while scripts load) */
+.cs-360-loading {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 251, 243, 0.2);
+  border-top-color: rgba(255, 251, 243, 0.7);
+  border-radius: 50%;
+  animation: spin360 0.7s linear infinite;
+}
+@keyframes spin360 { to { transform: rotate(360deg); } }
+
+/* Controls bar — auto-hides; shown via .is-visible */
+.cs-360-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 32px 14px 12px;
+  z-index: 3;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.cs-360-controls.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Scrubber row */
+.cs-360-scrub-row {
+  padding: 6px 0 8px;
+}
+.cs-360-scrub-track {
+  position: relative;
+  height: 3px;
+  background: rgba(255, 251, 243, 0.25);
+  border-radius: 2px;
+  cursor: pointer;
+}
+.cs-360-scrub-track:hover { height: 4px; }
+.cs-360-scrub-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0%;
+  background: var(--cream);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.cs-360-scrub-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 12px;
+  height: 12px;
+  background: var(--cream);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.cs-360-scrub-track:hover .cs-360-scrub-thumb { opacity: 1; }
+
+/* Button row */
+.cs-360-btn-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.cs-360-btn-left,
+.cs-360-btn-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cs-360-time {
+  font-family: var(--font-meta);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: rgba(255, 251, 243, 0.6);
+  white-space: nowrap;
+  padding: 0 4px;
+  user-select: none;
+}
+
+.cs-360-hint-text {
+  font-family: var(--font-meta);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 251, 243, 0.35);
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+.cs-360-icon-btn {
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 251, 243, 0.7);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
+}
+.cs-360-icon-btn:hover {
+  color: var(--cream);
+  background: rgba(255, 251, 243, 0.1);
+}
+.cs-360-icon-btn.is-active {
+  color: var(--cream);
+  background: rgba(255, 251, 243, 0.15);
+}
+
+.cs-360-caption {
+  padding: 12px var(--px-desktop) 0;
+  font-family: var(--font-meta);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: rgba(30, 30, 40, 0.45);
+  max-width: var(--max-w);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.cs-360-caption-icon {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  margin-inline: 2px;
+  color: rgba(30, 30, 40, 0.6);
+}
+
+/* Desktop shows drag hint; mobile shows gyro hint */
+.cs-360-caption-mobile { display: none; }
+
+@media (max-width: 768px) {
+  .cs-360-caption { padding-inline: var(--px-mobile); }
+  .cs-360-caption-desktop { display: none; }
+  .cs-360-caption-mobile  { display: block; }
+}
+
 /* ── Hotspot markers ─────────────────────────────── */
 .cs-hotspot-btn {
   position: absolute;
@@ -615,9 +840,6 @@
   padding-top: 72px;
   padding-bottom: 88px;
   position: relative;
-  display: flex;
-  gap: 80px;
-  flex-wrap: wrap;
 }
 
 .cs-footer::before {
@@ -630,9 +852,20 @@
   background: rgba(30, 30, 40, 0.09);
 }
 
+.cs-footer-left {
+  display: flex;
+  gap: 52px;
+  width: 50%;
+}
+
 .cs-credits-col,
 .cs-awards-col {
-  min-width: 220px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.cs-credits-inner {
+  width: 100%;
 }
 
 .cs-section-label {
@@ -646,6 +879,7 @@
 
 .cs-credit-item {
   display: flex;
+  align-items: flex-start;
   gap: 16px;
   padding: 10px 0;
   border-bottom: 1px solid rgba(30, 30, 40, 0.06);
@@ -654,8 +888,8 @@
 .cs-credit-role {
   font-size: 12px;
   color: rgba(30, 30, 40, 0.38);
-  min-width: 150px;
-  flex-shrink: 0;
+  width: 150px;
+  flex: 0 0 150px;
   line-height: 1.4;
 }
 
@@ -665,6 +899,8 @@
   font-weight: 500;
   line-height: 1.4;
 }
+
+.cs-credit-name span { display: block; }
 
 .cs-award-item {
   display: flex;
@@ -677,24 +913,40 @@
   line-height: 1.5;
 }
 
-.cs-award-item::before {
-  content: '★';
-  font-size: 9px;
-  color: var(--maroon);
-  margin-top: 3px;
-  flex-shrink: 0;
-}
 
 /* ── NEXT PROJECT ──────────────────────────────────── */
 .cs-next {
   display: block;
+  position: relative;
+  overflow: hidden;
   padding: 88px 0;
   background: var(--dark);
   text-decoration: none;
-  transition: background 0.45s ease;
 }
 
-.cs-next:hover { background: var(--maroon); }
+.cs-next .container {
+  position: relative;
+  z-index: 1;
+}
+
+.cs-next-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 0;
+}
+
+.cs-next-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+}
+
+.cs-next:hover .cs-next-bg { opacity: 1; }
 
 .cs-next-label {
   font-family: var(--font-meta);
@@ -702,16 +954,11 @@
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(255, 251, 243, 0.35);
-  margin-bottom: 20px;
-}
-
-.cs-next-row {
-  display: flex;
-  align-items: center;
-  gap: 28px;
+  margin-bottom: 10px;
 }
 
 .cs-next-title {
+  display: block;
   font-size: clamp(1.8rem, 4.5vw, 4rem);
   font-weight: 500;
   color: var(--cream);
@@ -719,18 +966,11 @@
   line-height: 1.05;
 }
 
-.cs-next-arrow {
-  flex-shrink: 0;
-  color: rgba(255, 251, 243, 0.5);
-  transition: transform 0.35s var(--spring), color 0.35s ease;
-}
-
-.cs-next:hover .cs-next-arrow {
-  transform: translateX(10px);
-  color: var(--cream);
-}
-
 /* ── RESPONSIVE ────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .cs-footer-left { width: 100%; }
+}
+
 @media (max-width: 900px) {
   .cs-three-col { grid-template-columns: 1fr 1fr; }
 }
@@ -791,8 +1031,10 @@
   /* 3-col stacks to 1 on small phones */
   .cs-grid-inner--3 { grid-template-columns: 1fr; }
 
-  .cs-footer { flex-direction: column; gap: 48px; }
-  .cs-credit-item { flex-direction: column; gap: 2px; }
-  .cs-credit-role { min-width: 0; }
+  .cs-footer-left { flex-direction: column; gap: 40px; width: 100%; }
+  .cs-credits-col,
+  .cs-awards-col { flex: 1 1 100%; }
+  .cs-credit-item { flex-direction: column; gap: 4px; }
+  .cs-credit-role { flex: 0 0 auto; width: auto; min-width: 0; }
   .cs-meta-divider { display: none; }
 }

@@ -14,6 +14,14 @@
   "heroImage": "assets/case-studies/hard-rock-vinyl/01-HC-Vinyl-HERO.avif",
   "gallery": [
     {
+      "type": "video360",
+      "provider": "mux",
+      "src": "lZitMWAwBV9p4OTk5J8IC3r8gG02edgISiPImBbydxt00",
+      "thumb": "assets/case-studies/unseen/Unseen_360-Thumbnail.avif",
+      "title": "Unseen — 360° Experience",
+      "caption": "Viewing with headphones recommended. Drag to look around or go full screen for full effect."
+    },
+    {
       "type": "full",
       "src": "assets/case-studies/hard-rock-vinyl/02-HC-Vinyl.avif"
     },
