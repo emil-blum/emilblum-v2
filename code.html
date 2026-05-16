@@ -133,6 +133,13 @@
       overflow: hidden;
     }
 
+    .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .card-thumb::after {
       content: '';
       position: absolute;
@@ -274,75 +281,73 @@
       <div class="carousel-track" id="carousel-track">
         <div class="carousel-pad" aria-hidden="true"></div>
 
-        <!-- 01 Window to Nature -->
+        <!-- 01 Reveil -->
         <article class="carousel-card" data-reveal data-cursor="Explore">
-          <div class="card-thumb"></div>
-          <div class="card-meta">
-            <div class="card-title-row">
-              <h2 class="card-title">Window to Nature</h2>
-              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-            </div>
-            <p class="card-desc">A live ambient screen that pipes in calming nature scenes — forests, rain, coastlines. Built as a browser extension and standalone app.</p>
+          <div class="card-thumb">
+            <img src="assets/code/Reveil_Code-Thumb.avif" alt="Reveil" loading="lazy">
           </div>
-        </article>
-
-        <!-- 02 Scratch Sound Recorder -->
-        <article class="carousel-card" data-reveal data-cursor="Explore">
-          <div class="card-thumb"></div>
-          <div class="card-meta">
-            <div class="card-title-row">
-              <h2 class="card-title">Scratch Sound Recorder</h2>
-              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-            </div>
-            <p class="card-desc">Draw shapes on a canvas, each stroke triggering a synthesised sound. Export your session as audio. A sketchpad that sings.</p>
-          </div>
-        </article>
-
-        <!-- 03 Painting Canvas Tools -->
-        <article class="carousel-card" data-reveal data-cursor="Explore">
-          <div class="card-thumb"></div>
-          <div class="card-meta">
-            <div class="card-title-row">
-              <h2 class="card-title">Painting Canvas Tools</h2>
-              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-            </div>
-            <p class="card-desc">A set of browser-based painting utilities — wet oil simulation, acrylic brush textures, watercolour bleed. Made for experimentation, not production.</p>
-          </div>
-        </article>
-
-        <!-- 04 Image Secret Message Encoder -->
-        <article class="carousel-card" data-reveal data-cursor="Explore">
-          <div class="card-thumb"></div>
-          <div class="card-meta">
-            <div class="card-title-row">
-              <h2 class="card-title">Image Secret Message Encoder</h2>
-              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
-            </div>
-            <p class="card-desc">Steganography tool that hides text inside image pixel data. Encode a message into any PNG, decode it later. All client-side, nothing leaves the browser.</p>
-          </div>
-        </article>
-
-        <!-- 05 Reveil -->
-        <article class="carousel-card" data-reveal data-cursor="Explore">
-          <div class="card-thumb"></div>
           <div class="card-meta">
             <div class="card-title-row">
               <h2 class="card-title">Reveil</h2>
-              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+              <a href="https://reveil.emilblum.com/" target="_blank" rel="noopener" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
             </div>
-            <p class="card-desc">An alarm clock that wakes you with birdsong streams from around the world, timed to local sunrise. No music. No algorithm. Just dawn.</p>
+            <p class="card-desc">An experimental awareness tool for discovering how much information your device, browser, and computer automatically broadcast for anyone to see, if they wish. Plus additional face and audio recognition visualisers for the fun of it.</p>
           </div>
         </article>
 
-        <!-- 06 Binaural Player -->
+        <!-- 02 Page Runner -->
         <article class="carousel-card" data-reveal data-cursor="Explore">
-          <div class="card-thumb"></div>
+          <div class="card-thumb">
+            <img src="assets/code/Page-Runner_Code-Thumb.avif" alt="Page Runner" loading="lazy">
+          </div>
           <div class="card-meta">
             <div class="card-title-row">
-              <h2 class="card-title">Binaural Player</h2>
-              <a href="#" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+              <h2 class="card-title">Page Runner</h2>
+              <a href="https://page-runner.emilblum.com/" target="_blank" rel="noopener" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
             </div>
-            <p class="card-desc">A focus and relaxation player using binaural beat synthesis. Choose your target brainwave state — alpha, theta, delta — and let it run.</p>
+            <p class="card-desc">Speed-reading tool based on the Optimal Recognition Point concept, first introduced by Frank Waldman's Spritz app. Useful for reading .md, .txt, and .docx files.</p>
+          </div>
+        </article>
+
+        <!-- 03 Gradient Tool -->
+        <article class="carousel-card" data-reveal data-cursor="Explore">
+          <div class="card-thumb">
+            <img src="assets/code/Gradient_Code-Thumb.avif" alt="Gradient Tool" loading="lazy">
+          </div>
+          <div class="card-meta">
+            <div class="card-title-row">
+              <h2 class="card-title">Gradient Tool</h2>
+              <a href="https://gradient.emilblum.com/" target="_blank" rel="noopener" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+            </div>
+            <p class="card-desc">I needed to have gradients for a project, but found it frustrating to create them in Adobe CC, so I made this. Since I have it, I have never again needed to make a gradient for anything, but I'll use it when I do.</p>
+          </div>
+        </article>
+
+        <!-- 04 Sound.img -->
+        <article class="carousel-card" data-reveal data-cursor="Explore">
+          <div class="card-thumb">
+            <img src="assets/code/Sound-img_Code-Thumb.avif" alt="Sound.img" loading="lazy">
+          </div>
+          <div class="card-meta">
+            <div class="card-title-row">
+              <h2 class="card-title">Sound.img</h2>
+              <a href="https://sound-img.emilblum.com/" target="_blank" rel="noopener" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+            </div>
+            <p class="card-desc">I'm fascinated by procedural music-making, and knowing a coloured pixel holds a mathematical value, I decided to map those values to notes and sounds for endless fun.</p>
+          </div>
+        </article>
+
+        <!-- 05 Window to Nature -->
+        <article class="carousel-card" data-reveal data-cursor="Explore">
+          <div class="card-thumb">
+            <img src="assets/code/Window_Code-Thumb.avif" alt="Window to Nature" loading="lazy">
+          </div>
+          <div class="card-meta">
+            <div class="card-title-row">
+              <h2 class="card-title">Window to Nature</h2>
+              <a href="https://window.calumma.design/" target="_blank" rel="noopener" class="card-link">View <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+            </div>
+            <p class="card-desc">Part Pomodoro Technique-based focus tool, part an attempt to remind myself there is more to life past the office walls and the computer screen.</p>
           </div>
         </article>
 
