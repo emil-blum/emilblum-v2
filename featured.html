@@ -65,6 +65,7 @@
     .project-item[data-index="2"] { transition-delay: 0.1s; }
     .project-item[data-index="3"] { transition-delay: 0.05s; }
     .project-item[data-index="4"] { transition-delay: 0.12s; }
+    .project-item[data-index="5"] { transition-delay: 0.08s; }
 
     /* Grid positions — desktop */
     @media (min-width: 768px) {
@@ -72,6 +73,7 @@
       .item-2 { grid-column: 8 / 13; margin-top: 14rem; margin-bottom: 10rem; }
       .item-3 { grid-column: 2 / 8;  margin-bottom: 10rem; }
       .item-4 { grid-column: 7 / 13; margin-top: 8rem;  margin-bottom: 10rem; }
+      .item-5 { grid-column: 1 / 7;  margin-top: 2rem;  margin-bottom: 10rem; }
     }
 
     /* Mobile: full width, modest spacing */
@@ -95,6 +97,7 @@
     .item-2 .img-wrap { aspect-ratio: 3 / 2; }
     .item-3 .img-wrap { aspect-ratio: 4 / 3; }
     .item-4 .img-wrap { aspect-ratio: 3 / 4; }
+    .item-5 .img-wrap { aspect-ratio: 4 / 3; }
 
     /* ── Parallax image ──
        Taller than its container (120%) so there's room to pan ±10%.
@@ -335,6 +338,28 @@
           <span class="project-year">2023</span>
         </div>
         <h2 class="project-title">FISGA</h2>
+        <span class="project-cta">View case study →</span>
+      </div>
+    </a>
+
+    <!-- 5 · Unseen ──────────────────────────────── -->
+    <a href="/featured/unseen"
+       class="project-item item-5"
+       data-index="5"
+       data-cursor="View">
+      <div class="img-wrap">
+        <img
+          class="parallax-img"
+          src="assets/case-studies/unseen/Featured-Thumb.avif"
+          alt="Unseen — Social awareness campaign and 360° VR experience"
+          draggable="false">
+      </div>
+      <div class="project-meta">
+        <div class="project-meta-top">
+          <span class="project-cat">Campaign &amp; VR Experience</span>
+          <span class="project-year">2017</span>
+        </div>
+        <h2 class="project-title">Unseen</h2>
         <span class="project-cta">View case study →</span>
       </div>
     </a>

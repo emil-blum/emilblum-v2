@@ -11,7 +11,7 @@
   "challenge": "Policymakers had seen the statistics and were familiar with the realities of children living in an abusive environment. Yet most of them hadn't experienced the weight of that life — the isolation, fear, unpredictability, emotional turmoil — so they had other plans for the funding money. Our work needed to change their minds.",
   "approach": "With the help of Perry Jonsson and actors from spoken word collective Loud Poets, we produced a series of videos stitched together in 360° format for viewing on a VR headset, with headphones playing increasingly distorting audio to heighten the emotional unease. Alongside the video, I art directed the ominous brand photography, designed the brand identity, and built the website as an informational hub for the campaign and a guide to available social services.",
   "outcome": "The experience premiered at the charity's headquarters in Scotland to a large crowd of politicians and council members, with great emotional impact and later showcased on YouTube and 360° video platforms where it reached new support. The campaign was recognised as one of Scotland's 100 Disruptors by The Hunter Foundation in 2018. Unfortunately, none of that was enough to save the charity from closure — a hard lesson in how the work can land exactly right, yet the cause it's fighting for can still be lost.",
-  "heroImage": "assets/case-studies/hard-rock-vinyl/01-HC-Vinyl-HERO.avif",
+  "heroImage": "assets/case-studies/unseen/01_Unseen-Hero.avif",
   "gallery": [
     {
       "type": "video360",
@@ -22,33 +22,34 @@
       "caption": "Viewing with headphones recommended. Drag to look around or go full screen for full effect."
     },
     {
-      "type": "full",
-      "src": "assets/case-studies/hard-rock-vinyl/02-HC-Vinyl.avif"
-    },
-    {
-      "type": "grid", "cols": 2,
+      "type": "grid", "cols": 1,
       "items": [
-        { "src": "assets/case-studies/hard-rock-vinyl/03-HC-Vinyl-1.avif" },
-        { "src": "assets/case-studies/hard-rock-vinyl/04-HC-Vinyl-2.avif" }
+        { "src": "assets/case-studies/unseen/02_Unseen-Case.avif" }
       ]
     },
     {
-      "type": "full",
-      "src": "assets/case-studies/hard-rock-vinyl/05-HC-Vinyl.avif"
+      "type": "grid", "cols": 2,
+      "items": [
+        { "src": "assets/case-studies/unseen/03_Unseen-Case.avif" },
+        { "src": "assets/case-studies/unseen/04_Unseen-Case.avif" }
+      ]
     },
     {
       "type": "grid", "cols": 2,
       "items": [
-        { "src": "assets/case-studies/hard-rock-vinyl/07-HC-Vinyl-1.avif" },
-        { "src": "assets/case-studies/hard-rock-vinyl/08-HC-Vinyl-2.avif" }
+        { "src": "assets/case-studies/unseen/05_Unseen-Case.avif" },
+        { "src": "assets/case-studies/unseen/06_Unseen-Case.avif" }
       ]
     },
     {
       "type": "scroll",
       "items": [
-        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-1.avif" },
-        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-2.avif" },
-        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-3.avif" }
+        { "src": "assets/case-studies/unseen/01_Unseen_Carousel.avif" },
+        { "src": "assets/case-studies/unseen/02_Unseen_Carousel.avif" },
+        { "src": "assets/case-studies/unseen/03_Unseen_Carousel.avif" },
+        { "src": "assets/case-studies/unseen/04_Unseen_Carousel.avif" },
+        { "src": "assets/case-studies/unseen/05_Unseen_Carousel.avif" },
+        { "src": "assets/case-studies/unseen/06_Unseen_Carousel.avif" }
       ]
     }
   ],
