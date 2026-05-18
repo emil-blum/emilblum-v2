@@ -66,6 +66,7 @@
     .project-item[data-index="3"] { transition-delay: 0.05s; }
     .project-item[data-index="4"] { transition-delay: 0.12s; }
     .project-item[data-index="5"] { transition-delay: 0.08s; }
+    .project-item[data-index="6"] { transition-delay: 0.14s; }
 
     /* Grid positions — desktop */
     @media (min-width: 768px) {
@@ -74,6 +75,7 @@
       .item-3 { grid-column: 2 / 8;  margin-bottom: 10rem; }
       .item-4 { grid-column: 7 / 13; margin-top: 8rem;  margin-bottom: 10rem; }
       .item-5 { grid-column: 1 / 7;  margin-top: 2rem;  margin-bottom: 10rem; }
+      .item-6 { grid-column: 7 / 13; margin-top: 12rem; margin-bottom: 10rem; }
     }
 
     /* Mobile: full width, modest spacing */
@@ -98,6 +100,7 @@
     .item-3 .img-wrap { aspect-ratio: 4 / 3; }
     .item-4 .img-wrap { aspect-ratio: 3 / 4; }
     .item-5 .img-wrap { aspect-ratio: 4 / 3; }
+    .item-6 .img-wrap { aspect-ratio: 3 / 4; }
 
     /* ── Parallax image ──
        Taller than its container (120%) so there's room to pan ±10%.
@@ -342,10 +345,32 @@
       </div>
     </a>
 
-    <!-- 5 · Unseen ──────────────────────────────── -->
-    <a href="/featured/unseen"
+    <!-- 5 · Daydream Believers ─────────────────── -->
+    <a href="/featured/daydream-believers"
        class="project-item item-5"
        data-index="5"
+       data-cursor="View">
+      <div class="img-wrap">
+        <img
+          class="parallax-img"
+          src="assets/case-studies/daydream-believers/01_DaydreamBelievers_Hero.avif"
+          alt="Daydream Believers — Brand identity for open educational platform"
+          draggable="false">
+      </div>
+      <div class="project-meta">
+        <div class="project-meta-top">
+          <span class="project-cat">Brand Identity &amp; Web Design</span>
+          <span class="project-year">2021</span>
+        </div>
+        <h2 class="project-title">Daydream Believers</h2>
+        <span class="project-cta">View case study →</span>
+      </div>
+    </a>
+
+    <!-- 6 · Unseen ──────────────────────────────── -->
+    <a href="/featured/unseen"
+       class="project-item item-6"
+       data-index="6"
        data-cursor="View">
       <div class="img-wrap">
         <img

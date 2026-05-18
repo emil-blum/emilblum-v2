@@ -11,36 +11,56 @@
   "challenge": "The brand needed to speak to two very different audiences simultaneously — teachers looking for credible curriculum tools, and young people who needed a reason to engage. One visual language with the ability to inspire and stand the test of time.",
   "approach": "We chose to embrace the messy creative process and give the brand a character both big and small could engage with. We leaned into a layered and vibrant visual language filled with scribbles and mixed-media collages, accompanied by a new brand mascot — Brua, an illustrated cloud named after the Scottish Gaelic word \"Bruadarach\" meaning dreamer or visionary. In addition to a new tone of voice and a custom-built website, over 40 unique collages were created as resource thumbnails, giving each learning resource its own distinct visual character.",
   "outcome": "The rebrand supported the launch of an accredited Creative Thinking Qualification in the Scottish education system, opened countless doors to new partnerships (LEGO, Ellen MacArthur Foundation, Rockstar North, Skyscanner, D&AD), and helped Daydream Believers reach 50,000+ students globally. In 2023, the organisation was recognised as one of the top 100 education innovators in the world by HundrED.",
-  "heroImage": "assets/case-studies/hard-rock-vinyl/01-HC-Vinyl-HERO.avif",
+  "heroImage": "assets/case-studies/daydream-believers/01_DaydreamBelievers_Hero.avif",
   "gallery": [
     {
-      "type": "full",
-      "src": "assets/case-studies/hard-rock-vinyl/02-HC-Vinyl.avif"
+      "type": "grid", "cols": 1,
+      "items": [{ "src": "assets/case-studies/daydream-believers/02_DaydreamBelievers-Case.avif" }]
     },
     {
-      "type": "grid", "cols": 2,
-      "items": [
-        { "src": "assets/case-studies/hard-rock-vinyl/03-HC-Vinyl-1.avif" },
-        { "src": "assets/case-studies/hard-rock-vinyl/04-HC-Vinyl-2.avif" }
-      ]
+      "type": "grid", "cols": 1,
+      "items": [{ "src": "assets/case-studies/daydream-believers/03_DaydreamBelievers-Case.avif" }]
     },
     {
-      "type": "full",
-      "src": "assets/case-studies/hard-rock-vinyl/05-HC-Vinyl.avif"
-    },
-    {
-      "type": "grid", "cols": 2,
-      "items": [
-        { "src": "assets/case-studies/hard-rock-vinyl/07-HC-Vinyl-1.avif" },
-        { "src": "assets/case-studies/hard-rock-vinyl/08-HC-Vinyl-2.avif" }
-      ]
+      "type": "grid", "cols": 1,
+      "items": [{ "src": "assets/case-studies/daydream-believers/04_DaydreamBelievers-Case.avif" }]
     },
     {
       "type": "scroll",
       "items": [
-        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-1.avif" },
-        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-2.avif" },
-        { "src": "assets/case-studies/hard-rock-vinyl/Slide-HC-Vinyl-Process-3.avif" }
+        { "src": "assets/case-studies/daydream-believers/01_DaydreamBelievers_Carousel_Bitesize-Bravery.avif" },
+        { "src": "assets/case-studies/daydream-believers/02_DaydreamBelieversCarousel_6-degrees.avif" },
+        { "src": "assets/case-studies/daydream-believers/03_DaydreamBelievers_Carousel_Campaign-For-Kindness.avif" },
+        { "src": "assets/case-studies/daydream-believers/04_DaydreamBelievers_Carousel_Creative-Industries.avif" },
+        { "src": "assets/case-studies/daydream-believers/05__DaydreamBelievers_Carousel_Transform.avif" },
+        { "src": "assets/case-studies/daydream-believers/06_DaydreamBelievers_Carousel_Spontaneity.avif" },
+        { "src": "assets/case-studies/daydream-believers/07_DaydreamBelievers_Carousel_Safe-Data.avif" },
+        { "src": "assets/case-studies/daydream-believers/08_DaydreamBelievers_Carousel_Positive-Imact-of-negative-thinking.avif" },
+        { "src": "assets/case-studies/daydream-believers/09_DaydreamBelievers_Carousel_Veggie-Delight.avif" },
+        { "src": "assets/case-studies/daydream-believers/10_DaydreamBelievers_Carousel_Say-what-you-see.avif" },
+        { "src": "assets/case-studies/daydream-believers/11_DaydreamBelievers_Carousel_Big-Thinkers.avif" }
+      ]
+    },
+    {
+      "type": "grid", "cols": 2,
+      "items": [
+        { "src": "assets/case-studies/daydream-believers/05_DaydreamBelievers-Case.avif" },
+        { "src": "assets/case-studies/daydream-believers/06_DaydreamBelievers-Case.avif" }
+      ]
+    },
+    {
+      "type": "full",
+      "src": "assets/case-studies/daydream-believers/07_DaydreamBelievers-Case.avif"
+    },
+    {
+      "type": "scroll",
+      "items": [
+        { "src": "assets/case-studies/daydream-believers/01_DaydreamBelievers_Carousel-Music-of-your-soul.avif" },
+        { "src": "assets/case-studies/daydream-believers/02_DaydreamBelievers_Carousel-New-way-to-play.avif" },
+        { "src": "assets/case-studies/daydream-believers/03_DaydreamBelievers_Carousel-Forestopia.avif" },
+        { "src": "assets/case-studies/daydream-believers/04_DaydreamBelievers_Carousel-GenAI.avif" },
+        { "src": "assets/case-studies/daydream-believers/05_DaydreamBelievers_Carousel-Digital-world.avif" },
+        { "src": "assets/case-studies/daydream-believers/06_DaydreamBelievers_Carousel-Solarpunk-island.avif" }
       ]
     }
   ],
