@@ -190,10 +190,11 @@
           <div class="footer-social">
             <a href="mailto:hello@emilblum.com" class="footer-link">Email</a>
             <a href="https://linkedin.com/in/emilblum" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
-            <a href="https://instagram.com/emilblum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
-            <a href="https://are.na/emilblum" target="_blank" rel="noopener" class="footer-link">Are.na</a>
+            <a href="https://www.instagram.com/emil_blum" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+            <a href="https://www.are.na/emil-b/" target="_blank" rel="noopener" class="footer-link">Are.na</a>
             <a href="https://x.com/emilblum" target="_blank" rel="noopener" class="footer-link">X</a>
             <a href="https://substack.com/@emilblum" target="_blank" rel="noopener" class="footer-link">Substack</a>
+            <a href="https://github.com/emil-blum" target="_blank" rel="noopener" class="footer-link">GitHub</a>
           </div>
           <span class="footer-copy">© 2026 Emīl Blūm. All rights reserved.</span>
         </div>`;
