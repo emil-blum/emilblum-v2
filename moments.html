@@ -65,10 +65,17 @@
       font-feature-settings: "ss02" on, "ss03" on;
     }
 
+    .moments-hint { display: none; }
+
     @media (max-width: 640px) {
       #moments-desc {
         bottom: 16px;
         left: 16px;
+        right: 16px;
+      }
+      .moments-hint {
+        display: block;
+        margin-top: 5px;
       }
     }
   </style>
@@ -122,6 +129,8 @@
   <div id="moments-desc">
     <span>A selection of moments</span>
     <span>captured on camera over the years</span>
+    <span class="moments-hint">Drag · Pinch to zoom</span>
+    <span class="moments-hint">Double-tap to focus</span>
   </div>
 
   <!-- Canvas app bundle — IIFE format, plain script tag (no CORS, works on file://) -->

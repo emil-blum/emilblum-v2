@@ -105,9 +105,10 @@
 .cs-eyebrow {
   font-family: var(--font-meta);
   font-size: 11px;
-  letter-spacing: 0.18em;
+  font-weight: 600;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: rgba(30, 30, 40, 0.38);
+  color: var(--n500);
   margin-bottom: 18px;
 }
 
@@ -146,6 +147,14 @@
   object-position: center;
   display: block;
   will-change: transform;
+}
+
+@media (max-width: 640px) {
+  .cs-hero {
+    height: auto;
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+  }
 }
 
 /* ── META BAR ──────────────────────────────────────── */

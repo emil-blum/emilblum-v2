@@ -246,9 +246,23 @@
 
     .site-nav { z-index: 1000; }
 
+    .mobile-hint { display: none; }
+
     @media (max-width: 640px) {
-      #scraps-desc-left  { bottom: 24px; left: 16px; }
-      #scraps-desc-right { bottom: 24px; right: 16px; }
+      #scraps-desc-left {
+        bottom: 56px;
+        left: 16px;
+        right: 16px;
+        max-width: none;
+      }
+      #scraps-desc-right {
+        bottom: 24px;
+        left: 16px;
+        right: auto;
+        text-align: left;
+      }
+      .desktop-hint { display: none; }
+      .mobile-hint  { display: block; }
 
       /* Lightbox nav: move to bottom corners alongside counter */
       .lb-nav {
@@ -312,16 +326,17 @@
 
   <!-- ── BOTTOM-LEFT DESCRIPTION ── -->
   <div id="scraps-desc-left">
-    <span>A selection of visual and</span>
-    <span>conceptual experiments left on</span>
-    <span>the cutting room floor</span>
+    <span>A selection of visual and conceptual</span>
+    <span>experiments left on the cutting room floor</span>
   </div>
 
   <!-- ── BOTTOM-RIGHT HINT ── -->
   <div id="scraps-desc-right">
-    <span>Drag canvas to look around</span>
-    <span>Hold space to pan over images</span>
-    <span>Click on image to see detail</span>
+    <span class="desktop-hint">Drag canvas to look around</span>
+    <span class="desktop-hint">Hold space to pan over images</span>
+    <span class="desktop-hint">Click on image to see detail</span>
+    <span class="mobile-hint">Drag canvas to navigate</span>
+    <span class="mobile-hint">Click to focus on an image</span>
   </div>
 
   <!-- ── LIGHTBOX ── -->

@@ -209,6 +209,18 @@
   display: inline-block;
 }
 
+@media (max-width: 640px) {
+  .hero {
+    padding-top: 100px;
+  }
+  .hero-eyebrow {
+    margin-bottom: 12px;
+  }
+  .hero-headline {
+    margin-bottom: 40px;
+  }
+}
+
 /* ── PAGE NAVIGATION GRID ── */
 .home-nav-grid {
   display: grid;
