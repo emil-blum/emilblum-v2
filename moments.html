@@ -77,6 +77,10 @@
         display: block;
         margin-top: 5px;
       }
+      /* Hide canvas app's own controls overlay — our #moments-desc handles mobile instructions */
+      [class*="_controls_1w3ho_32"] {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -134,7 +138,7 @@
   </div>
 
   <!-- Canvas app bundle — IIFE format, plain script tag (no CORS, works on file://) -->
-  <script src="moments-v2-canvas/assets/index-lr62jITV.js"></script>
+  <script src="moments-v2-canvas/assets/index-PG-ztS-2.js"></script>
 
   <!-- Portfolio nav + transitions (must come after body for correct DOM order) -->
   <script src="js/transitions.js" defer></script>
