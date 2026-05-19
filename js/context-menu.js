@@ -42,6 +42,7 @@
       /* ── Items ── */
       '.ctx-item{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 14px;cursor:pointer;white-space:nowrap;color:var(--dark,#1e1e28);transition:background .1s ease,color .1s ease;}',
       '.ctx-item:hover{background:var(--maroon,#6e0a0a);color:var(--cream,#fffbf3);}',
+      '.ctx-item::after{content:"";position:absolute;top:0;left:100%;width:8px;height:100%;}',
       '.ctx-item.ctx-dim{color:rgba(30,30,40,.38);}',
       '.ctx-item.ctx-dim:hover{background:none;color:rgba(30,30,40,.38);cursor:default;}',
       '.ctx-divider{height:1px;background:rgba(30,30,40,.08);margin:4px 0;}',
@@ -53,6 +54,8 @@
       '.ctx-item:hover>.ctx-sub{opacity:1;pointer-events:auto;transform:translateX(0);}',
       '.ctx-sub.flip{left:auto;right:calc(100% + 4px);transform:translateX(6px);}',
       '.ctx-item:hover>.ctx-sub.flip{transform:translateX(0);}',
+      '.ctx-sub::before{content:"";position:absolute;top:0;right:100%;width:8px;height:100%;}',
+      '.ctx-sub.flip::before{right:auto;left:100%;}',
 
       /* ── Modal backdrop ── */
       '.ctx-bg{position:fixed;inset:0;z-index:99999;background:rgba(30,30,40,.42);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .22s ease;pointer-events:none;}',
