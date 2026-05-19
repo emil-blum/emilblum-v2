@@ -146,14 +146,6 @@
       'assets/images/hover-previews/play/02_Emil-Blum_Play.avif',
       'assets/images/hover-previews/play/03_Emil-Blum_Play.avif',
     ],
-    connect: [
-      'assets/images/hover-previews/connect/placeholder-22.webp',
-      'assets/images/hover-previews/connect/placeholder-23.webp',
-      'assets/images/hover-previews/connect/placeholder-24.webp',
-      'assets/images/hover-previews/connect/placeholder-7.png',
-      'assets/images/hover-previews/connect/placeholder-8.jpg',
-      'assets/images/hover-previews/connect/placeholder-9.png',
-    ],
   };
 
   // Widths for three size tiers (px) — varies each image for natural feel
