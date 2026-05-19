@@ -137,23 +137,32 @@
   background: var(--dark);
 }
 
+/* Extra height (120% vs 110%) ensures the parallax range (±4% pct)
+   never shifts the image enough to expose the dark background at the
+   bottom edge of the container. */
 .cs-hero-img {
   position: absolute;
   top: -5%;
   left: 0;
   width: 100%;
-  height: 110%;
+  height: 120%;
   object-fit: cover;
   object-position: center;
   display: block;
   will-change: transform;
 }
 
-@media (max-width: 640px) {
+/* Mobile: lock to 16:9, disable absolute parallax positioning */
+@media (max-width: 900px) {
   .cs-hero {
     height: auto;
     aspect-ratio: 16 / 9;
     min-height: 0;
+  }
+  .cs-hero-img {
+    top: 0;
+    height: 100%;
+    will-change: auto;
   }
 }
 
@@ -1126,13 +1135,10 @@
 }
 
 @media (max-width: 640px) {
-  .cs-hero {
-    height: 60vh;
-    min-height: 360px;
-  }
+  /* Hero height is already locked to 16:9 by the ≤900px rule — no override needed */
 
   .cs-title-block {
-    padding: 80px var(--px-mobile) 48px;
+    padding: 120px var(--px-mobile) 48px;
   }
 
   .cs-three-col { grid-template-columns: 1fr; gap: 36px; }

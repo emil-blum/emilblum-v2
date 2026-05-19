@@ -868,14 +868,16 @@
     function initParallax() {
       const heroImg = document.getElementById('cs-hero-img');
       const hero    = document.querySelector('.cs-hero');
-      if (!heroImg || !hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!heroImg || !hero) return;
+      if (window.innerWidth <= 900) return; // mobile: hero is 16:9 fixed, no parallax
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       function update() {
         const rect = hero.getBoundingClientRect();
         if (rect.bottom < 0 || rect.top > window.innerHeight) return;
         // progress: 0 when hero center at viewport bottom, 1 at viewport top
         const progress = 1 - (rect.top + rect.height / 2) / window.innerHeight;
-        // Move ±4% around the initial -5% offset (stays within 110% height bounds)
+        // Move ±4% around the -5% offset; image is 120% tall so bottom is always covered
         const pct = -5 + (progress - 0.5) * 8;
         heroImg.style.transform = `translateY(${pct.toFixed(2)}%)`;
       }
