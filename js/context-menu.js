@@ -71,6 +71,8 @@
       '.ctx-field label{font-family:var(--font-meta,"Space Grotesk",sans-serif);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(30,30,40,.42);}',
       '.ctx-field input,.ctx-field textarea{width:100%;box-sizing:border-box;background:rgba(30,30,40,.04);border:1px solid rgba(30,30,40,.11);border-radius:3px;padding:10px 12px;font-family:var(--font-body,"Manrope",sans-serif);font-size:14px;color:var(--dark,#1e1e28);outline:none;transition:border-color .15s ease;cursor:none;}',
       '.ctx-field input:focus,.ctx-field textarea:focus{border-color:var(--maroon,#6e0a0a);}',
+      '.ctx-field.is-error input,.ctx-field.is-error textarea{border-color:var(--maroon,#6e0a0a);background:rgba(110,10,10,.04);}',
+      '.ctx-field.is-error label{color:var(--maroon,#6e0a0a);}',
       '.ctx-field textarea{height:96px;min-height:64px;resize:vertical;}',
 
       /* ── Send button ── */
@@ -328,7 +330,10 @@
 
     /* Reset animation state */
     box.classList.remove('is-sending', 'is-sent');
-    if (form) form.reset();
+    if (form) {
+      form.reset();
+      form.querySelectorAll('.ctx-field').forEach(function (f) { f.classList.remove('is-error'); });
+    }
     if (btn)  { btn.disabled = false; btn.textContent = 'Send message'; }
     if (err)  err.textContent = '';
 
@@ -366,23 +371,62 @@
   }
 
   /* ── EmailJS send ─────────────────────────────────── */
-  function sendMsg(form) {
-    var box   = modal.querySelector('.ctx-box');
-    var btn   = form.querySelector('.ctx-submit');
-    var error = form.querySelector('#ctx-error');
-    var name  = form.querySelector('#ctx-name').value.trim();
-    var email = form.querySelector('#ctx-email').value.trim();
-    var subj  = form.querySelector('#ctx-subject').value.trim();
-    var msg   = form.querySelector('#ctx-msg').value.trim();
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!name || !email || !msg) {
-      error.textContent = 'Please fill in name, email and message.';
+  function fieldOf(el) { return el.closest('.ctx-field'); }
+
+  function setError(el, yes) {
+    var f = fieldOf(el);
+    if (f) f.classList.toggle('is-error', yes);
+  }
+
+  function clearErrorOnInput(el) {
+    el.addEventListener('input', function () { setError(el, false); }, { once: true });
+  }
+
+  function sendMsg(form) {
+    var box       = modal.querySelector('.ctx-box');
+    var btn       = form.querySelector('.ctx-submit');
+    var errorEl   = form.querySelector('#ctx-error');
+    var nameEl    = form.querySelector('#ctx-name');
+    var emailEl   = form.querySelector('#ctx-email');
+    var subjEl    = form.querySelector('#ctx-subject');
+    var msgEl     = form.querySelector('#ctx-msg');
+
+    var name  = nameEl.value.trim();
+    var email = emailEl.value.trim();
+    var subj  = subjEl.value.trim();
+    var msg   = msgEl.value.trim();
+
+    /* Per-field validation */
+    var valid = true;
+    var firstError = null;
+
+    [nameEl, subjEl, msgEl].forEach(function (el) {
+      var empty = !el.value.trim();
+      setError(el, empty);
+      if (empty) { valid = false; firstError = firstError || el; clearErrorOnInput(el); }
+    });
+
+    var badEmail = !email || !EMAIL_RE.test(email);
+    setError(emailEl, badEmail);
+    if (badEmail) {
+      valid = false;
+      firstError = firstError || emailEl;
+      clearErrorOnInput(emailEl);
+    }
+
+    if (!valid) {
+      errorEl.textContent = !email || !name || !subj || !msg
+        ? 'Please fill in all fields.'
+        : 'Please enter a valid email address.';
+      if (firstError) firstError.focus();
       return;
     }
 
-    error.textContent = '';
-    btn.disabled      = true;
-    btn.textContent   = 'Sending…';
+    errorEl.textContent = '';
+    btn.disabled        = true;
+    btn.textContent     = 'Sending…';
     box.classList.add('is-sending');
 
     loadEJS(function () {
