@@ -226,6 +226,10 @@
     initCursor();
     initReveal();
     initFooter();
+
+    const cm = document.createElement('script');
+    cm.src = 'js/context-menu.js';
+    document.head.appendChild(cm);
   });
 
 })();

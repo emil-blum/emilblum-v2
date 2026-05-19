@@ -197,7 +197,7 @@ button {
   background-color: var(--dark);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 100002;
   transform: translate(-50%, -50%);
   transition:
     width  0.3s var(--spring),

@@ -1,0 +1,64 @@
+{
+  "id": "game-masters",
+  "title": "National Museum of Scotland",
+  "subtitle": "A campaign for the first European showing of Game Masters that drew 65,000 visitors — 58% of whom had never attended a special exhibition at the museum before.",
+  "category": "Integrated Campaign",
+  "year": "2014",
+  "client": "National Museum of Scotland",
+  "industry": "Arts & Culture",
+  "tags": ["Campaign", "Illustration", "Print", "Digital"],
+  "intro": "Game Masters — an exhibition celebrating the largely unknown designers behind gaming's most iconic titles — was making its European debut at the National Museum of Scotland. The brief was to create a visual campaign flexible enough to work across every format, and compelling enough to attract both dedicated gamers and people who had never picked up a controller.",
+  "challenge": "The exhibition's real subject — the designers behind decades of beloved games — wasn't an obvious crowd-puller on its own. The design needed to make gaming feel culturally significant, not just nostalgic, to an audience well beyond the converted.",
+  "approach": "A grid system inspired by circuit boards — the architecture that makes games run — became the campaign's visual foundation. Iconic gaming characters were reconstructed within it as neon circuit illustrations, creating a system that scaled from outdoor posters to exhibition walls to museum merchandise.",
+  "outcome": "The campaign drew 65,000 visitors, with 58% having never attended a special exhibition at the museum before, proving especially popular with men and younger audiences. It won the Scottish Creative Awards 2015 for Use of Visual Design.",
+  "heroImage": "assets/case-studies/game-masters/01_Game-Masters_Hero.avif",
+  "gallery": [
+    {
+      "type": "full",
+      "src": "assets/case-studies/game-masters/02_GameMasters_Case.avif"
+    },
+    {
+      "type": "full",
+      "src": "assets/case-studies/game-masters/03_GameMasters_Case.avif"
+    },
+    {
+      "type": "grid", "cols": 2,
+      "items": [
+        { "src": "assets/case-studies/game-masters/04_GameMasters_Case.avif" },
+        { "src": "assets/case-studies/game-masters/05_GameMasters_Case.avif" }
+      ]
+    },
+    {
+      "type": "grid", "cols": 2,
+      "items": [
+        { "src": "assets/case-studies/game-masters/06_GameMasters_Case.avif" },
+        { "src": "assets/case-studies/game-masters/07_GameMasters_Case.avif" }
+      ]
+    },
+    {
+      "type": "full",
+      "src": "assets/case-studies/game-masters/08_GameMasters_Case.avif"
+    },
+    {
+      "type": "scroll",
+      "items": [
+        { "src": "assets/case-studies/game-masters/Carousel/01_GameMasters-Icons_Carousel.avif" },
+        { "src": "assets/case-studies/game-masters/Carousel/02_GameMasters-Icons_Carousel.avif" },
+        { "src": "assets/case-studies/game-masters/Carousel/03_GameMasters-Icons_Carousel.avif" },
+        { "src": "assets/case-studies/game-masters/Carousel/04_GameMasters-Icons_Carousel.avif" },
+        { "src": "assets/case-studies/game-masters/Carousel/05_GameMasters-Icons_Carousel.avif" },
+        { "src": "assets/case-studies/game-masters/Carousel/06_GameMasters-Icons_Carousel.avif" },
+        { "src": "assets/case-studies/game-masters/Carousel/07_GameMasters-Icons_Carousel.avif" },
+        { "src": "assets/case-studies/game-masters/Carousel/08_GameMasters-Icons_Carousel.avif" }
+      ]
+    }
+  ],
+  "credits": [
+    { "role": "Creative Direction", "name": "Emīl Blūm & Chris Davey" },
+    { "role": "Design", "name": "Emīl Blūm" },
+    { "role": "Art Worker", "name": "Ricky Bentley" },
+    { "role": "Photography", "name": "Jakub Iwanicki" }
+  ],
+  "awards": ["Scottish Creative Awards 2015 — Use of Visual Design"],
+  "next": { "id": "hard-rock-hotel", "title": "Hard Rock Hotel" }
+}
