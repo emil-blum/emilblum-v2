@@ -71,6 +71,7 @@
       '.ctx-field label{font-family:var(--font-meta,"Space Grotesk",sans-serif);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(30,30,40,.42);}',
       '.ctx-field input,.ctx-field textarea{width:100%;box-sizing:border-box;background:rgba(30,30,40,.04);border:1px solid rgba(30,30,40,.11);border-radius:3px;padding:10px 12px;font-family:var(--font-body,"Manrope",sans-serif);font-size:14px;color:var(--dark,#1e1e28);outline:none;transition:border-color .15s ease;cursor:none;}',
       '.ctx-field input:focus,.ctx-field textarea:focus{border-color:var(--maroon,#6e0a0a);}',
+      '.ctx-field input:-webkit-autofill,.ctx-field input:-webkit-autofill:hover,.ctx-field input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 1000px rgba(30,30,40,.04) inset;-webkit-text-fill-color:var(--dark,#1e1e28);border-color:rgba(30,30,40,.11);transition:background-color 5000s ease;}',
       '.ctx-field.is-error input,.ctx-field.is-error textarea{border-color:var(--maroon,#6e0a0a);background:rgba(110,10,10,.04);}',
       '.ctx-field.is-error label{color:var(--maroon,#6e0a0a);}',
       '.ctx-field textarea{height:96px;min-height:64px;resize:vertical;}',
