@@ -12,12 +12,34 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Case Study — Emil Blum</title>
-  <meta name="description" content="Project case study — Emil Blum.">
+  <title>Case Study — Emīl Blūm</title>
+  <meta name="description" content="A project case study by Emīl Blūm — creative director working across brand identity, art direction, and interactive media.">
+  <link rel="canonical" href="https://emilblum.com/featured">
+  <meta name="author" content="Emīl Blūm">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="Emīl Blūm, Emil Blum, creative director, brand identity designer, art direction, interactive design, Calumma studio">
+  <meta property="og:title" content="Emīl Blūm — Case Study">
+  <meta property="og:description" content="Craft, strategy, and creative direction. A project case study by Emīl Blūm.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://emilblum.com/featured">
+  <meta property="og:image" content="https://emilblum.com/assets/og/og-featured.webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Emīl Blūm">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@emilblum">
+  <meta name="twitter:creator" content="@emilblum">
+  <meta name="twitter:title" content="Emīl Blūm — Case Study">
+  <meta name="twitter:description" content="Craft, strategy, and creative direction. A project case study by Emīl Blūm.">
+  <meta name="twitter:image" content="https://emilblum.com/assets/og/og-featured.webp">
   <!-- base href ensures relative asset/CSS/JS paths resolve from root when
        served under /featured/:slug via Vercel rewrite -->
   <base href="/">
 
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/transitions.css">
@@ -529,12 +551,26 @@
 
     /* ── Populate ──────────────────────────────────────── */
     function populatePage(data) {
-      document.title = `${data.title || 'Project'} — Emil Blum`;
+      const pageTitle = `${data.title || 'Project'} — ${data.category || 'Case Study'} — Emīl Blūm`;
+      document.title = pageTitle;
 
-      if (data.intro) {
-        const descTag = document.querySelector('meta[name="description"]');
-        if (descTag) descTag.setAttribute('content', data.intro.slice(0, 160));
-      }
+      const canonical = `https://emilblum.com/featured/${data.id}`;
+      const ogImage   = data.heroImage
+        ? `https://emilblum.com/${data.heroImage}`
+        : 'https://emilblum.com/assets/og/og-featured.webp';
+      const ogTitle   = `${data.title || 'Case Study'} — ${data.category || ''}`.replace(/ — $/, '');
+      const ogDesc    = data.subtitle || data.intro?.slice(0, 160) || '';
+
+      const set = (sel, attr, val) => document.querySelector(sel)?.setAttribute(attr, val);
+      set('meta[name="description"]',        'content', data.intro ? data.intro.slice(0, 160) : ogDesc);
+      set('link[rel="canonical"]',           'href',    canonical);
+      set('meta[property="og:title"]',       'content', ogTitle);
+      set('meta[property="og:description"]', 'content', ogDesc);
+      set('meta[property="og:url"]',         'content', canonical);
+      set('meta[property="og:image"]',       'content', ogImage);
+      set('meta[name="twitter:title"]',      'content', ogTitle);
+      set('meta[name="twitter:description"]','content', ogDesc);
+      set('meta[name="twitter:image"]',      'content', ogImage);
 
       // Hero image
       const heroImg = document.getElementById('cs-hero-img');

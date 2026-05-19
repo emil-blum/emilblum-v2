@@ -1,7 +1,7 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/featured/:slug", "destination": "/case-study?id=:slug" }
+    { "source": "/featured/:slug", "destination": "/api/featured/:slug" }
   ],
   "redirects": [
     { "source": "/moments-v2", "destination": "/moments", "permanent": true },
