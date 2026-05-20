@@ -4,36 +4,7 @@
    ===================================================== */
 
 /* ── FONTS ── */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
-
-@font-face {
-  font-family: 'Offlig';
-  src: url('../assets/fonts/Offlig-Light.otf') format('opentype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Offlig';
-  src: url('../assets/fonts/Offlig-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Offlig';
-  src: url('../assets/fonts/Offlig-Medium.otf') format('opentype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Offlig';
-  src: url('../assets/fonts/Offlig-Bold.otf') format('opentype');
-  font-weight: 600 700;
-  font-style: normal;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap');
 
 /* ── DESIGN TOKENS ── */
 :root {
@@ -65,7 +36,7 @@
 
   /* Typography */
   --font-body: 'Manrope', sans-serif;
-  --font-meta: 'Offlig', monospace;
+  --font-meta: 'Space Grotesk', sans-serif;
 
   /* Border radius */
   --r-card: 2px;
