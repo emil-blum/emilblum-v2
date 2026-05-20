@@ -168,13 +168,17 @@
 
 /* ── META BAR ──────────────────────────────────────── */
 .cs-meta-bar {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 24px;
   padding-top: 28px;
   padding-bottom: 28px;
   position: relative;
+}
+
+/* Solutions row spans all columns */
+.cs-meta-bar .cs-meta-pair:last-child {
+  grid-column: 1 / -1;
 }
 
 .cs-meta-bar::after {
@@ -211,11 +215,7 @@
 }
 
 .cs-meta-divider {
-  width: 1px;
-  height: 28px;
-  background: rgba(30, 30, 40, 0.1);
-  margin: 0 20px;
-  flex-shrink: 0;
+  display: none;
 }
 
 /* Solutions (tags) now rendered as plain comma-separated meta-val text */
@@ -1154,5 +1154,16 @@
   .cs-credits-col { flex: 1 1 100%; }
   .cs-credit-item { flex-direction: column; gap: 4px; }
   .cs-credit-role { flex: 0 0 auto; width: auto; min-width: 0; }
-  .cs-meta-divider { display: none; }
+  /* Meta bar: stack to single column on small screens */
+  .cs-meta-bar {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+  }
+  .cs-meta-bar .cs-meta-pair:last-child {
+    grid-column: 1;
+  }
+
+  /* Carousel captions are clipped by overflow:hidden on desktop;
+     on mobile height:auto exposes them — hide until copy is finalised */
+  .cs-item-caption { display: none; }
 }
