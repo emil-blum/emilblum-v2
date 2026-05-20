@@ -77,6 +77,10 @@ img, video {
   max-width: 100%;
 }
 
+p {
+  text-wrap: pretty;
+}
+
 a {
   color: inherit;
   text-decoration: none;
