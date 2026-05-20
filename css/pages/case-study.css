@@ -168,17 +168,14 @@
 
 /* ── META BAR ──────────────────────────────────────── */
 .cs-meta-bar {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  row-gap: 24px;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  column-gap: 56px;
+  row-gap: 20px;
   padding-top: 28px;
   padding-bottom: 28px;
   position: relative;
-}
-
-/* Solutions row spans all columns */
-.cs-meta-bar .cs-meta-pair:last-child {
-  grid-column: 1 / -1;
 }
 
 .cs-meta-bar::after {
@@ -989,7 +986,8 @@
 
 .cs-section-label {
   font-family: var(--font-meta);
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--maroon);
@@ -1154,13 +1152,10 @@
   .cs-credits-col { flex: 1 1 100%; }
   .cs-credit-item { flex-direction: column; gap: 4px; }
   .cs-credit-role { flex: 0 0 auto; width: auto; min-width: 0; }
-  /* Meta bar: stack to single column on small screens */
+  /* Meta bar: stack vertically on small screens */
   .cs-meta-bar {
-    grid-template-columns: 1fr;
-    row-gap: 16px;
-  }
-  .cs-meta-bar .cs-meta-pair:last-child {
-    grid-column: 1;
+    flex-direction: column;
+    gap: 16px;
   }
 
   /* Carousel captions are clipped by overflow:hidden on desktop;
