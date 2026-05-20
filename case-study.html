@@ -689,6 +689,7 @@
       initScrollCarousels();
       initHotspots();
       initVideos();
+      initVideoPlayers();
       init360Players();
     }
 
@@ -782,10 +783,9 @@
         const videoWrap = document.createElement('div');
         videoWrap.className = 'cs-video-wrap';
         if (block.provider === 'mux') {
-          videoWrap.dataset.src = `https://player.mux.com/${block.src}`;
+          videoWrap.dataset.src = `https://stream.mux.com/${block.src}.m3u8`;
         } else if (block.provider !== 'direct') {
           videoWrap.dataset.src = block.src;
-          videoWrap.dataset.provider = block.provider || 'iframe';
         }
         if (block.aspectRatio) videoWrap.style.aspectRatio = block.aspectRatio;
         videoWrap.innerHTML = `
@@ -798,9 +798,31 @@
             </button>
             ${block.title ? `<span class="cs-video-badge">${block.title}</span>` : ''}
           </div>
-          ${block.provider === 'direct'
-            ? `<video src="${block.src}" controls playsinline></video>`
-            : `<iframe src="" frameborder="0" allowfullscreen allow="autoplay; fullscreen; picture-in-picture"></iframe>`}
+          <video class="cs-video-el" playsinline></video>
+          <div class="cs-360-controls">
+            <div class="cs-360-scrub-row">
+              <div class="cs-360-scrub-track" role="slider" aria-label="Seek">
+                <div class="cs-360-scrub-fill"></div>
+                <div class="cs-360-scrub-thumb"></div>
+              </div>
+            </div>
+            <div class="cs-360-btn-row">
+              <div class="cs-360-btn-left">
+                <button class="cs-360-icon-btn cs-360-pp-btn" aria-label="Pause">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+                </button>
+                <span class="cs-360-time">0:00</span>
+              </div>
+              <div class="cs-360-btn-right">
+                <button class="cs-360-icon-btn cs-360-mute-btn" aria-label="Mute">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                </button>
+                <button class="cs-360-icon-btn cs-360-fs-btn" aria-label="Enter fullscreen">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
         `;
         wrap.appendChild(videoWrap);
 
@@ -993,6 +1015,7 @@
     /* ── Video lazy-load ────────────────────────────────── */
     function initVideos() {
       document.querySelectorAll('.cs-video-wrap').forEach(wrap => {
+        if (wrap.querySelector('.cs-video-el')) return; // handled by video-player.js
         const btn = wrap.querySelector('.cs-video-play');
         if (!btn) return;
         btn.addEventListener('click', () => {
@@ -1119,6 +1142,7 @@
 
   <!-- Scripts -->
   <script src="js/video360.js"></script>
+  <script src="js/video-player.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/transitions.js"></script>
 
