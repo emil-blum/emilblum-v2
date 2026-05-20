@@ -16,7 +16,7 @@
     { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/02_Oxfam-ROY.avif" },
     { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/03_Oxfam-ROY.avif" },
     { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/04_Oxfam-ROY.avif" },
-    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/05_Oxfam-ROY.avif" },
+    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/05_Oxfam-ROY.gif" },
     {
       "type": "grid", "cols": 2,
       "items": [
@@ -36,7 +36,7 @@
     {
       "type": "grid", "cols": 2,
       "items": [
-        { "src": "assets/case-studies/oxfam-republic-of-you/12_Oxfam-ROY.avif" },
+        { "src": "assets/case-studies/oxfam-republic-of-you/12_Oxfam-ROY.gif" },
         { "src": "assets/case-studies/oxfam-republic-of-you/13_Oxfam-ROY.avif" }
       ]
     },
@@ -52,7 +52,7 @@
         { "src": "assets/case-studies/oxfam-republic-of-you/carousel/06-Oxfam-ROY_Transport.avif" }
       ]
     },
-    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/16_Oxfam-ROY.avif" },
+    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/16_Oxfam-ROY.gif" },
     { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/17_Oxfam-ROY.avif" }
   ],
   "credits": [
