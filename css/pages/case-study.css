@@ -975,11 +975,10 @@
 .cs-footer-left {
   display: flex;
   gap: 52px;
-  width: 50%;
+  width: 100%;
 }
 
-.cs-credits-col,
-.cs-awards-col {
+.cs-credits-col {
   flex: 1 1 0;
   min-width: 0;
 }
@@ -1148,8 +1147,7 @@
   .cs-grid-inner--3 { grid-template-columns: 1fr; }
 
   .cs-footer-left { flex-direction: column; gap: 40px; width: 100%; }
-  .cs-credits-col,
-  .cs-awards-col { flex: 1 1 100%; }
+  .cs-credits-col { flex: 1 1 100%; }
   .cs-credit-item { flex-direction: column; gap: 4px; }
   .cs-credit-role { flex: 0 0 auto; width: auto; min-width: 0; }
   .cs-meta-divider { display: none; }
