@@ -286,7 +286,8 @@
 
 .cs-info-label {
   font-family: var(--font-meta);
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--dark);
@@ -355,7 +356,8 @@
 
 .cs-col-label {
   font-family: var(--font-meta);
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--maroon);
