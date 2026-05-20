@@ -68,11 +68,11 @@
       '.ctx-close{position:absolute;top:14px;right:14px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:rgba(30,30,40,.35);border-radius:2px;transition:color .15s ease;}',
       '.ctx-close:hover{color:var(--dark,#1e1e28);}',
       '.ctx-modal-title{font-family:var(--font-body,"Manrope",sans-serif);font-size:20px;font-weight:500;letter-spacing:-.02em;color:var(--dark,#1e1e28);margin:0 0 6px;}',
-      '.ctx-modal-sub{font-family:var(--font-body,"Manrope",sans-serif);font-size:14px;color:rgba(30,30,40,.5);margin:0 0 28px;line-height:1.55;}',
+      '.ctx-modal-sub{font-family:var(--font-body,"Manrope",sans-serif);font-size:13px;color:rgba(30,30,40,.5);margin:0 0 28px;line-height:1.55;}',
 
       /* ── Form fields ── */
       '.ctx-field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}',
-      '.ctx-field label{font-family:var(--font-meta,"Space Grotesk",sans-serif);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(30,30,40,.42);}',
+      '.ctx-field label{font-family:var(--font-meta,"Space Grotesk",sans-serif);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(30,30,40,.42);}',
       '.ctx-field input,.ctx-field textarea{width:100%;box-sizing:border-box;background:rgba(30,30,40,.04);border:1px solid rgba(30,30,40,.11);border-radius:3px;padding:10px 12px;font-family:var(--font-body,"Manrope",sans-serif);font-size:14px;color:var(--dark,#1e1e28);outline:none;transition:border-color .15s ease;cursor:none;}',
       '.ctx-field input:focus,.ctx-field textarea:focus{border-color:var(--maroon,#6e0a0a);}',
       '.ctx-field input:-webkit-autofill,.ctx-field input:-webkit-autofill:hover,.ctx-field input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 1000px rgba(30,30,40,.04) inset;-webkit-text-fill-color:var(--dark,#1e1e28);border-color:rgba(30,30,40,.11);transition:background-color 5000s ease;}',
@@ -95,7 +95,7 @@
       '.ctx-box.is-sent .ctx-confirm{opacity:1;pointer-events:auto;}',
       '.ctx-confirm-icon{width:44px;height:44px;border-radius:50%;background:rgba(110,10,10,.08);display:flex;align-items:center;justify-content:center;color:var(--maroon,#6e0a0a);margin-bottom:4px;}',
       '.ctx-confirm-title{font-family:var(--font-body,"Manrope",sans-serif);font-size:18px;font-weight:500;letter-spacing:-.02em;color:var(--dark,#1e1e28);margin:0;}',
-      '.ctx-confirm-sub{font-family:var(--font-body,"Manrope",sans-serif);font-size:14px;color:rgba(30,30,40,.5);margin:0;line-height:1.5;}'
+      '.ctx-confirm-sub{font-family:var(--font-body,"Manrope",sans-serif);font-size:13px;color:rgba(30,30,40,.5);margin:0;line-height:1.5;}'
     ].join('');
     document.head.appendChild(s);
   }
@@ -302,7 +302,7 @@
           '<div class="ctx-field"><label for="ctx-msg">Message</label>' +
             '<textarea id="ctx-msg" placeholder="Say hello…" required></textarea></div>' +
           '<button type="submit" class="ctx-submit">Send message</button>' +
-          '<p id="ctx-error" style="margin-top:10px;font-size:14px;color:var(--maroon,#6e0a0a);min-height:0;"></p>' +
+          '<p id="ctx-error" style="margin-top:10px;font-size:13px;color:var(--maroon,#6e0a0a);min-height:0;"></p>' +
         '</form>' +
       '</div>' +
       '<div class="ctx-confirm" aria-live="polite">' +

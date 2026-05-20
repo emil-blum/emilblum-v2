@@ -105,7 +105,7 @@
 .cs-eyebrow {
   font-family: var(--font-meta);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--n500);
@@ -602,7 +602,7 @@
 .cs-video-badge {
   font-family: var(--font-meta);
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(255, 251, 243, 0.55);
@@ -693,7 +693,7 @@
 .cs-360-badge {
   font-family: var(--font-meta);
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(255, 251, 243, 0.55);
