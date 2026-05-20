@@ -790,15 +790,14 @@
         if (block.aspectRatio) videoWrap.style.aspectRatio = block.aspectRatio;
         videoWrap.innerHTML = `
           ${block.thumb ? `<img class="cs-video-thumb" src="${block.thumb}" alt="">` : ''}
-          <button class="cs-video-play" aria-label="Play video">
-            <div class="cs-video-play-ring">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-          </button>
-          ${block.title ? `<div class="cs-video-meta">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/></svg>
-            <span>${block.title}</span>
-          </div>` : ''}
+          <div class="cs-video-overlay">
+            <button class="cs-video-play" aria-label="Play video">
+              <div class="cs-video-play-ring">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </button>
+            ${block.title ? `<span class="cs-video-badge">${block.title}</span>` : ''}
+          </div>
           ${block.provider === 'direct'
             ? `<video src="${block.src}" controls playsinline></video>`
             : `<iframe src="" frameborder="0" allowfullscreen allow="autoplay; fullscreen; picture-in-picture"></iframe>`}

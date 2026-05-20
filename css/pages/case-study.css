@@ -536,16 +536,13 @@
 
 /* ── Video block ─────────────────────────────────── */
 .cs-block-video {
-  max-width: var(--max-w);
-  margin-inline: auto;
-  padding-inline: var(--px-desktop);
+  /* full-width, no side padding — matches video360 */
 }
 
 .cs-video-wrap {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: var(--dark);
-  border-radius: 2px;
+  background: #0a0a0f;
   overflow: hidden;
   cursor: pointer;
 }
@@ -557,27 +554,39 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  opacity: 0.75;
+  opacity: 0.7;
   transition: opacity 0.35s ease;
 }
-.cs-video-wrap:hover .cs-video-thumb { opacity: 0.9; }
+.cs-video-wrap:hover .cs-video-thumb { opacity: 0.85; }
 
-.cs-video-play {
+/* Pre-play overlay — centred column, same as 360° */
+.cs-video-overlay {
   position: absolute;
   inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 14px;
+  z-index: 2;
+}
+
+.cs-video-play {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   background: none;
   border: none;
   cursor: pointer;
-  z-index: 2;
+  padding: 0;
 }
+
 .cs-video-play-ring {
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 251, 243, 0.14);
-  border: 1px solid rgba(255, 251, 243, 0.3);
+  width: 68px;
+  height: 68px;
+  background: rgba(255, 251, 243, 0.12);
+  border: 1px solid rgba(255, 251, 243, 0.28);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -587,29 +596,22 @@
 }
 .cs-video-wrap:hover .cs-video-play-ring {
   transform: scale(1.1);
-  background: rgba(255, 251, 243, 0.22);
+  background: rgba(255, 251, 243, 0.2);
 }
 
-.cs-video-meta {
-  position: absolute;
-  bottom: 20px;
-  left: 24px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: rgba(255, 251, 243, 0.55);
+.cs-video-badge {
   font-family: var(--font-meta);
   font-size: 10px;
-  letter-spacing: 0.14em;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: rgba(255, 251, 243, 0.55);
   pointer-events: none;
 }
 
-/* Loaded state: hide overlay, show player */
+/* Loaded state */
 .cs-video-wrap.is-playing .cs-video-thumb,
-.cs-video-wrap.is-playing .cs-video-play,
-.cs-video-wrap.is-playing .cs-video-meta { display: none; }
+.cs-video-wrap.is-playing .cs-video-overlay { display: none; }
 
 .cs-video-wrap iframe,
 .cs-video-wrap video {
@@ -1096,7 +1098,6 @@
 @media (max-width: 768px) {
   .cs-block-full  { padding-inline: var(--px-mobile); }
   .cs-block-grid  { padding-inline: var(--px-mobile); }
-  .cs-block-video { padding-inline: var(--px-mobile); }
   .cs-scroll-header { padding-inline: var(--px-mobile); }
   /* Mobile: natural proportions — fixed width, auto height */
   .cs-scroll-pad {
