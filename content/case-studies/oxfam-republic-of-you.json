@@ -11,33 +11,49 @@
   "challenge": "Inequality is easy to care about in theory and easy to ignore in practice. The challenge was making policy feel personally consequential — without being preachy or academic — to an audience that would usually avoid the subject altogether.",
   "approach": "Working closely with illustrator Katie McPherson and a team of copywriters, UX designers and developers, we created a retro web-based 8-bit game built around a set of deterministic questions about national policy — where every leadership decision about healthcare, wages, wealth tax and social services shaped a personalised country landscape, triggered citizen reactions, and linked directly to real Oxfam case studies about global equivalents.",
   "outcome": "The game received a Commendation at the Scottish Design Awards 2016 and inspired Oxfam to pursue more interactive campaigns to further their work, but it also received a fair dose of criticism from the public for oversimplifying the causes of inequality and was eventually shut down. In the years that followed, the political landscape made it look considerably less oversimplified.",
-  "heroImage": "assets/case-study-placeholders/Oxfam-Republic-of-You/ROY_YT.jpg",
+  "heroImage": "assets/case-studies/oxfam-republic-of-you/01_Oxfam-ROY_Hero.avif",
   "gallery": [
-    {
-      "type": "full",
-      "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/22eeb567909747.5b4a894a08bfe.gif"
-    },
-    {
-      "type": "grid", "cols": 2,
-      "items": [
-        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/14195167909747.5b4aa42f2d665.jpg" },
-        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/368ffa67909747.5b4a9e7e53495.jpg" }
-      ]
-    },
+    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/02_Oxfam-ROY.avif" },
+    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/03_Oxfam-ROY.avif" },
+    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/04_Oxfam-ROY.avif" },
+    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/05_Oxfam-ROY.avif" },
     {
       "type": "grid", "cols": 2,
       "items": [
-        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/381cbb67909747.5b4a8c9226c0f.jpg" },
-        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/5b779f67909747.5b4aa42f2e29b.jpg" }
+        { "src": "assets/case-studies/oxfam-republic-of-you/06_Oxfam-ROY.avif" },
+        { "src": "assets/case-studies/oxfam-republic-of-you/07_Oxfam-ROY.avif" }
       ]
     },
+    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/08_Oxfam-ROY.avif" },
+    {
+      "type": "grid", "cols": 2,
+      "items": [
+        { "src": "assets/case-studies/oxfam-republic-of-you/09_Oxfam-ROY.avif" },
+        { "src": "assets/case-studies/oxfam-republic-of-you/10_Oxfam-ROY.avif" }
+      ]
+    },
+    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/11_Oxfam-ROY.avif" },
+    {
+      "type": "grid", "cols": 2,
+      "items": [
+        { "src": "assets/case-studies/oxfam-republic-of-you/12_Oxfam-ROY.avif" },
+        { "src": "assets/case-studies/oxfam-republic-of-you/13_Oxfam-ROY.avif" }
+      ]
+    },
+    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/14_Oxfam-ROY.avif" },
     {
       "type": "scroll",
       "items": [
-        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/70899e67909747.5b4a894a085da.gif", "caption": "Decision flow" },
-        { "src": "assets/case-study-placeholders/Oxfam-Republic-of-You/aca63a67909747.5b4a9e7e53eb5.gif", "caption": "Consequence state" }
+        { "src": "assets/case-studies/oxfam-republic-of-you/carousel/01-Oxfam-ROY_Transport.avif" },
+        { "src": "assets/case-studies/oxfam-republic-of-you/carousel/02-Oxfam-ROY_Transport.avif" },
+        { "src": "assets/case-studies/oxfam-republic-of-you/carousel/03-Oxfam-ROY_Transport.avif" },
+        { "src": "assets/case-studies/oxfam-republic-of-you/carousel/04-Oxfam-ROY_Transport.avif" },
+        { "src": "assets/case-studies/oxfam-republic-of-you/carousel/05-Oxfam-ROY_Transport.avif" },
+        { "src": "assets/case-studies/oxfam-republic-of-you/carousel/06-Oxfam-ROY_Transport.avif" }
       ]
-    }
+    },
+    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/16_Oxfam-ROY.avif" },
+    { "type": "full", "src": "assets/case-studies/oxfam-republic-of-you/17_Oxfam-ROY.avif" }
   ],
   "credits": [
     { "role": "Creative Direction", "name": "Charlie Bell" },
