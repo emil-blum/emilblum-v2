@@ -458,7 +458,7 @@
         outcome: 'The system proved extensible by design — as new beers joined the series, new elements were created to match the flavours, the ingredients and the character of each beer. The project won Best Concept Design at the SIBA Business Awards 2019, recognising both the packaging concept and the AR experience as an authentic celebration of the brewing craft. Over the course of our partnership, we developed labels for 19 different beers that helped establish Stewart Brewing as true champions of the craft with thousands of new fans.',
         heroImage: 'assets/case-studies/stewart-brewing/01_Stewart-Brewing-AllCans-Hero.avif',
         gallery: [
-          { type: 'video360', provider: 'mux', src: 'Lcu1a3VsYuVHozYiRRuO8pkYjNDPYyb5AYvRjTZItps', title: 'Stewart Brewing — Project 7', caption: '' },
+          { type: 'video', provider: 'mux', src: 'Lcu1a3VsYuVHozYiRRuO8pkYjNDPYyb5AYvRjTZItps', title: 'A preview of the AR app in use', aspectRatio: '683/316' },
           { type: 'grid', cols: 2, items: [
             { src: 'assets/case-studies/stewart-brewing/02_Stewart_Brewing_App_Wireframes.avif' },
             { src: 'assets/case-studies/stewart-brewing/03_Stewart_Brewing_App_Wireframes.avif' }
@@ -585,16 +585,16 @@
       const ogTitle   = `${data.title || 'Case Study'} — ${data.category || ''}`.replace(/ — $/, '');
       const ogDesc    = data.subtitle || data.intro?.slice(0, 160) || '';
 
-      const set = (sel, attr, val) => document.querySelector(sel)?.setAttribute(attr, val);
-      set('meta[name="description"]',        'content', data.intro ? data.intro.slice(0, 160) : ogDesc);
-      set('link[rel="canonical"]',           'href',    canonical);
-      set('meta[property="og:title"]',       'content', ogTitle);
-      set('meta[property="og:description"]', 'content', ogDesc);
-      set('meta[property="og:url"]',         'content', canonical);
-      set('meta[property="og:image"]',       'content', ogImage);
-      set('meta[name="twitter:title"]',      'content', ogTitle);
-      set('meta[name="twitter:description"]','content', ogDesc);
-      set('meta[name="twitter:image"]',      'content', ogImage);
+      const setAttr = (sel, attr, val) => document.querySelector(sel)?.setAttribute(attr, val);
+      setAttr('meta[name="description"]',        'content', data.intro ? data.intro.slice(0, 160) : ogDesc);
+      setAttr('link[rel="canonical"]',           'href',    canonical);
+      setAttr('meta[property="og:title"]',       'content', ogTitle);
+      setAttr('meta[property="og:description"]', 'content', ogDesc);
+      setAttr('meta[property="og:url"]',         'content', canonical);
+      setAttr('meta[property="og:image"]',       'content', ogImage);
+      setAttr('meta[name="twitter:title"]',      'content', ogTitle);
+      setAttr('meta[name="twitter:description"]','content', ogDesc);
+      setAttr('meta[name="twitter:image"]',      'content', ogImage);
 
       // Hero image
       const heroImg = document.getElementById('cs-hero-img');
@@ -781,10 +781,13 @@
         wrap.classList.add('cs-block-video');
         const videoWrap = document.createElement('div');
         videoWrap.className = 'cs-video-wrap';
-        if (block.provider !== 'direct') {
+        if (block.provider === 'mux') {
+          videoWrap.dataset.src = `https://player.mux.com/${block.src}`;
+        } else if (block.provider !== 'direct') {
           videoWrap.dataset.src = block.src;
           videoWrap.dataset.provider = block.provider || 'iframe';
         }
+        if (block.aspectRatio) videoWrap.style.aspectRatio = block.aspectRatio;
         videoWrap.innerHTML = `
           ${block.thumb ? `<img class="cs-video-thumb" src="${block.thumb}" alt="">` : ''}
           <button class="cs-video-play" aria-label="Play video">
@@ -798,7 +801,7 @@
           </div>` : ''}
           ${block.provider === 'direct'
             ? `<video src="${block.src}" controls playsinline></video>`
-            : `<iframe src="" frameborder="0" allowfullscreen allow="autoplay; fullscreen"></iframe>`}
+            : `<iframe src="" frameborder="0" allowfullscreen allow="autoplay; fullscreen; picture-in-picture"></iframe>`}
         `;
         wrap.appendChild(videoWrap);
 

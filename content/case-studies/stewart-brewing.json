@@ -14,11 +14,11 @@
   "heroImage": "assets/case-studies/stewart-brewing/01_Stewart-Brewing-AllCans-Hero.avif",
   "gallery": [
     {
-      "type": "video360",
+      "type": "video",
       "provider": "mux",
       "src": "Lcu1a3VsYuVHozYiRRuO8pkYjNDPYyb5AYvRjTZItps",
-      "title": "Stewart Brewing — Project 7",
-      "caption": ""
+      "title": "A preview of the AR app in use",
+      "aspectRatio": "683/316"
     },
     {
       "type": "grid",
