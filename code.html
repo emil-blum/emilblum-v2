@@ -48,13 +48,19 @@
       padding-bottom: 80px;
     }
 
-    /* ── Header: 24px padding matches logo + footer ──────── */
+    /* ── Header ──────────────────────────────────────────── */
     .carousel-header {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
       gap: 24px;
-      padding: 0 24px 32px;
+      padding: 0 var(--px-desktop) 32px;
+    }
+
+    @media (max-width: 767px) {
+      .carousel-header {
+        padding: 0 var(--px-mobile) 32px;
+      }
     }
 
     .carousel-header h1 {
@@ -86,6 +92,7 @@
         overflow-x: visible;
         scroll-snap-type: none;
         gap: 32px;
+        padding: 0 var(--px-mobile);
         padding-bottom: 0;
       }
       .carousel-card {
