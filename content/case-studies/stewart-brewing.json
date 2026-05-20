@@ -11,40 +11,62 @@
   "challenge": "Each beer in the series is entirely distinct — different ingredients, different processes, different character. The packaging needed a visual system flexible enough to give each beer its own identity while still reading as a coherent series on shelf.",
   "approach": "We looked closely at the process and chose to conceptualise and present the microscopic elements and secret ingredients that make each brew special — what we called the Elements of Craft. Each beer's ingredients and process were translated into a unique 3D molecular form — inspired by medical imaging and microscopic organisms. An AR app extended the idea further: point your phone at the can, summon the element, and explore its unique character via virtual microscope.",
   "outcome": "The system proved extensible by design — as new beers joined the series, new elements were created to match the flavours, the ingredients and the character of each beer. The project won Best Concept Design at the SIBA Business Awards 2019, recognising both the packaging concept and the AR experience as an authentic celebration of the brewing craft. Over the course of our partnership, we developed labels for 19 different beers that helped establish Stewart Brewing as true champions of the craft with thousands of new fans.",
-  "heroImage": "assets/case-study-placeholders/Stewart-Brewings/upload-08bd448a-80b4-4127-94c2-c84ff2b3d66b.webp",
+  "heroImage": "assets/case-studies/stewart-brewing/01_Stewart-Brewing-AllCans-Hero.avif",
   "gallery": [
     {
-      "type": "grid", "cols": 2,
-      "items": [
-        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-2e92202c-a587-4c3a-8b29-d4dc55610a97.webp" },
-        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-303c2168-9ffc-4fb9-b488-a31a7d58a644.webp" }
-      ]
+      "type": "video360",
+      "provider": "mux",
+      "src": "Lcu1a3VsYuVHozYiRRuO8pkYjNDPYyb5AYvRjTZItps",
+      "title": "Stewart Brewing — Project 7",
+      "caption": ""
     },
     {
-      "type": "full",
-      "src": "assets/case-study-placeholders/Stewart-Brewings/upload-35d27559-b54a-4b40-8d79-9200963ec97b.webp",
-      "hotspots": [
-        {
-          "x": 72, "y": 48,
-          "label": "Design System",
-          "title": "Molecular Fingerprint",
-          "body": "Each label is built from abstract forms derived from the ingredients and brewing process — unique to every beer in the series."
-        }
-      ]
-    },
-    {
-      "type": "grid", "cols": 2,
+      "type": "grid",
+      "cols": 2,
       "items": [
-        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-5687f772-9823-49c4-ac17-d0cf14c60ecf.webp" },
-        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-71aaec08-c36e-4d86-a6b0-a018daabba6a.webp" }
+        { "src": "assets/case-studies/stewart-brewing/02_Stewart_Brewing_App_Wireframes.avif" },
+        { "src": "assets/case-studies/stewart-brewing/03_Stewart_Brewing_App_Wireframes.avif" }
       ]
     },
+    { "type": "full", "src": "assets/case-studies/stewart-brewing/04_Stewart-Brewing-AR-app-screens.avif" },
+    { "type": "full", "src": "assets/case-studies/stewart-brewing/05_Stewart-Brewing-AR-App.avif" },
+    { "type": "full", "src": "assets/case-studies/stewart-brewing/06_Stewart-Brewing-Can.avif" },
     {
       "type": "scroll",
       "items": [
-        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-73700c31-8f9d-47a7-9335-647213dd554f.webp", "caption": "Bottle 1" },
-        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-7b2a063f-1b70-4d06-a36e-cf4caa6286b4.webp", "caption": "Bottle 2" },
-        { "src": "assets/case-study-placeholders/Stewart-Brewings/upload-b83e7f1b-39f9-401d-b4fe-79e518076463.webp", "caption": "Bottle 3" }
+        { "src": "assets/case-studies/stewart-brewing/01_Stewart-Brewing-Can-VOSS.avif",         "caption": "VOSS" },
+        { "src": "assets/case-studies/stewart-brewing/02_Stewart-Brewing-Can-Sour-Sitron.avif",   "caption": "Sour Sitron" },
+        { "src": "assets/case-studies/stewart-brewing/03_Stewart-Brewing-Can-Hothead.avif",       "caption": "Hothead" },
+        { "src": "assets/case-studies/stewart-brewing/04_Stewart-Brewing-Can-Watermelon.avif",    "caption": "Watermelon" },
+        { "src": "assets/case-studies/stewart-brewing/05_Stewart-Brewing-Can-Big-Blue.avif",      "caption": "Big Blue" },
+        { "src": "assets/case-studies/stewart-brewing/06_Stewart-Brewing-Can-GOSE.avif",          "caption": "GOSE" },
+        { "src": "assets/case-studies/stewart-brewing/07_Stewart-Brewing-Can-HORNINDAL.avif",     "caption": "HORNINDAL" },
+        { "src": "assets/case-studies/stewart-brewing/08_Stewart-Brewing-Can-Negroni.avif",       "caption": "Negroni" },
+        { "src": "assets/case-studies/stewart-brewing/09_Stewart-Brewing-Can-HIP-POP.avif",       "caption": "HIP POP" },
+        { "src": "assets/case-studies/stewart-brewing/10_Stewart-Brewing-Can-WHITE-RUSSIAN.avif", "caption": "WHITE RUSSIAN" },
+        { "src": "assets/case-studies/stewart-brewing/11_Stewart-Brewing-Can-Highway.avif",       "caption": "Highway" },
+        { "src": "assets/case-studies/stewart-brewing/12_Stewart-Brewing-Can-Micro-IPA.avif",     "caption": "Micro IPA" },
+        { "src": "assets/case-studies/stewart-brewing/13_Stewart-Brewing-Can-AQUALUNG.avif",      "caption": "AQUALUNG" },
+        { "src": "assets/case-studies/stewart-brewing/14_Stewart-Brewing-Can-Gooseberry.avif",    "caption": "Gooseberry" },
+        { "src": "assets/case-studies/stewart-brewing/15_Stewart-Brewing-Can-DIPA.avif",          "caption": "DIPA" },
+        { "src": "assets/case-studies/stewart-brewing/16_Stewart-Brewing-Can-HEDGEROW.avif",      "caption": "HEDGEROW" }
+      ]
+    },
+    { "type": "full", "src": "assets/case-studies/stewart-brewing/01_SB_Master-Art.avif" },
+    { "type": "full", "src": "assets/case-studies/stewart-brewing/02_SB_Master-Art.avif" },
+    { "type": "full", "src": "assets/case-studies/stewart-brewing/03_SB_Master-Art.avif" },
+    {
+      "type": "scroll",
+      "items": [
+        { "src": "assets/case-studies/stewart-brewing/01_SB_3d-Closeups.avif" },
+        { "src": "assets/case-studies/stewart-brewing/02_SB_3d-Closeups.avif" },
+        { "src": "assets/case-studies/stewart-brewing/03_SB_3d-Closeups.avif" },
+        { "src": "assets/case-studies/stewart-brewing/04_SB_3d-Closeups.avif" },
+        { "src": "assets/case-studies/stewart-brewing/05_SB_3d-Closeups.avif" },
+        { "src": "assets/case-studies/stewart-brewing/06_SB_3d-Closeups.avif" },
+        { "src": "assets/case-studies/stewart-brewing/07_SB_3d-Closeups.avif" },
+        { "src": "assets/case-studies/stewart-brewing/08_SB_3d-Closeups.avif" },
+        { "src": "assets/case-studies/stewart-brewing/09_SB_3d-Closeups.avif" }
       ]
     }
   ],

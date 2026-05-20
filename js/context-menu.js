@@ -21,7 +21,8 @@
       { label: 'Unseen',                 href: '/featured/unseen' },
       { label: 'FISGA',                  href: '/featured/fisga' },
       { label: 'Stewart Brewing',        href: '/featured/stewart-brewing' },
-      { label: 'Game Masters',           href: '/featured/game-masters' }
+      { label: 'Game Masters',           href: '/featured/game-masters' },
+      { label: 'SgMA',                   href: 'https://www.sol-gel.co.uk/', external: true }
     ]},
     { label: 'Code',    href: '/code' },
     { label: 'Art',     href: '/art' },
@@ -168,7 +169,10 @@
 
         page.sub.forEach(function (cs) {
           var el = makeItem(cs.label);
-          el.addEventListener('click', function () { navigate(cs.href); });
+          el.addEventListener('click', function () {
+            if (cs.external) { window.open(cs.href, '_blank', 'noopener'); }
+            else { navigate(cs.href); }
+          });
           featSub.appendChild(el);
         });
 
