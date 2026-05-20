@@ -177,7 +177,7 @@ button {
 .t-label {
   font-family: var(--font-meta);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   font-feature-settings: "ss02" on, "ss03" on;
@@ -186,14 +186,14 @@ button {
 .t-mono {
   font-family: var(--font-meta);
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 500;
   font-feature-settings: "ss02" on, "ss03" on;
 }
 
 .t-micro {
   font-family: var(--font-meta);
-  font-size: 10px;
-  font-weight: 400;
+  font-size: 12px;
+  font-weight: 500;
   font-feature-settings: "ss02" on, "ss03" on;
 }
 
@@ -252,7 +252,7 @@ body.cursor-on-dark #cursor {
 
 #cursor-label {
   font-family: var(--font-meta);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -329,7 +329,7 @@ body.cursor-hover #cursor-label {
 .tag {
   display: inline-block;
   font-family: var(--font-meta);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -411,7 +411,7 @@ body.cursor-hover #cursor-label {
 
 .footer-link {
   font-family: var(--font-meta);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -425,7 +425,7 @@ body.cursor-hover #cursor-label {
 
 .footer-copy {
   font-family: var(--font-meta);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   color: var(--cream);
   white-space: nowrap;

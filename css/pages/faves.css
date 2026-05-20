@@ -192,7 +192,7 @@
   position: absolute;
   top: 10px; right: 10px;
   font-family: var(--font-meta);
-  font-size: 9px; font-weight: 700;
+  font-size: 10px; font-weight: 500;
   letter-spacing: 0.12em; text-transform: uppercase;
   padding: 4px 8px; border-radius: 4px;
   background: rgba(0,0,0,0.55);
@@ -214,7 +214,7 @@
 .card__meta-item { display: flex; flex-direction: column; gap: 2px; }
 .card__meta-label {
   font-family: var(--font-meta);
-  font-size: 8px; font-weight: 700;
+  font-size: 8px; font-weight: 500;
   letter-spacing: 0.15em; text-transform: uppercase;
   color: #4a4a55;
 }
@@ -225,7 +225,7 @@
 }
 .card__number {
   font-family: var(--font-meta);
-  font-size: 9px; color: #4a4a55;
+  font-size: 10px; color: #4a4a55;
   letter-spacing: 0.1em;
   display: flex; justify-content: space-between; align-items: center;
 }
