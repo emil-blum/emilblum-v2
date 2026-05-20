@@ -339,9 +339,7 @@
   transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cs-info-accordion.is-open .cs-info-panel {
-  max-height: 900px;
-}
+/* max-height on open is set dynamically in JS to match actual scrollHeight */
 
 /* ── THREE COLUMNS ─────────────────────────────────── */
 .cs-three-col {

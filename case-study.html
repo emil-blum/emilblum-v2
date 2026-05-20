@@ -1152,10 +1152,16 @@
     (function () {
       const accordion = document.querySelector('.cs-info-accordion');
       const trigger   = accordion && accordion.querySelector('.cs-info-trigger');
-      if (!trigger) return;
+      const panel     = accordion && accordion.querySelector('.cs-info-panel');
+      if (!trigger || !panel) return;
       trigger.addEventListener('click', function () {
         const open = accordion.classList.toggle('is-open');
         trigger.setAttribute('aria-expanded', open);
+        if (open) {
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+        } else {
+          panel.style.maxHeight = '0';
+        }
       });
     })();
   </script>
