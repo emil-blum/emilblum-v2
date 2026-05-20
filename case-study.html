@@ -664,7 +664,7 @@
             ${data.credits.map(c => `
               <div class="cs-credit-item">
                 <span class="cs-credit-role">${c.role}</span>
-                <span class="cs-credit-name">${c.name.split(' & ').map(n => `<span>${n.trim()}</span>`).join('')}</span>
+                <span class="cs-credit-name">${c.name.split(/\s*[&,]\s*/).map(n => `<span>${n.trim()}</span>`).join('')}</span>
               </div>
             `).join('')}
           </div>
