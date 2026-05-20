@@ -382,11 +382,14 @@
   (function () {
     'use strict';
 
-    /* ── Photos — 73 files (67 AVIFs + 6 GIFs) ─────────── */
+    /* ── Photos — 45 files (40 AVIFs + 5 GIFs) ─────────── */
     const PHOTOS = (() => {
+      const GIFS = new Set([3, 10, 23, 29, 39]);
       const files = [];
-      for (let i = 1; i <= 67; i++) files.push(`${String(i).padStart(2,'0')}_Emil-Swarf-S.avif`);
-      for (let i = 68; i <= 73; i++) files.push(`${String(i).padStart(2,'0')}_Emil-Swarf-S.gif`);
+      for (let i = 1; i <= 45; i++) {
+        const n = String(i).padStart(2, '0');
+        files.push(`${n}_EmilBlum-Swarf.${GIFS.has(i) ? 'gif' : 'avif'}`);
+      }
       return files.map(f => `swarf/${f}`);
     })();
 
