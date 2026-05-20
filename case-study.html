@@ -184,11 +184,10 @@
       <!-- 5. GALLERY — rows injected by JS -->
       <section class="cs-gallery" id="cs-gallery" aria-label="Project imagery"></section>
 
-      <!-- 6. CREDITS & AWARDS -->
+      <!-- 6. CREDITS -->
       <div class="cs-footer container" id="cs-footer">
         <div class="cs-footer-left">
           <div class="cs-credits-col" id="cs-credits-col"></div>
-          <div class="cs-awards-col"  id="cs-awards-col"></div>
         </div>
       </div>
 
@@ -669,17 +668,6 @@
               </div>
             `).join('')}
           </div>
-        `;
-      }
-
-      // Awards
-      const awardsCol = document.getElementById('cs-awards-col');
-      if (awardsCol && data.awards && data.awards.length) {
-        awardsCol.innerHTML = `
-          <p class="cs-section-label">Recognition</p>
-          ${data.awards.map(a => `
-            <div class="cs-award-item">${a}</div>
-          `).join('')}
         `;
       }
 
