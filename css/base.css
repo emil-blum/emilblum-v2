@@ -4,7 +4,8 @@
    ===================================================== */
 
 /* ── FONTS ── */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap');
+/* Loaded via <link> preconnect in each page's <head> for maximum speed.
+   @import removed — it adds an extra blocking round-trip and delays all fonts. */
 
 /* ── DESIGN TOKENS ── */
 :root {

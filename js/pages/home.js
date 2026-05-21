@@ -27,6 +27,10 @@
     const boxInner = document.querySelector('.loader-box-inner');
     const targetW  = boxInner ? boxInner.offsetWidth : 420;
 
+    // Reveal wordmarks and push them below the clip atomically —
+    // CSS keeps them opacity:0 to prevent a flash before this runs.
+    gsap.set([emilImg, blumImg], { opacity: 1, yPercent: 110 });
+
     const DUR = 1.0;    // per-word slide duration
     const STAGGER = 0.4; // gap between Emil and Blum starts
 

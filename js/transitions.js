@@ -21,9 +21,15 @@
 
   /* ── CREATE VEIL ── */
   function createVeil() {
-    veil = document.createElement('div');
-    veil.id = 'page-veil';
-    document.body.prepend(veil);
+    // Reuse the static #page-veil already in the HTML if present;
+    // the static element is painted by the browser before any JS runs,
+    // eliminating the gap between first render and DOMContentLoaded.
+    veil = document.getElementById('page-veil');
+    if (!veil) {
+      veil = document.createElement('div');
+      veil.id = 'page-veil';
+      document.body.prepend(veil);
+    }
 
     // Double rAF: ensures the browser has painted opacity:1
     // before we start the fade-out transition

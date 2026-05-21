@@ -34,9 +34,16 @@
   <meta name="twitter:description" content="Brand identity, art direction, digital experiences, and interactive media. Based in Portugal. Working globally.">
   <meta name="twitter:image" content="https://emilblum.com/assets/og/og-home.webp">
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap">
+
   <!-- Preload wordmarks -->
   <link rel="preload" href="assets/wordmarks/emil.svg" as="image" type="image/svg+xml">
   <link rel="preload" href="assets/wordmarks/blum.svg" as="image" type="image/svg+xml">
+  <!-- Preload GSAP so defer doesn't stall DOMContentLoaded on cold loads -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" as="script">
 
   <!-- Styles -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -51,6 +58,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 </head>
 <body>
+  <div id="page-veil"></div>
 
   <!-- ── CUSTOM CURSOR ── -->
   <div id="cursor">

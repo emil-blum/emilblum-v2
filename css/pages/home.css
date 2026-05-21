@@ -48,6 +48,8 @@
   will-change: transform;
   user-select: none;
   -webkit-user-drag: none;
+  /* Hidden until GSAP applies yPercent — prevents flash before initLoader() runs */
+  opacity: 0;
 }
 
 /* ── EXPANDING IMAGE BOX ── */
