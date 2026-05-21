@@ -27,10 +27,6 @@
     const boxInner = document.querySelector('.loader-box-inner');
     const targetW  = boxInner ? boxInner.offsetWidth : 420;
 
-    // Reveal wordmarks and push them below the clip atomically —
-    // CSS keeps them opacity:0 to prevent a flash before this runs.
-    gsap.set([emilImg, blumImg], { opacity: 1, yPercent: 110 });
-
     const DUR = 1.0;    // per-word slide duration
     const STAGGER = 0.4; // gap between Emil and Blum starts
 
@@ -39,11 +35,21 @@
       delay: 0.2
     });
 
-    /* Emil slides up */
-    tl.from(emilImg, { yPercent: 110, duration: DUR });
+    /* fromTo explicitly declares both states — from() would capture the
+       GSAP-recorded "current" as destination, causing 110→110 no-op after
+       any prior gsap.set call. CSS opacity:0 is overridden to 1 in the
+       from-vars, atomically with the yPercent push-below-clip. */
+    tl.fromTo(emilImg,
+      { opacity: 1, yPercent: 110 },
+      { yPercent: 0, duration: DUR }
+    );
 
     /* Blum starts 0.4s after Emil — viewer gets a beat to register each word */
-    tl.from(blumImg, { yPercent: 110, duration: DUR }, `-=${DUR - STAGGER}`);
+    tl.fromTo(blumImg,
+      { opacity: 1, yPercent: 110 },
+      { yPercent: 0, duration: DUR },
+      `-=${DUR - STAGGER}`
+    );
 
     /* Box expands immediately after Blum begins (no gap) */
     tl.fromTo(box,

@@ -71,6 +71,9 @@ body {
   position: relative;
   z-index: 1;
   background: var(--cream);
+  /* Ensures the page bg covers the full viewport from first paint,
+     so the maroon body never shows through on short/lazy-loaded pages */
+  min-height: 100vh;
 }
 
 img, video {
