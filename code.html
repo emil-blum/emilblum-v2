@@ -487,6 +487,15 @@
 
     track.addEventListener('scroll', updateButtons, { passive: true });
     updateButtons();
+
+    // Make entire card clickable — opens the project link in a new tab
+    track.querySelectorAll('.carousel-card').forEach(card => {
+      card.addEventListener('click', e => {
+        if (e.target.closest('a')) return;
+        const link = card.querySelector('.card-link');
+        if (link) window.open(link.href, '_blank', 'noopener');
+      });
+    });
   </script>
 
 </body>
