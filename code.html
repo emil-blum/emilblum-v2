@@ -80,35 +80,6 @@
       align-self: flex-end; /* bottom-align with title on all sizes */
     }
 
-    /* Mobile: header stacks, arrows bottom-right */
-    @media (max-width: 600px) {
-      .carousel-header {
-        flex-wrap: wrap;
-        align-items: flex-start;
-      }
-      .carousel-header > div:first-child {
-        width: 100%;
-      }
-      .carousel-controls {
-        display: none;
-      }
-      .carousel-track {
-        flex-direction: column;
-        overflow-x: visible;
-        scroll-snap-type: none;
-        gap: 80px;
-        padding: 0 var(--px-mobile);
-        padding-bottom: 0;
-      }
-      .carousel-card {
-        flex: 0 0 auto;
-        width: 100%;
-      }
-      .carousel-pad {
-        display: none;
-      }
-    }
-
     .carousel-card { cursor: pointer; }
 
     .carousel-btn {
@@ -264,6 +235,36 @@
 
     @media (max-width: 900px) {
       .card-desc { max-width: 100%; }
+    }
+
+    /* Mobile: stacked column layout — must come after all base rules to win */
+    @media (max-width: 600px) {
+      .carousel-header {
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      .carousel-header > div:first-child {
+        width: 100%;
+      }
+      .carousel-controls {
+        display: none;
+      }
+      .carousel-track {
+        flex-direction: column;
+        overflow-x: visible;
+        overflow-y: visible;
+        scroll-snap-type: none;
+        gap: 80px;
+        padding: 0 var(--px-mobile);
+        padding-bottom: 0;
+      }
+      .carousel-card {
+        flex: 0 0 auto;
+        width: 100%;
+      }
+      .carousel-pad {
+        display: none;
+      }
     }
   </style>
 </head>
