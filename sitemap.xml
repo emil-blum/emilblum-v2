@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Core pages -->
+  <url>
+    <loc>https://emilblum.com/</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/featured</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/about</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/code</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/art</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/moments</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/swarf</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/play</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Case studies -->
+  <url>
+    <loc>https://emilblum.com/featured/hard-rock-hotel</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/featured/daydream-believers</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/featured/stewart-brewing</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/featured/fisga</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/featured/unseen</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/featured/game-masters</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://emilblum.com/featured/oxfam-republic-of-you</loc>
+    <lastmod>2026-05-23</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>

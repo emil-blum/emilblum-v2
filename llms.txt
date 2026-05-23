@@ -1,0 +1,80 @@
+# Emīl Blūm
+
+> Also searchable as: Emil Blum (the ī and ū are Latvian long vowels — both spellings refer to the same person).
+
+> Multidisciplinary designer, creative director, and LLM-assisted coder. Founder of Calumma Studio. Born in Latvia, based in northern Portugal.
+
+Emīl Blūm is a multidisciplinary designer with 15+ years of experience across brand identity, commercial art direction, digital experiences, packaging design, illustration, video production, print, and interactive media.
+
+In 2019 he co-founded Daydream Believers, an award-winning educational organisation recognised among the top 100 education innovators in the world by HundrED, working in partnership with LEGO, Rockstar North, D&AD, and the Ellen MacArthur Foundation.
+
+In 2021 he founded Calumma (https://calumma.design/), a creative studio for rebellious-optimist-led organisations working across education, healthcare, tech, and environmental conservation.
+
+Born in Latvia, became a professional adult in Scotland, and currently raising three children in northern Portugal.
+
+---
+
+## Featured Client Work
+
+Selected projects from 15+ years of client work. Full portfolio at https://emilblum.com/featured
+
+- [Hard Rock Hotel](https://emilblum.com/featured/hard-rock-hotel): A paper vinyl record player, custom-pressed and made from scratch in ten days. Disciplines: Craft, Product Design, Packaging, Experiential.
+- [Daydream Believers](https://emilblum.com/featured/daydream-believers): A rebrand built to grow an innovative educational platform from grassroots idea to globally recognised organisation. Disciplines: Brand Identity, Illustration, Web Design, Educational Content.
+- [SgMA](https://www.sol-gel.co.uk/): Brand identity for the Sol-Gel Materials Association. NDA — no case study available.
+- [Stewart Brewing](https://emilblum.com/featured/stewart-brewing): Beer labels designed from the inside out to present the hidden elements of craft in each brew. Disciplines: Packaging, 3D Visuals, Augmented Reality, Brand Identity.
+- [FISGA Spaces](https://emilblum.com/featured/fisga): A modular identity for a Porto creative hub that refuses to stand still. Disciplines: Brand Identity, Web Design, Print, Digital.
+- [Unseen](https://emilblum.com/featured/unseen): A social awareness campaign centred on a 360° immersive experience that places the viewer inside the world of a child living with abuse. Disciplines: Campaign, Digital, Interactive, Web Design, Print.
+- [National Museum of Scotland — Game Masters](https://emilblum.com/featured/game-masters): A campaign for the first European showing of Game Masters that drew 65,000 visitors — 58% of whom had never attended a special exhibition at the museum before. Disciplines: Campaign, Illustration, Print, Digital.
+- [Oxfam — Republic of You](https://emilblum.com/featured/oxfam-republic-of-you): A retro-gaming-inspired political quiz giving anyone a chance to step into the shoes of a national leader. Disciplines: Game Design, Interactive, Illustration, Web Design, Campaign.
+
+---
+
+## Code & Tools
+
+LLM-assisted coding experiments and interactive tools. Full list at https://emilblum.com/code
+
+- [(Mind)Space](https://x.com/emilblum/status/2057472892699361747): A locally-hosted project management and creative process canvas tool. Includes automatic local server launches, local Whisper speech-to-text integration, and folder-based project discovery.
+- [Vault of Vör](https://vor.emilblum.com/): A steganography tool for hiding text and audio messages within images using military-grade encryption.
+- [3DGS Forest Bathing](https://forest.emilblum.com/): Experimental website embedding a 3D Gaussian Splat (3DGS) for an immersive forest environment. Desktop only due to file size.
+- [Reveil](https://reveil.emilblum.com/): An experimental awareness tool revealing what personal data your device, browser, and computer automatically broadcast. Includes face and audio recognition visualisers.
+- [Page Runner](https://page-runner.emilblum.com/): A speed-reading tool based on the Optimal Recognition Point (ORP) concept. Supports .md, .txt, and .docx files. Available in 6 languages.
+- [Gradient Tool](https://gradient.emilblum.com/): A simple browser tool for creating and exporting custom CSS gradients.
+- [Sound.img](https://sound-img.emilblum.com/): Maps pixel colour values to musical notes for procedural music generation from any image.
+- [Window to Nature](https://window.calumma.design/): A Pomodoro-based focus tool with nature scenes as a reminder of the world beyond the screen.
+
+---
+
+## Art
+
+Personal visual art spanning illustration, digital art, and mixed media.
+
+- [Art Gallery](https://emilblum.com/art): A collection of 30 artworks, viewable as an infinite animated strip or a masonry grid with lightbox.
+
+---
+
+## Interactive Experiences
+
+- [Moments](https://emilblum.com/moments): An infinite Three.js 3D canvas of 64 personal photographs. Drag to explore, works on touch.
+- [Swarf](https://emilblum.com/swarf): A viewport-relative canvas of scattered visual fragments — design ephemera, process work, and personal imagery.
+- [Play — Ripple Music](https://emilblum.com/play): An interactive audio-visual canvas where cursor movement and touch create musical ripples.
+
+---
+
+## About
+
+- [About](https://emilblum.com/about): Full biography, career history, and a fragmented portrait collage. See llms-full.txt for the complete text content.
+- [Now](https://emilblum.com/now): What Emīl is currently working on.
+
+---
+
+## Contact
+
+- Email: hello@emilblum.com
+- LinkedIn: https://linkedin.com/in/emilblum
+- Instagram: https://www.instagram.com/emil_blum
+- Are.na: https://www.are.na/emil-b/
+- Substack: https://substack.com/@emilblum
+- GitHub: https://github.com/emil-blum
+- Twitter / X: https://x.com/emilblum
+- Book a call: https://cal.com/emil-blum/45min
+- Studio: https://calumma.design/
