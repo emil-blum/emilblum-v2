@@ -56,6 +56,49 @@
 
   <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://emilblum.com/#person",
+        "name": "Emīl Blūm",
+        "alternateName": "Emil Blum",
+        "jobTitle": "Creative Director & Designer",
+        "url": "https://emilblum.com",
+        "image": "https://emilblum.com/assets/og/og-about.webp",
+        "sameAs": [
+          "https://linkedin.com/in/emilblum",
+          "https://www.instagram.com/emil_blum",
+          "https://github.com/emil-blum",
+          "https://x.com/emilblum",
+          "https://substack.com/@emilblum",
+          "https://www.are.na/emil-b/"
+        ],
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Calumma",
+          "url": "https://calumma.design/"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "PT"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://emilblum.com/#website",
+        "url": "https://emilblum.com",
+        "name": "Emīl Blūm",
+        "description": "Portfolio of Emīl Blūm — Creative Director & Designer",
+        "author": { "@id": "https://emilblum.com/#person" }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <div id="page-veil"></div>

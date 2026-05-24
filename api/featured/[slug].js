@@ -52,6 +52,20 @@ const STUDIES = {
   },
 };
 
+function buildJsonLd(slug, data) {
+  const canonical = `https://emilblum.com/featured/${slug}`;
+  return `<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "url": "${canonical}",
+    "name": "${data.ogTitle.replace(/&amp;/g, '&')} — Emīl Blūm",
+    "description": "${data.desc.replace(/&amp;/g, '&')}",
+    "author": { "@id": "https://emilblum.com/#person" }
+  }
+  <\/script>`; // eslint-disable-line no-useless-escape
+}
+
 export default async function handler(request) {
   const url  = new URL(request.url);
   const slug = url.pathname.replace(/^\/featured\//, "").replace(/\/$/, "");
@@ -105,6 +119,10 @@ export default async function handler(request) {
       .replace(
         '<meta name="twitter:image" content="https://emilblum.com/assets/og/og-featured.webp">',
         `<meta name="twitter:image" content="${data.image}">`
+      )
+      .replace(
+        '<!-- JSONLD_PLACEHOLDER -->',
+        buildJsonLd(slug, data)
       );
   }
 
