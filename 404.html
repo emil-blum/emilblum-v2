@@ -30,59 +30,49 @@
   <link rel="stylesheet" href="css/transitions.css">
 
   <style>
-    /* ── Trail container ────────────────────────────────── */
+    /* ── Page layout ────────────────────────────────────── */
     .not-found-wrap {
       min-height: 80vh;
-      position: relative;
-      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* ── Trail images ───────────────────────────────────── */
+    /* ── Trail images
+         position: fixed so they cover the full viewport,
+         not clipped by any parent container.
+         z-index: 100 — above page content, below nav (200).     ── */
     .trail-img {
       width: 280px;
-      aspect-ratio: 14 / 9; /* matches loader image ratio */
+      aspect-ratio: 14 / 9;
       border-radius: 4px;
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       opacity: 0;
       overflow: hidden;
       will-change: transform, opacity;
       pointer-events: none;
+      z-index: 100;
       box-shadow: 0 16px 48px rgba(30, 30, 40, 0.14);
     }
 
-    /* Inner image is oversized so GSAP scale:2→1 zooms without
-       revealing empty space — parent overflow:hidden clips it */
+    /* Simple full-cover img — GSAP scale on this element
+       creates the zoom-in effect; overflow:hidden clips it. */
     .trail-img img {
-      position: absolute;
-      top: -5%;
-      left: -5%;
-      width: 110%;
-      height: 110%;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       display: block;
     }
 
-    /* ── Centred text — sits above trail images ─────────── */
+    /* ── Centred content ────────────────────────────────── */
     .not-found-content {
-      position: relative;
-      z-index: 10;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       padding: 120px var(--px-desktop) 80px;
-      pointer-events: none; /* let mouse events reach the trail layer */
-    }
-
-    /* Re-enable pointer events on interactive children */
-    .not-found-content a,
-    .not-found-content button {
-      pointer-events: auto;
     }
 
     .not-found-heading {
@@ -163,19 +153,17 @@
 <body>
   <div id="page-veil"></div>
 
+  <!-- Trail images — position:fixed, so DOM parent doesn't matter -->
+  <div class="trail-img"><img src="assets/images/loader/01-Loader.avif" alt=""></div>
+  <div class="trail-img"><img src="assets/images/loader/02-Loader.avif" alt=""></div>
+  <div class="trail-img"><img src="assets/images/loader/03-Loader.avif" alt=""></div>
+  <div class="trail-img"><img src="assets/images/loader/04-Loader.avif" alt=""></div>
+  <div class="trail-img"><img src="assets/images/loader/05-Loader.avif" alt=""></div>
+  <div class="trail-img"><img src="assets/images/loader/06-Loader.avif" alt=""></div>
+  <div class="trail-img"><img src="assets/images/loader/07-Loader.avif" alt=""></div>
+
   <main class="page-main">
     <div class="not-found-wrap">
-
-      <!-- Trail images — cycled by JS on mouse move -->
-      <div class="trail-img"><img src="assets/images/loader/01-Loader.avif" alt=""></div>
-      <div class="trail-img"><img src="assets/images/loader/02-Loader.avif" alt=""></div>
-      <div class="trail-img"><img src="assets/images/loader/03-Loader.avif" alt=""></div>
-      <div class="trail-img"><img src="assets/images/loader/04-Loader.avif" alt=""></div>
-      <div class="trail-img"><img src="assets/images/loader/05-Loader.avif" alt=""></div>
-      <div class="trail-img"><img src="assets/images/loader/06-Loader.avif" alt=""></div>
-      <div class="trail-img"><img src="assets/images/loader/07-Loader.avif" alt=""></div>
-
-      <!-- Centred content -->
       <div class="not-found-content">
         <h1 class="not-found-heading">Wrong turn.</h1>
         <p class="not-found-sub">This page doesn't exist — or it moved somewhere without leaving a note.</p>
@@ -184,57 +172,57 @@
           <a href="/featured" class="not-found-btn not-found-btn--ghost">See the Work</a>
         </div>
       </div>
-
     </div>
   </main>
 
   <script src="js/nav.js"></script>
   <script src="js/transitions.js"></script>
 
-  <!-- GSAP for trail animation — loaded only on this page -->
+  <!-- GSAP — trail animation, this page only -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
   <script>
   (function () {
     'use strict';
 
-    // Skip on touch-only devices — trail needs a mouse
+    // Skip on touch-only devices
     if (window.matchMedia('(hover: none)').matches) return;
+    if (typeof gsap === 'undefined') return;
 
-    const container = document.querySelector('.not-found-wrap');
-    if (!container || typeof gsap === 'undefined') return;
-
-    const imgs   = [...container.querySelectorAll('.trail-img')];
+    const imgs   = [...document.querySelectorAll('.trail-img')];
     const total  = imgs.length;
-    const THRESH = 60; // px of mouse travel before next image appears
+    const THRESH = 60; // px of mouse travel before next image fires
 
     let imgPos      = 0;
     let zVal        = 1;
     let activeCount = 0;
-    let isIdle      = true;
+    let paused      = false; // true when cursor is over interactive element
 
+    // Use raw clientX/clientY — images are position:fixed (viewport coords)
     let mouse     = { x: 0, y: 0 };
     let lastMouse = { x: 0, y: 0 };
     let cache     = { x: 0, y: 0 };
-    let rafId     = null;
 
     const lerp = (a, b, n) => (1 - n) * a + n * b;
     const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 
-    function getPos(e) {
-      const r = container.getBoundingClientRect();
-      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    // Pause trail when cursor is over nav, buttons, or links
+    function isInteractive(x, y) {
+      const el = document.elementFromPoint(x, y);
+      if (!el) return false;
+      return !!el.closest('a, button, [role="button"], .site-nav, .ctx-menu');
     }
 
-    container.addEventListener('mousemove', function onFirstMove(e) {
-      cache = getPos(e);
-      lastMouse = { ...cache };
-      container.removeEventListener('mousemove', onFirstMove);
-      rafId = requestAnimationFrame(render);
+    // Kick off on first move
+    document.addEventListener('mousemove', function onFirst(e) {
+      mouse = cache = lastMouse = { x: e.clientX, y: e.clientY };
+      document.removeEventListener('mousemove', onFirst);
+      requestAnimationFrame(render);
     }, { once: true });
 
-    container.addEventListener('mousemove', e => {
-      mouse = getPos(e);
+    document.addEventListener('mousemove', e => {
+      mouse  = { x: e.clientX, y: e.clientY };
+      paused = isInteractive(e.clientX, e.clientY);
     });
 
     function showNext() {
@@ -247,58 +235,50 @@
       const h   = el.offsetHeight;
 
       gsap.killTweensOf([el, img]);
-
       activeCount++;
-      isIdle = false;
 
       gsap.timeline({
         onComplete: () => {
           activeCount--;
-          if (activeCount === 0) {
-            isIdle = true;
-            zVal   = 1;
-          }
+          if (activeCount === 0) zVal = 1;
         }
       })
-      // Outer: pop in at cursor, scale up from small, then shrink away
+      // Card slides from cached pos to current mouse pos, fades in
       .fromTo(el, {
         opacity : 1,
-        scale   : 0.2,
         zIndex  : zVal,
         x       : cache.x - w / 2,
         y       : cache.y - h / 2
       }, {
-        duration : 0.4,
-        ease     : 'power2.out',
-        scale    : 1,
         x        : mouse.x - w / 2,
-        y        : mouse.y - h / 2
+        y        : mouse.y - h / 2,
+        duration : 0.35,
+        ease     : 'power2.out'
       }, 0)
-      // Inner image: zoom in from 2× to 1× as card appears
-      .fromTo(img, { scale: 2 }, {
-        duration : 0.4,
-        ease     : 'power2.out',
-        scale    : 1
+      // Inner image zooms from 1.5× to 1× as card arrives
+      .fromTo(img, { scale: 1.5 }, {
+        scale    : 1,
+        duration : 0.35,
+        ease     : 'power2.out'
       }, 0)
-      // Fade + shrink out
+      // Fade out
       .to(el, {
-        duration : 0.4,
-        ease     : 'power2.in',
         opacity  : 0,
-        scale    : 0.2
-      }, 0.5);
+        duration : 0.35,
+        ease     : 'power2.in'
+      }, 0.45);
     }
 
     function render() {
       cache.x = lerp(cache.x, mouse.x, 0.1);
       cache.y = lerp(cache.y, mouse.y, 0.1);
 
-      if (dist(mouse, lastMouse) > THRESH) {
+      if (!paused && dist(mouse, lastMouse) > THRESH) {
         showNext();
         lastMouse = { ...mouse };
       }
 
-      rafId = requestAnimationFrame(render);
+      requestAnimationFrame(render);
     }
 
   })();
