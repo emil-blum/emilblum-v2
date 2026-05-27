@@ -210,7 +210,7 @@
     function isInteractive(x, y) {
       const el = document.elementFromPoint(x, y);
       if (!el) return false;
-      return !!el.closest('a, button, [role="button"], .site-nav, .ctx-menu');
+      return !!el.closest('a, button, [role="button"], .site-nav, .ctx-menu, .not-found-content');
     }
 
     // Kick off on first move
