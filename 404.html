@@ -13,6 +13,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Page Not Found — Emīl Blūm</title>
   <meta name="robots" content="noindex, nofollow">
+  <!-- base href ensures CSS/JS/asset paths resolve from root regardless
+       of what URL Vercel served this 404 page for -->
+  <base href="/">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,27 +30,59 @@
   <link rel="stylesheet" href="css/transitions.css">
 
   <style>
+    /* ── Trail container ────────────────────────────────── */
     .not-found-wrap {
       min-height: 80vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Trail images ───────────────────────────────────── */
+    .trail-img {
+      width: 280px;
+      aspect-ratio: 14 / 9; /* matches loader image ratio */
+      border-radius: 4px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      overflow: hidden;
+      will-change: transform, opacity;
+      pointer-events: none;
+      box-shadow: 0 16px 48px rgba(30, 30, 40, 0.14);
+    }
+
+    /* Inner image is oversized so GSAP scale:2→1 zooms without
+       revealing empty space — parent overflow:hidden clips it */
+    .trail-img img {
+      position: absolute;
+      top: -5%;
+      left: -5%;
+      width: 110%;
+      height: 110%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Centred text — sits above trail images ─────────── */
+    .not-found-content {
+      position: relative;
+      z-index: 10;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       text-align: center;
       padding: 120px var(--px-desktop) 80px;
+      pointer-events: none; /* let mouse events reach the trail layer */
     }
 
-    .not-found-num {
-      font-family: var(--font-body);
-      font-size: clamp(7rem, 20vw, 16rem);
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: -0.04em;
-      color: var(--cream);
-      -webkit-text-stroke: 2px rgba(30, 30, 40, 0.12);
-      color: transparent;
-      margin: 0 0 8px;
-      user-select: none;
+    /* Re-enable pointer events on interactive children */
+    .not-found-content a,
+    .not-found-content button {
+      pointer-events: auto;
     }
 
     .not-found-heading {
@@ -110,7 +145,7 @@
     }
 
     @media (max-width: 640px) {
-      .not-found-wrap {
+      .not-found-content {
         padding: 100px var(--px-mobile) 60px;
       }
       .not-found-actions {
@@ -130,17 +165,144 @@
 
   <main class="page-main">
     <div class="not-found-wrap">
-      <p class="not-found-num" aria-hidden="true">404</p>
-      <h1 class="not-found-heading">Wrong turn.</h1>
-      <p class="not-found-sub">This page doesn't exist — or it moved somewhere without leaving a note.</p>
-      <div class="not-found-actions">
-        <a href="/" class="not-found-btn not-found-btn--primary">Back to Home</a>
-        <a href="/featured" class="not-found-btn not-found-btn--ghost">See the Work</a>
+
+      <!-- Trail images — cycled by JS on mouse move -->
+      <div class="trail-img"><img src="assets/images/loader/01-Loader.avif" alt=""></div>
+      <div class="trail-img"><img src="assets/images/loader/02-Loader.avif" alt=""></div>
+      <div class="trail-img"><img src="assets/images/loader/03-Loader.avif" alt=""></div>
+      <div class="trail-img"><img src="assets/images/loader/04-Loader.avif" alt=""></div>
+      <div class="trail-img"><img src="assets/images/loader/05-Loader.avif" alt=""></div>
+      <div class="trail-img"><img src="assets/images/loader/06-Loader.avif" alt=""></div>
+      <div class="trail-img"><img src="assets/images/loader/07-Loader.avif" alt=""></div>
+
+      <!-- Centred content -->
+      <div class="not-found-content">
+        <h1 class="not-found-heading">Wrong turn.</h1>
+        <p class="not-found-sub">This page doesn't exist — or it moved somewhere without leaving a note.</p>
+        <div class="not-found-actions">
+          <a href="/" class="not-found-btn not-found-btn--primary">Back to Home</a>
+          <a href="/featured" class="not-found-btn not-found-btn--ghost">See the Work</a>
+        </div>
       </div>
+
     </div>
   </main>
 
   <script src="js/nav.js"></script>
   <script src="js/transitions.js"></script>
+
+  <!-- GSAP for trail animation — loaded only on this page -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // Skip on touch-only devices — trail needs a mouse
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    const container = document.querySelector('.not-found-wrap');
+    if (!container || typeof gsap === 'undefined') return;
+
+    const imgs   = [...container.querySelectorAll('.trail-img')];
+    const total  = imgs.length;
+    const THRESH = 60; // px of mouse travel before next image appears
+
+    let imgPos      = 0;
+    let zVal        = 1;
+    let activeCount = 0;
+    let isIdle      = true;
+
+    let mouse     = { x: 0, y: 0 };
+    let lastMouse = { x: 0, y: 0 };
+    let cache     = { x: 0, y: 0 };
+    let rafId     = null;
+
+    const lerp = (a, b, n) => (1 - n) * a + n * b;
+    const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+    function getPos(e) {
+      const r = container.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+
+    container.addEventListener('mousemove', function onFirstMove(e) {
+      cache = getPos(e);
+      lastMouse = { ...cache };
+      container.removeEventListener('mousemove', onFirstMove);
+      rafId = requestAnimationFrame(render);
+    }, { once: true });
+
+    container.addEventListener('mousemove', e => {
+      mouse = getPos(e);
+    });
+
+    function showNext() {
+      zVal++;
+      imgPos = (imgPos + 1) % total;
+
+      const el  = imgs[imgPos];
+      const img = el.querySelector('img');
+      const w   = el.offsetWidth;
+      const h   = el.offsetHeight;
+
+      gsap.killTweensOf([el, img]);
+
+      activeCount++;
+      isIdle = false;
+
+      gsap.timeline({
+        onComplete: () => {
+          activeCount--;
+          if (activeCount === 0) {
+            isIdle = true;
+            zVal   = 1;
+          }
+        }
+      })
+      // Outer: pop in at cursor, scale up from small, then shrink away
+      .fromTo(el, {
+        opacity : 1,
+        scale   : 0.2,
+        zIndex  : zVal,
+        x       : cache.x - w / 2,
+        y       : cache.y - h / 2
+      }, {
+        duration : 0.4,
+        ease     : 'power2.out',
+        scale    : 1,
+        x        : mouse.x - w / 2,
+        y        : mouse.y - h / 2
+      }, 0)
+      // Inner image: zoom in from 2× to 1× as card appears
+      .fromTo(img, { scale: 2 }, {
+        duration : 0.4,
+        ease     : 'power2.out',
+        scale    : 1
+      }, 0)
+      // Fade + shrink out
+      .to(el, {
+        duration : 0.4,
+        ease     : 'power2.in',
+        opacity  : 0,
+        scale    : 0.2
+      }, 0.5);
+    }
+
+    function render() {
+      cache.x = lerp(cache.x, mouse.x, 0.1);
+      cache.y = lerp(cache.y, mouse.y, 0.1);
+
+      if (dist(mouse, lastMouse) > THRESH) {
+        showNext();
+        lastMouse = { ...mouse };
+      }
+
+      rafId = requestAnimationFrame(render);
+    }
+
+  })();
+  </script>
+
 </body>
 </html>
