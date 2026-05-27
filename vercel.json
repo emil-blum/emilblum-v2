@@ -1,8 +1,5 @@
 {
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/featured/:slug", "destination": "/api/featured/:slug" }
-  ],
   "redirects": [
     { "source": "/moments-v2", "destination": "/moments", "permanent": true },
     { "source": "/scraps-v2",  "destination": "/swarf",   "permanent": true },
