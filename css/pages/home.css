@@ -131,7 +131,10 @@
 }
 
 .hero-eyebrow {
-  color: var(--n500);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--maroon);
   margin-bottom: 32px;
 }
 
