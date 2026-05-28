@@ -56,10 +56,17 @@
 
     /* ── Page header ── */
     .featured-header {
-      padding: clamp(7rem, 12vw, 11rem) clamp(1.5rem, 5vw, 6rem) clamp(3rem, 5vw, 5rem);
+      padding: clamp(100px, 12vw, 140px) var(--px-desktop) clamp(3rem, 5vw, 5rem);
       display: flex;
       flex-direction: column;
       gap: 20px;
+    }
+
+    @media (max-width: 767px) {
+      .featured-header {
+        padding-left: var(--px-mobile);
+        padding-right: var(--px-mobile);
+      }
     }
 
     /* ── Scattered grid ──
@@ -70,7 +77,7 @@
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       column-gap: clamp(1rem, 2vw, 2.5rem);
-      padding: 0 clamp(1.5rem, 5vw, 6rem);
+      padding: 0 var(--px-desktop);
       padding-bottom: clamp(6rem, 10vw, 12rem);
       align-items: start; /* prevent items stretching to fill shared row height */
     }
@@ -116,6 +123,10 @@
 
     /* Mobile: full width, modest spacing */
     @media (max-width: 767px) {
+      .featured-grid {
+        padding-left: var(--px-mobile);
+        padding-right: var(--px-mobile);
+      }
       .project-item {
         grid-column: 1 / -1;
         margin-bottom: 4rem !important;
