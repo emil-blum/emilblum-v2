@@ -374,9 +374,9 @@
   padding-bottom: clamp(80px, 10vw, 120px);
 }
 
-/* Spacing between blocks — airy on desktop, tight on mobile */
+/* Spacing between blocks */
 .cs-block {
-  margin-bottom: clamp(96px, 12vw, 160px);
+  margin-bottom: 30px;
 }
 .cs-block:last-child { margin-bottom: 0; }
 
