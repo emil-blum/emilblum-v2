@@ -156,6 +156,20 @@
   color: var(--n600);
 }
 
+.hero-bio a,
+.hero-info-value a {
+  text-decoration: underline;
+  text-decoration-color: var(--maroon);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.hero-bio a:hover,
+.hero-info-value a:hover {
+  color: var(--maroon);
+}
+
 @media (max-width: 900px) {
   .hero-meta {
     flex-direction: column;
