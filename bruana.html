@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bruana</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: #1e1e28;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .avatar-wrap {
+      width: 720px;
+      height: 720px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    ojin-agent {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    @media (max-width: 760px) {
+      .avatar-wrap {
+        width: calc(100vw - 16px);
+        height: calc(100vw - 16px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="avatar-wrap">
+    <ojin-agent agent-id="66b8549c-c369-471a-9edc-3461d1c41b11"></ojin-agent>
+  </div>
+  <script src="https://widget.ojin.ai/ojin-agent.js"></script>
+</body>
+</html>
